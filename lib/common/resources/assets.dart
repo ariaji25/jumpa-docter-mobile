@@ -6,6 +6,9 @@ class Assets {
   static const imagesPath = "assets/images";
   static const othersPath = "assets/others";
 
+  static const String icStar = "$iconsPath/ic_stars.png";
+  static const String icSuccess = "$iconsPath/ic_success.png";
+
   static const String logoSplash = "$othersPath/logo.png";
 
   static const String imgIls1 = "$imagesPath/jd_illustrate1.png";
