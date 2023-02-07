@@ -101,7 +101,7 @@ class BasePageState extends State<BasePage> {
                                   Navigator.pushNamedAndRemoveUntil(
                                     context,
                                     LoginPage.routeName,
-                                    (route) => false,
+                                        (route) => false,
                                   );
                                 },
                                 onDoubleTap: () {
@@ -138,12 +138,12 @@ class BasePageState extends State<BasePage> {
                               Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 LoginPage.routeName,
-                                (route) => false,
+                                    (route) => false,
                               );
                             },
                             child: Container(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              const EdgeInsets.symmetric(horizontal: 10),
                               height: 50,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
@@ -169,27 +169,13 @@ class BasePageState extends State<BasePage> {
                             ),
                           ),
                         ),
-                        // context.sbWidth(size: 11),
-                        // Container(
-                        //   width: 50,
-                        //   height: 47,
-                        //   decoration: BoxDecoration(
-                        //     color:
-                        //         AppColors.primaryColorDarkColor.withOpacity(0.4),
-                        //     borderRadius: BorderRadius.circular(6),
-                        //   ),
-                        //   child: const Icon(
-                        //     FeatherIcons.settings,
-                        //     color: AppColors.whiteColor,
-                        //   ),
-                        // ),
                         context.sbWidth(size: 11),
                         InkWell(
                           onTap: () {
                             Navigator.pushNamedAndRemoveUntil(
                               context,
                               LoginPage.routeName,
-                              (route) => false,
+                                  (route) => false,
                             );
                           },
                           child: Container(
@@ -298,44 +284,4 @@ class BasePageState extends State<BasePage> {
       _currentIndex = value;
     });
   }
-
-  void _isNewPatient(BuildContext context) {
-    /*if (_patient.isNewPatient.isTrue && _patient.isInvalidToken.isFalse) {
-      confirmModal(
-        context,
-        "Pasien Baru",
-        "Selamat datang di JumpaDokter. \nKami tidak menemukan 'Rekam Medis' anda, lengkapi sekarang?",
-        onOk: () {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            LoginPage.routeName,
-                (route) => false,
-          );
-        },
-        okText: "Sekarang",
-        cancelText: "Nanti",
-      );
-    }*/
-  }
-
-  void _isInvalidToken() async {
-    /* printDebug("CEKING _isInvalidToken ${_patient.isInvalidToken.value}");
-    if (_patient.isInvalidToken.value == true) {
-      await _otp.logout().then((value) {
-        /// SET VALUE IS IN VALID TOKEN TO FALSE AGAIN
-        _patient.isInvalidToken.value = false;
-        printDebug("REST INVALID TOKEN ${_patient.isInvalidToken.value}");
-
-        Get.offAll(const LoginScreen());
-        SnackBarMessage.showSnackBarMessage(
-            title: "Opps! ",
-            message: "Sesi anda telah habis, silahkan login kembali!",
-            typeMessage: SnackBarMessage.error);
-      });*/
-  }
 }
-
-void showFeedback() {
-  // Alerts.showAlertDialogFeedback(context);
-}
-// }

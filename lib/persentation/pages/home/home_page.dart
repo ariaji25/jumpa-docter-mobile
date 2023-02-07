@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:jd_mobile/persentation/pages/order/complaint_page.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import '../../../common/resources/assets.dart';
 import '../../../common/resources/colors.dart';
@@ -142,13 +143,8 @@ class HomeScreenState extends State<HomePage> {
                             isActive: selectedIndex == index,
                             onTap: () {
                               if (e == "Semua") {
-                                _getAll();
                               } else if (e == "Lebih banyak") {
-                                // _article.selectedByTag.value = "";
-                                // Get.to(() => const ArticleScreen());
-                              } else {
-                                _getByTag(e);
-                              }
+                              } else {}
 
                               setState(() {
                                 selectedIndex = index;
@@ -162,41 +158,30 @@ class HomeScreenState extends State<HomePage> {
                   Visibility(
                     visible: false,
                     child: InkWell(
-                      onTap: () {
-                        // _article.selectedByTag.value = "";
-                        // Get.to(() => const ArticleScreen());
-                      },
+                      onTap: () {},
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         margin: const EdgeInsets.only(left: 5),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.primaryColor),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
                         child: const Icon(
                           Icons.chevron_right,
                           size: 20,
                           color: AppColors.primaryColor,
                         ),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.primaryColor),
-                            borderRadius: BorderRadius.circular(100)),
                       ),
                     ),
                   )
                 ],
               )),
           const SizedBox(height: 19),
-          /* false
-              ?SizedBox(
-            height: 171,
-            width: double.infinity,
-            child: Center(child: loadingWidget),
-          )
-              :*/
           SizedBox(
             height: 240,
             width: double.infinity,
             child: LazyLoadScrollView(
-              onEndOfPage: () {
-                // _article.loadNextPage();
-              },
+              onEndOfPage: () {},
               isLoading: true,
               scrollDirection: Axis.horizontal,
               child: ListView.builder(
@@ -210,17 +195,9 @@ class HomeScreenState extends State<HomePage> {
                   /// CARD ARTICLE
                   return InkWell(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                Container() /*ComplaintScreen(
-            serviceId: "yUIh9XQqwWy|MhyZyvVteRY",
-            title: "Pemeriksaan Umum",
-            logoPath: "${Assets.iconsPath}/ic_umum.png",
-            titleColor: AppColors.orangePrimaryColor,
-          )*/
-                            ),
+                        ComplaintPage.routeName,
                       );
                     },
                     child: Container(
@@ -231,16 +208,17 @@ class HomeScreenState extends State<HomePage> {
                         right: idx == true ? 30 : 0,
                       ),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.whiteColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: const Offset(0, 3),
-                            ),
-                          ]),
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.whiteColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -314,19 +292,6 @@ class HomeScreenState extends State<HomePage> {
     );
   }
 
-  _getByTag(String tag) {
-    // _article.selectedByTag.value = tag;
-    // _article.page.value = 1;
-    // _article.getArticle();
-  }
-
-  _getAll() {
-    // _article.selectedByTag.value = "";
-    // _article.page.value = 1;
-    // _article.article.clear();
-    // _article.getArticle();
-  }
-
   final List<Widget> imageSliders = imgList.map((item) {
     return Container(
       margin: const EdgeInsets.all(5.0),
@@ -345,17 +310,10 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.orangeColor,
         imagePath: "${Assets.iconsPath}/ic_home_umum.png",
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Container() /*ComplaintScreen(
-            serviceId: "yUIh9XQqwWy|MhyZyvVteRY",
-            title: "Pemeriksaan Umum",
-            logoPath: "${Assets.iconsPath}/ic_umum.png",
-            titleColor: AppColors.orangePrimaryColor,
-          )*/
-                ),
+            ComplaintPage.routeName,
+            (route) => false,
           );
         },
       ),
@@ -364,17 +322,10 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.redColor,
         imagePath: "${Assets.iconsPath}/ic_home_swab.png",
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Container() /*const ComplaintScreen(
-            serviceId: "LPH5Qihd5Ux|JtpO3a0CUhm",
-            title: "Swab Antigen",
-            logoPath: "${Assets.iconsPath}/ic_swab.png",
-            titleColor: AppColors.redPrimaryColor,
-          )()*/
-                ),
+            ComplaintPage.routeName,
+            (route) => false,
           );
         },
       ),
@@ -383,17 +334,10 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.greenColor,
         imagePath: "${Assets.iconsPath}/ic_home_gula.png",
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Container() /* const ComplaintScreen(
-            serviceId: "XwbXDJqe9Je|ytHrqQJuamG",
-            title: "Periksa Gula Darah",
-            logoPath: "${Assets.iconsPath}/ic_gula.png",
-            titleColor: AppColors.greenPrimaryColor,
-          )()*/
-                ),
+            ComplaintPage.routeName,
+            (route) => false,
           );
         },
       ),
@@ -402,17 +346,10 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.blueColor,
         imagePath: "${Assets.iconsPath}/ic_home_priksa.png",
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Container() /* const ComplaintScreen(
-            serviceId: "n7XVDlPb8WJ|q8dFWkwNMJS",
-            title: "Periksa Kolesterol",
-            logoPath: "${Assets.iconsPath}/ic_priksa.png",
-            titleColor: AppColors.bluePrimaryColor,
-          )()*/
-                ),
+            ComplaintPage.routeName,
+            (route) => false,
           );
         },
       ),
@@ -421,17 +358,10 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.purpleColor,
         imagePath: "${Assets.iconsPath}/ic_home_asam.png",
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Container() /*const ComplaintScreen(
-            serviceId: "enzACS7PSah|gzhaZrxlnvQ",
-            title: "Periksa Asam Urat",
-            logoPath: "${Assets.iconsPath}/ic_asam.png",
-            titleColor: AppColors.purplePrimaryColor,
-          )()*/
-                ),
+            ComplaintPage.routeName,
+            (route) => false,
           );
         },
       ),
@@ -440,17 +370,10 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.pinkColor,
         imagePath: "${Assets.iconsPath}/ic_home_khitan.png",
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Container() /* const ComplaintScreen(
-            serviceId: "fFLfhYeNaxA|lmeeX5ZJ8i2",
-            title: "Khitanan",
-            logoPath: "${Assets.iconsPath}/ic_khitan.png",
-            titleColor: AppColors.redPrimaryColor,
-          )()*/
-                ),
+            ComplaintPage.routeName,
+            (route) => false,
           );
         },
       ),
@@ -459,17 +382,10 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.yellowColor,
         imagePath: "${Assets.iconsPath}/ic_home_luka.png",
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Container() /*const ComplaintScreen(
-            serviceId: "b3KEOx3Aa0H|zclX2e1l3bcs",
-            title: "Perawatan Luka",
-            logoPath: "${Assets.iconsPath}/ic_luka.png",
-            titleColor: AppColors.yellowColor,
-          ),*/
-                ),
+            ComplaintPage.routeName,
+            (route) => false,
           );
         },
       ),
@@ -479,11 +395,10 @@ class HomeScreenState extends State<HomePage> {
         imagePath: "${Assets.iconsPath}/ic_chat.png",
         showBadge: true,
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Container() /*const SpecializationScreen()*/),
+            ComplaintPage.routeName,
+            (route) => false,
           );
         },
       ),
