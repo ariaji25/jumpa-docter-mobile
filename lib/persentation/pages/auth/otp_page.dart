@@ -10,10 +10,12 @@ import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
+import 'package:jd_mobile/persentation/pages/base/base_page.dart';
 import 'package:jd_mobile/persentation/widgets/app_bars.dart';
 
 class OtpPage extends StatefulWidget {
   static const routeName = "/OtpPage";
+
   const OtpPage({Key? key}) : super(key: key);
 
   @override
@@ -159,6 +161,7 @@ class _OtpPageState extends State<OtpPage> {
 
   void _onNext() {
     log("OTP CODE -- ${_otpCtrl.text}");
+    Navigator.pushNamed(context, BasePage.routeName);
   }
 }
 
