@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jd_mobile/common/extensions/context_ext.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/theme/theme.dart';

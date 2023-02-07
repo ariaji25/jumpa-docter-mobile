@@ -82,6 +82,7 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
                         ),
                         Expanded(
                           child: TextFormField(
+                            controller: _searchCtrl,
                             decoration: const InputDecoration.collapsed(
                               filled: true,
                               fillColor: Color(0xffEDF2F7),
