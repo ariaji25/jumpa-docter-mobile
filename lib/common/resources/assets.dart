@@ -14,4 +14,5 @@ class Assets {
   static const String imgIls1 = "$imagesPath/jd_illustrate1.png";
   static const String imgIls2 = "$imagesPath/jd_illustrate2.png";
   static const String imgIls3 = "$imagesPath/jd_illustrate3.png";
+  static const String imgIlsDoctor = "$imagesPath/ilus_doc.png";
 }
