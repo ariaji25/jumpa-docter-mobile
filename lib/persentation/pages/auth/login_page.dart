@@ -5,10 +5,13 @@ import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
+import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/persentation/pages/auth/components/help_bottom_sheet.dart';
 import 'package:jd_mobile/persentation/pages/auth/otp_page.dart';
 import 'package:jd_mobile/persentation/pages/global/on_boarding_page.dart';
+import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:jd_mobile/persentation/widgets/app_bars.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/LoginPage";
@@ -19,10 +22,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _noHpCtrl = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
+
+  _navigateToOtpPage(String phoneNumber, String verificationId) {
+    Navigator.pushNamed(
+      context,
+      OtpPage.routeName,
+      arguments: [verificationId, phoneNumber],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppsBar(
         elevation: 0,
@@ -108,7 +121,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 10),
             TextFormField(
-              controller: _noHpCtrl,
+              controller: _phoneNumber,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: "cth : 08123456789",
                 border: OutlineInputBorder(
@@ -140,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 25),
             InkWell(
-              onTap: _onNext,
+              onTap: () => _onLanjut(provider, _phoneNumber.text),
               child: Container(
                 height: 47,
                 decoration: BoxDecoration(
@@ -148,13 +162,22 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
-                  child: Text(
-                    "Lanjut",
-                    style: AppTheme.subtitle.copyWith(
-                      color: AppColors.whiteColor,
-                      fontSize: 14,
-                    ),
-                  ),
+                  child: provider.requestState == RequestState.Loading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2.0,
+                          ),
+                        )
+                      : Text(
+                          "Lanjut",
+                          style: AppTheme.subtitle.copyWith(
+                            color: AppColors.whiteColor,
+                            fontSize: 14,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -164,15 +187,40 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onNext() {
-    if (_noHpCtrl.text.isEmpty) {
+  void _onLanjut(AuthProvider provider, String phoneNumber) {
+    if (_phoneNumber.text.isEmpty) {
       SnackBarCustom.failSnackBar(
         context,
         title: "Ops!",
         description: "Silahkan mengisi nomor hp terlebih dahulu!",
       );
     } else {
-      Navigator.pushNamed(context, OtpPage.routeName);
+      provider.setRequestState(RequestState.Loading);
+      provider.requestOtp(
+        phoneNumber: _phoneNumber.text,
+        verificationCompleted: (phoneAuthCredential) {},
+        verificationFailed: (err) {
+          provider.setRequestState(RequestState.Error);
+          SnackBarCustom.failSnackBar(
+            context,
+            title: "Opps!",
+            description: err.toString(),
+          );
+        },
+        codeSent: (verificationId, resendToken) async {
+          provider.verificationId = verificationId;
+          provider.resendToken = resendToken;
+          await _navigateToOtpPage(
+            _phoneNumber.text,
+            verificationId,
+          );
+          provider.setRequestState(RequestState.Loaded);
+        },
+        codeAutoRetrievalTimeout: (verificationId) {
+          provider.verificationId = verificationId;
+          provider.setRequestState(RequestState.Error);
+        },
+      );
     }
   }
 

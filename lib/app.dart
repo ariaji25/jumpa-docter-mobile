@@ -1,20 +1,37 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/routes/routes.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
+import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
+import 'package:provider/provider.dart';
+import 'injection.dart' as di;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: kDebugMode,
-      theme: AppTheme.light,
-      title: 'JumpaDokter',
-      onGenerateRoute: AppRoutes.generateRoute,
-      home: const SplashPage(),
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: AppColors.primaryColor,
+      systemNavigationBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => di.getIt<AuthProvider>()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: kDebugMode,
+        theme: AppTheme.light,
+        title: 'JumpaDokter',
+        onGenerateRoute: AppRoutes.generateRoute,
+        home: const SplashPage(),
+      ),
     );
   }
 }

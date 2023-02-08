@@ -9,9 +9,13 @@ import 'package:jd_mobile/common/extensions/padding_ext.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
+import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
+import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/persentation/pages/base/base_page.dart';
+import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:jd_mobile/persentation/widgets/app_bars.dart';
+import 'package:provider/provider.dart';
 
 class OtpPage extends StatefulWidget {
   static const routeName = "/OtpPage";
@@ -27,6 +31,8 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppsBar(
         elevation: 0,
@@ -135,7 +141,7 @@ class _OtpPageState extends State<OtpPage> {
             const SizedBox(height: 30),
             const SizedBox(height: 30),
             InkWell(
-              onTap: _onNext,
+              onTap: () => _onLanjut(provider),
               child: Container(
                 height: 47,
                 decoration: BoxDecoration(
@@ -143,13 +149,22 @@ class _OtpPageState extends State<OtpPage> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
-                  child: Text(
-                    "Lanjut",
-                    style: AppTheme.bodyText.copyWith(
-                      color: AppColors.whiteColor,
-                      fontSize: 14,
-                    ),
-                  ),
+                  child: provider.state == RequestState.Loading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2.0,
+                          ),
+                        )
+                      : Text(
+                          "Lanjut",
+                          style: AppTheme.bodyText.copyWith(
+                            color: AppColors.whiteColor,
+                            fontSize: 14,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -159,9 +174,23 @@ class _OtpPageState extends State<OtpPage> {
     );
   }
 
-  void _onNext() {
-    log("OTP CODE -- ${_otpCtrl.text}");
-    Navigator.pushNamed(context, BasePage.routeName);
+  void _onLanjut(AuthProvider provider) {
+    provider.smsCode = _otpCtrl.text;
+    provider.signInUser().then((_) {
+      if (provider.state == RequestState.Loaded) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          BasePage.routeName,
+          (route) => false,
+        );
+      } else {
+        SnackBarCustom.failSnackBar(
+          context,
+          title: "Opps!",
+          description: provider.errMsg.toString(),
+        );
+      }
+    });
   }
 }
 
