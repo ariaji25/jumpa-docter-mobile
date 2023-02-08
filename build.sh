@@ -11,5 +11,5 @@ flutter pub get
 # flutter build apk --release --flavor prod -t lib/main_prod.dart --split-per-abi
 # flutter build appbundle --release --flavor prod -t lib/main_prod.dart
 
-flutter build apk --release --flavor prod -t lib/main.dart --split-per-abi
-flutter build appbundle --release --flavor prod -t lib/main.dart
+flutter build apk --release -t lib/main.dart --split-per-abi
+flutter build appbundle --release -t lib/main.dart
