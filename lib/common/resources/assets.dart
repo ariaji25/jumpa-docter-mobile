@@ -5,6 +5,7 @@ class Assets {
   static const iconsPath = "assets/icons";
   static const imagesPath = "assets/images";
   static const othersPath = "assets/others";
+  static const logoPath = "assets/logo";
 
   static const String icStar = "$iconsPath/ic_stars.png";
   static const String icSuccess = "$iconsPath/ic_success.png";
