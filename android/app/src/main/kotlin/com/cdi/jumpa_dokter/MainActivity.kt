@@ -1,4 +1,4 @@
-package com.example.jd_mobile
+package com.cdi.jumpa_dokter
 
 import io.flutter.embedding.android.FlutterActivity
 
