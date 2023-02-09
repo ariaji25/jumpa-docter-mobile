@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jd_mobile/common/extensions/padding_ext.dart';
@@ -26,10 +27,33 @@ class OtpPage extends StatefulWidget {
 
 class _OtpPageState extends State<OtpPage> {
   final TextEditingController _otpCtrl = TextEditingController();
+  late CountdownTimerController? controller;
+
+  int endTime = DateTime.now().millisecondsSinceEpoch +
+      const Duration(minutes: 3).inMilliseconds;
+
+  void resetCountDown() {
+    endTime = (DateTime.now().millisecondsSinceEpoch +
+        const Duration(minutes: 3).inMilliseconds);
+    controller = CountdownTimerController(endTime: endTime);
+  }
+
+  @override
+  void initState() {
+    resetCountDown();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AuthProvider>(context);
+    final params = ModalRoute.of(context)?.settings.arguments as List<String>;
 
     return Scaffold(
       appBar: AppsBar(
@@ -103,7 +127,7 @@ class _OtpPageState extends State<OtpPage> {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: "8123456789",
+                    text: params[1],
                     style: AppTheme.bodyText.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primaryColor,
@@ -137,6 +161,41 @@ class _OtpPageState extends State<OtpPage> {
               showFieldAsBox: true,
             ),
             const SizedBox(height: 30),
+            Center(
+              child: CountdownTimer(
+                controller: controller,
+                endTime: endTime,
+                widgetBuilder: (_, CurrentRemainingTime? time) {
+                  return RichText(
+                    text: TextSpan(
+                      text: time == null ? "Belum dapet kode OTP? " : "",
+                      style: GoogleFonts.poppins(
+                          color: AppColors.primaryColorDarkColor),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: time == null
+                              ? 'Kirim Lagi'
+                              : "${time.min ?? 0}:${time.sec}",
+                          style: AppTheme.bodyText.copyWith(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 12,
+                            color: AppColors.primaryColorDarkColor,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              if (time == null) {
+                                // Make Request OTP Again
+                                resetCountDown();
+                                controller?.start();
+                              }
+                            },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
             const SizedBox(height: 30),
             InkWell(
               onTap: () => _onLanjut(provider),
@@ -172,7 +231,15 @@ class _OtpPageState extends State<OtpPage> {
     );
   }
 
+  void closeKeyboard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
   void _onLanjut(AuthProvider provider) {
+    closeKeyboard();
     provider.smsCode = _otpCtrl.text;
     provider.signInUser().then((_) {
       if (provider.state == RequestState.Loaded) {

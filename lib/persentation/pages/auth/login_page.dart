@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jd_mobile/common/extensions/padding_ext.dart';
+import 'package:jd_mobile/common/helpers/phone_number_helper.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
@@ -187,8 +188,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void closeKeyboard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
   void _onLanjut(AuthProvider provider, String phoneNumber) {
     if (_phoneNumber.text.isEmpty) {
+      closeKeyboard();
       SnackBarCustom.failSnackBar(
         context,
         title: "Ops!",
@@ -197,7 +206,8 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       provider.setRequestState(RequestState.Loading);
       provider.requestOtp(
-        phoneNumber: _phoneNumber.text,
+        phoneNumber: PhoneNumberHelper.formatPhoneNumber(_phoneNumber.text),
+        timeout: const Duration(seconds: 120),
         verificationCompleted: (phoneAuthCredential) {},
         verificationFailed: (err) {
           provider.setRequestState(RequestState.Error);

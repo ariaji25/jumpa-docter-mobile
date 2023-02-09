@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_countdown_timer:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
   dartz: ^0.10.1
