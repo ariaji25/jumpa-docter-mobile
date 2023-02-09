@@ -101,7 +101,7 @@ class BasePageState extends State<BasePage> {
                                   Navigator.pushNamedAndRemoveUntil(
                                     context,
                                     LoginPage.routeName,
-                                        (route) => false,
+                                    (route) => false,
                                   );
                                 },
                                 onDoubleTap: () {
@@ -138,12 +138,12 @@ class BasePageState extends State<BasePage> {
                               Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 LoginPage.routeName,
-                                    (route) => false,
+                                (route) => false,
                               );
                             },
                             child: Container(
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 10),
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               height: 50,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
@@ -175,7 +175,7 @@ class BasePageState extends State<BasePage> {
                             Navigator.pushNamedAndRemoveUntil(
                               context,
                               LoginPage.routeName,
-                                  (route) => false,
+                              (route) => false,
                             );
                           },
                           child: Container(
@@ -208,7 +208,7 @@ class BasePageState extends State<BasePage> {
         child: _screens[_currentIndex],
       ),
       bottomNavigationBar: Container(
-        height: 75,
+        height: 90,
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
