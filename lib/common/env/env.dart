@@ -6,10 +6,10 @@ class Env {
 
 mixin EnvType {
   static Env get staging {
-    return Env(baseUrl: '');
+    return Env(baseUrl: 'https://jd-thirdparties.castellumdigital.org');
   }
 
   static Env get production {
-    return Env(baseUrl: '');
+    return Env(baseUrl: 'https://third-parties.jumpadokter.com');
   }
 }
