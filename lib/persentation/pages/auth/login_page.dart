@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/LoginPage";
+
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -199,11 +200,10 @@ class _LoginPageState extends State<LoginPage> {
     if (_phoneNumber.text.isEmpty) {
       closeKeyboard();
       SnackBarCustom.showSnackBarMessage(
-          context:context,
+          context: context,
           title: "Ops!",
           message: "Silahkan mengisi nomor hp terlebih dahulu!",
-          typeMessage: SnackBarType.error
-      );
+          typeMessage: SnackBarType.error);
     } else {
       provider.setRequestState(RequestState.Loading);
       provider.requestOtp(
@@ -212,10 +212,11 @@ class _LoginPageState extends State<LoginPage> {
         verificationCompleted: (phoneAuthCredential) {},
         verificationFailed: (err) {
           provider.setRequestState(RequestState.Error);
-          SnackBarCustom.failSnackBar(
-            context,
+          SnackBarCustom.showSnackBarMessage(
+            context: context,
             title: "Opps!",
-            description: err.toString(),
+            message: err.toString(),
+            typeMessage: SnackBarType.error,
           );
         },
         codeSent: (verificationId, resendToken) async {

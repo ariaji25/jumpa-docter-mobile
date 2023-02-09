@@ -249,10 +249,11 @@ class _OtpPageState extends State<OtpPage> {
           (route) => false,
         );
       } else {
-        SnackBarCustom.failSnackBar(
-          context,
+        SnackBarCustom.showSnackBarMessage(
+          context: context,
           title: "Opps!",
-          description: provider.errMsg.toString(),
+          message: provider.errMsg.toString(),
+          typeMessage: SnackBarType.error,
         );
       }
     });
