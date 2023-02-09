@@ -166,10 +166,11 @@ class _LoginPageState extends State<LoginPage> {
 
   void _onNext() {
     if (_noHpCtrl.text.isEmpty) {
-      SnackBarCustom.failSnackBar(
-        context,
+      SnackBarCustom.showSnackBarMessage(
+        context:context,
         title: "Ops!",
-        description: "Silahkan mengisi nomor hp terlebih dahulu!",
+        message: "Silahkan mengisi nomor hp terlebih dahulu!",
+        typeMessage: SnackBarType.error
       );
     } else {
       Navigator.pushNamed(context, OtpPage.routeName);

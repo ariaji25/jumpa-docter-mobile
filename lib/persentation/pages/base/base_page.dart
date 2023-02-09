@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
+import 'package:jd_mobile/persentation/pages/account/profile_page.dart';
 import 'package:jd_mobile/persentation/pages/home/home_page.dart';
 import 'package:jd_mobile/persentation/widgets/logo_widget.dart';
 
@@ -29,7 +30,7 @@ class BasePageState extends State<BasePage> {
     const HomePage(),
     const HomePage(),
     const HomePage(),
-    const HomePage(),
+    const ProfilePage(),
   ];
 
   @override
