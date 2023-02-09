@@ -9,9 +9,8 @@ import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../../common/constants/app_const.dart';
-import '../../common/resources/snackbar.dart';
+import '../../../../common/constants/app_const.dart';
+import '../../../../common/resources/snackbar.dart';
 
 class MapProvider extends ChangeNotifier {
   var mapPosition = const LatLng(0, 0);
@@ -37,6 +36,7 @@ class MapProvider extends ChangeNotifier {
       await Permission.location.request().then((status) {
         if (status.isGranted) {
           permissionLocationAllow = true;
+          notifyListeners();
           getCurrentLocation();
         } else {
           setLoading(false);
@@ -47,7 +47,7 @@ class MapProvider extends ChangeNotifier {
 
   void getCurrentLocation() async {
     await Geolocator.getCurrentPosition().then((currLocation) {
-      mapPosition = LatLng(currLocation.latitude, currLocation.longitude);
+      setMapPosition(LatLng(currLocation.latitude, currLocation.longitude));
       setLoading(false);
     });
   }
@@ -99,7 +99,7 @@ class MapProvider extends ChangeNotifier {
     if (lat != null && lng != null && deskripsi != null) {
       moveCameraFromSliding = false;
       querySearchController.text = deskripsi;
-      mapPosition = LatLng(lat, lng);
+      setMapPosition(mapPosition = LatLng(lat, lng));
       notifyListeners();
 
       final googleMapController = await controller.future;
@@ -112,7 +112,7 @@ class MapProvider extends ChangeNotifier {
       setLoadingDetailLocation(true);
       Future.delayed(const Duration(seconds: 2), () {
         getLocation(LatLng(lat, lng)).then((value) {
-          detailAddress = value;
+          setDetailAddress(value);
           setLoadingDetailLocation(false);
         });
         moveCameraFromSliding = true;
@@ -131,7 +131,7 @@ class MapProvider extends ChangeNotifier {
     Future.delayed(const Duration(seconds: 2), () {
       if (moveCameraFromSliding) {
         getLocation(mapPosition).then((value) {
-          detailAddress = value;
+          setDetailAddress(value);
           setLoadingDetailLocation(false);
         });
       }
@@ -146,14 +146,26 @@ class MapProvider extends ChangeNotifier {
     permission = await Geolocator.checkPermission();
 
     if (!serviceEnabled) {
-      snackBarMessage(context, "PLayanan lokasi dinonaktifkan");
+      SnackBarCustom.showSnackBarMessage(
+          context: context,
+          title: "Ops !",
+          message: "Pelayanan lokasi dinonaktifkan",
+          typeMessage: SnackBarType.error);
     } else if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     } else if (permission == LocationPermission.denied) {
-      snackBarMessage(context, "Izin lokasi ditolak");
+      SnackBarCustom.showSnackBarMessage(
+          context: context,
+          title: "Ops !",
+          message: "Izin lokasi ditolak",
+          typeMessage: SnackBarType.error);
     } else if (permission == LocationPermission.deniedForever) {
-      snackBarMessage(context,
-          "Izin lokasi ditolak secara permanen, kami tidak dapat meminta izin");
+      SnackBarCustom.showSnackBarMessage(
+          context: context,
+          title: "Ops !",
+          message:
+              "Izin lokasi ditolak secara permanen, kami tidak dapat meminta izin",
+          typeMessage: SnackBarType.error);
     } else {
       final GoogleMapController googleMapController = await controller.future;
       getCurrentLocation();
@@ -209,16 +221,28 @@ class MapProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setMapPosition(value) {
+    mapPosition = value;
+    notifyListeners();
+  }
+
+  void setDetailAddress(value) {
+    detailAddress = value;
+    notifyListeners();
+  }
+
   void setLoadingDetailLocation(status) {
     loadingDetailLocation = status;
     notifyListeners();
   }
 
-  void snackBarMessage(BuildContext context, String message) {
-    SnackBarCustom.showSnackBarMessage(
-        context: context,
-        title: "Ops !",
-        message: message,
-        typeMessage: SnackBarType.error);
+  void setSelectedDetailAddress(value) {
+    selectedDetailAddress = value;
+    notifyListeners();
+  }
+
+  void setSelectedPosition(value) {
+    selectedPosition = value;
+    notifyListeners();
   }
 }

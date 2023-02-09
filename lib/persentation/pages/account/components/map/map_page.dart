@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
-import 'package:jd_mobile/persentation/provider/map_provider.dart';
+import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../../common/resources/assets.dart';
 import '../../../../../common/resources/colors.dart';
 import '../../../../widgets/app_bars.dart';
@@ -31,14 +32,14 @@ class MapPageState extends State<MapPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final map = Provider.of<MapProvider>(context, listen: false);
       map.setLoading(true);
-      map.mapPosition = const LatLng(-8.59050199305857, 116.11873215431551);
+      map.setMapPosition(const LatLng(-8.59050199305857, 116.11873215431551));
       if (widget.latLng == "" || widget.latLng == null) {
         map.getPermissionLocationAllow();
       } else {
         List<String> latLng = widget.latLng!.split(",");
-        map.mapPosition = LatLng(
+        map.setMapPosition(LatLng(
             double.parse(latLng[0] == "" ? "0" : latLng[0]),
-            double.parse(latLng[1] == "" ? "0" : latLng[1]));
+            double.parse(latLng[1] == "" ? "0" : latLng[1])));
         map.setLoading(false);
       }
     });
@@ -95,13 +96,9 @@ class MapPageState extends State<MapPage> {
                               map.controller.complete(controller);
                             }
                             map.getLocation(map.mapPosition).then((value) {
-                              map.detailAddress = value;
-                              map.loadingDetailLocation = false;
+                              map.setDetailAddress(value);
+                              map.setLoadingDetailLocation(false);
                             });
-                            // _addMarker(
-                            //     widget.latLng == null && successGetCurrentPosition
-                            //         ? _currentPosition!
-                            //         : _mapPosition);
                           },
                           initialCameraPosition:
                               CameraPosition(target: map.mapPosition, zoom: 20),
@@ -109,7 +106,7 @@ class MapPageState extends State<MapPage> {
                           mapType: map.mapType,
                           // onCameraMove: map.onCameraMove,
                           onCameraMove: (position) {
-                            map.mapPosition = position.target;
+                            map.setMapPosition(position.target);
                             map.onCameraMove();
                           },
                           indoorViewEnabled: true,
@@ -250,8 +247,8 @@ class MapPageState extends State<MapPage> {
                               title: "Pilih Alamat",
                               onTap: () {
                                 map.querySearchController.text = "";
-                                map.selectedPosition = map.mapPosition;
-                                map.selectedDetailAddress = map.detailAddress;
+                                map.setSelectedPosition(map.mapPosition);
+                                map.setSelectedDetailAddress(map.detailAddress);
                                 Navigator.of(context).pop();
                                 widget.onTap(map.selectedPosition);
                               },
