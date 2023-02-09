@@ -166,8 +166,7 @@ class ProfileFormState extends State<ProfileForm> {
                                       typeMessage: SnackBarType.error,
                                     );
                                   } else if ((patient.patient.gender ?? "") ==
-                                          "" &&
-                                      false) {
+                                      "") {
                                     SnackBarCustom.showSnackBarMessage(
                                       context: context,
                                       title: "Ops !",
