@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "50210171481",
+    "project_id": "jumpa-dokter",
+    "storage_bucket": "jumpa-dokter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50210171481:android:9de8e872cbe969d5009f48",
+        "android_client_info": {
+          "package_name": "com.cdi.jumpa_dokter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50210171481-boa8pk0m2r6piotolohh49f3jt7pu9vr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cdi.jumpa_dokter",
+            "certificate_hash": "c66b1093db1ae1ef24cc063dbe1039380db956ee"
+          }
+        },
+        {
+          "client_id": "50210171481-edos8focvka1p6r3eham914o25b5si4c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cdi.jumpa_dokter",
+            "certificate_hash": "b62127bf6f615c28514ad0e3cd5165e34b02e911"
+          }
+        },
+        {
+          "client_id": "50210171481-itil9hgi1a4cdn9l6rhpav57t1sc1q86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cdi.jumpa_dokter",
+            "certificate_hash": "4d4e4fb7d54ae9f3c8c7c39b1f20a80cecd97b02"
+          }
+        },
+        {
+          "client_id": "50210171481-c7gsjv637jjb4n2334god4dklkdnd8m0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbLOBVTWBTFsCC3Fo9x9PzhVszL8RN5-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50210171481-c7gsjv637jjb4n2334god4dklkdnd8m0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "50210171481-ec95d3u8deliuvn247irc8lsfhi3583o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cdi.jumpa-dokter",
+                "app_store_id": "1612176502"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

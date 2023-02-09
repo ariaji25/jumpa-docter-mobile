@@ -1,10 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:jd_mobile/data/datasources/http_services.dart';
-import 'package:jd_mobile/data/datasources/patient/patient_api.dart';
-import 'package:jd_mobile/data/repositories/patient/patient_repository_impl.dart';
-import 'package:jd_mobile/domain/repositories/patient_repositorty.dart';
-import 'package:jd_mobile/domain/usecases/patient/create_patient.dart';
-import 'package:jd_mobile/persentation/provider/patient_provider.dart';
+import 'package:jd_mobile/data/repositories/auth/auth_repository_impl.dart';
+import 'package:jd_mobile/domain/repositories/auth/auth_repository.dart';
+import 'package:jd_mobile/domain/usecases/auth/sign_in.dart';
+import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -21,6 +20,20 @@ Future setup() async {
   // API
   getIt.registerLazySingleton<PatientApi>(() => PatientApi(getIt<HttpService>().dio));
 
+  // Provider
+  getIt.registerFactory<AuthProvider>(() => AuthProvider(signIn: getIt()));
+
+  // Repository
+  getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authFirebase: getIt()));
+
+  // Usecase
+  getIt.registerLazySingleton<SignIn>(() => SignIn(getIt()));
+
+  // External
+  final auth = FirebaseAuth.instance;
+  getIt.registerLazySingleton(() => auth);
+
   // Http Service
   getIt.registerLazySingleton<HttpService>(() => HttpService());
+  getIt.registerLazySingleton<AuthFirebase>(() => AuthFirebaseImpl(auth: getIt()));
 }

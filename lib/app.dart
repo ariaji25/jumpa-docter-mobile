@@ -1,22 +1,29 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/routes/routes.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
-import 'package:jd_mobile/domain/usecases/patient/create_patient.dart';
 import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
-import 'package:jd_mobile/persentation/provider/map_provider.dart';
-import 'package:jd_mobile/persentation/provider/patient_provider.dart';
+import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'injection.dart' as di;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: AppColors.primaryColor,
+      systemNavigationBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => PatientProvider()),
-        ChangeNotifierProvider(create: (_) => MapProvider()),
+        ChangeNotifierProvider(create: (_) => di.getIt<AuthProvider>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: kDebugMode,
