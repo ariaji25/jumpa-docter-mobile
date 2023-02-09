@@ -1,0 +1,15 @@
+image: cirrusci/flutter:stable
+
+stages:
+  - build
+
+build_android:
+  stage: build
+  script:
+    - chmod +x build.sh
+    - ./build.sh
+  artifacts:
+    paths:
+      - build/app/outputs/apk/release/
+      - build/app/outputs/bundle/release/
+    expire_in: 2 week
