@@ -8,9 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
-import 'package:jd_mobile/domain/entities/patient_entities.dart';
 import 'package:jd_mobile/persentation/pages/account/components/map/map_page.dart';
-import 'package:jd_mobile/persentation/provider/map_provider.dart';
 import 'package:jd_mobile/persentation/widgets/logo_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +16,9 @@ import '../../../common/constants/app_const.dart';
 import '../../../common/helpers/helpers.dart';
 import '../../../common/resources/snackbar.dart';
 import '../../../common/theme/theme.dart';
-import '../../provider/patient_provider.dart';
+import '../../../common/utils/state_enum.dart';
+import '../../provider/map/map_provider.dart';
+import '../../provider/patient/patient_provider.dart';
 import '../../widgets/app_bars.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/text_field.dart';
@@ -43,20 +43,18 @@ class ProfileFormState extends State<ProfileForm> {
   final TextEditingController _religionCtrl = TextEditingController();
   final TextEditingController _pobCtrl = TextEditingController();
   final TextEditingController _dobCtrl = TextEditingController();
-  String gender = "";
 
   // Use phone number as wa number
   bool waNumberEqPhoneNumber = false;
   final _formKey = GlobalKey<FormState>();
   bool _showBtnEdit = true;
-  var patient;
-  var map;
 
   @override
   void initState() {
     super.initState();
-    patient = Provider.of<PatientProvider>(context, listen: false);
-    map = Provider.of<MapProvider>(context, listen: false);
+    PatientProvider patient =
+        Provider.of<PatientProvider>(context, listen: false);
+    MapProvider map = Provider.of<MapProvider>(context, listen: false);
     if (patient.patient.name?.isEmpty ?? true) {
       setState(() {
         _showBtnEdit = false;
@@ -79,13 +77,13 @@ class ProfileFormState extends State<ProfileForm> {
       _religionCtrl.text = patient.patient.religion ?? "";
       _pobCtrl.text = patient.patient.pob ?? "";
       _dobCtrl.text = patient.patient.dob ?? "";
-      gender = patient.patient.gender ?? "";
+      patient.patient.gender = patient.patient.gender ?? "";
       if ((patient.patient.coordinate ?? "") != "") {
         List<dynamic> latLng = jsonDecode(patient.patient.coordinate!);
         map.selectedPosition = LatLng(double.parse(latLng[1].toString()),
             double.parse(latLng[0].toString()));
         map.getLocation(map.selectedPosition).then((value) {
-          map.selectedDetailAddress = value;
+          map.setSelectedDetailAddress(value);
         });
       }
 
@@ -97,39 +95,42 @@ class ProfileFormState extends State<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    PatientProvider patientProvider =
+        Provider.of<PatientProvider>(context, listen: true);
+    MapProvider mapProvider = Provider.of<MapProvider>(context, listen: true);
     return Scaffold(
-      appBar: AppsBar(
-        elevation: 0.0,
-        flexibleSpaceBar: FlexibleSpaceBar(
-          centerTitle: true,
-          title: Container(
-            margin: const EdgeInsets.only(right: 25),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    size: 32,
-                    color: AppColors.whiteColor,
+        appBar: AppsBar(
+          elevation: 0.0,
+          flexibleSpaceBar: FlexibleSpaceBar(
+            centerTitle: true,
+            title: Container(
+              margin: const EdgeInsets.only(right: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 32,
+                      color: AppColors.whiteColor,
+                    ),
                   ),
-                ),
-                LogoWidget.logoIcon(height: 23, width: 65, color: Colors.white),
-              ],
+                  LogoWidget.logoIcon(
+                      height: 23, width: 65, color: Colors.white),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      body: Consumer<PatientProvider>(builder: (context, patient, child) {
-        return Transform.translate(
+        body: Transform.translate(
           offset: const Offset(0, -1),
           child: Column(
             children: [
-              _buildHeader(),
+              _buildHeader(patientProvider),
               const SizedBox(height: 10),
               Expanded(
                 child: Container(
@@ -146,17 +147,19 @@ class ProfileFormState extends State<ProfileForm> {
                           children: [
                             Visibility(
                               visible: !_showBtnEdit,
-                              child: _buildTextfield(patient.patient),
+                              child:
+                                  _buildTextfield(patientProvider, mapProvider),
                             ),
                             Visibility(
                               visible: _showBtnEdit,
-                              child: _buildDetailPatient(),
+                              child: _buildDetailPatient(patientProvider),
                             ),
                             const SizedBox(height: 10),
                             InkWell(
                               onTap: () {
                                 if (_showBtnEdit == false) {
-                                  if ((patient.patient.coordinate ?? "") ==
+                                  if ((patientProvider.patient.coordinate ??
+                                          "") ==
                                       "") {
                                     SnackBarCustom.showSnackBarMessage(
                                       context: context,
@@ -165,7 +168,8 @@ class ProfileFormState extends State<ProfileForm> {
                                           "Pastikan Alamat dengan Maps dipilih",
                                       typeMessage: SnackBarType.error,
                                     );
-                                  } else if ((patient.patient.gender ?? "") ==
+                                  } else if ((patientProvider.patient.gender ??
+                                          "") ==
                                       "") {
                                     SnackBarCustom.showSnackBarMessage(
                                       context: context,
@@ -176,7 +180,7 @@ class ProfileFormState extends State<ProfileForm> {
                                   } else if (_formKey.currentState!
                                       .validate()) {
                                     Helpers.printDebug("_createOrUpdate()");
-                                    _createOrUpdate();
+                                    _createOrUpdate(patientProvider);
                                   }
                                 }
 
@@ -194,7 +198,8 @@ class ProfileFormState extends State<ProfileForm> {
                                 ),
                                 height: 40,
                                 child: Center(
-                                  child: patient.loading
+                                  child: patientProvider.requestState ==
+                                          RequestState.Loading
                                       ? const Loading(
                                           color: Colors.white,
                                           size: 20,
@@ -226,22 +231,19 @@ class ProfileFormState extends State<ProfileForm> {
               ),
             ],
           ),
-        );
-      }),
-    );
+        ));
   }
 
-  void _createOrUpdate() {
+  void _createOrUpdate(PatientProvider provider) {
     FocusScope.of(context).unfocus();
 
-    patient.patientCreate().then((value) {
-      if (patient.success.isTrue) {
-        patient.success = false;
+    provider.patientCreate().then((value) {
+      if (provider.requestState == RequestState.Loaded) {
         SnackBarCustom.showSnackBarMessage(
           context: context,
           title: "Berhasil !",
           message:
-              "Berhasil ${patient.isNewPatient.isTrue ? "menyimpan" : "memperbarui"}  data pasien!",
+              "Berhasil ${provider.isNewPatient ? "menyimpan" : "memperbarui"}  data pasien!",
           typeMessage: SnackBarType.success,
         );
       } else {
@@ -256,7 +258,7 @@ class ProfileFormState extends State<ProfileForm> {
     });
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(PatientProvider patient) {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -344,7 +346,8 @@ class ProfileFormState extends State<ProfileForm> {
     );
   }
 
-  Widget _buildTextfield(PatientEntities patient) {
+  Widget _buildTextfield(
+      PatientProvider patientProvider, MapProvider mapProvider) {
     return Column(
       children: [
         const SizedBox(height: 12),
@@ -360,7 +363,7 @@ class ProfileFormState extends State<ProfileForm> {
             FilteringTextInputFormatter.allow(RegExp('[a-zA-Z-" "]')),
           ],
           onChanged: (value) {
-            patient.name = value;
+            patientProvider.patient.name = value;
           },
         ),
         const SizedBox(height: 12),
@@ -372,7 +375,7 @@ class ProfileFormState extends State<ProfileForm> {
           controller: _domicilieAdressCtrl,
           inputType: TextInputType.text,
           onChanged: (value) {
-            patient.domicilieAddress = value;
+            patientProvider.patient.domicilieAddress = value;
           },
         ),
         const SizedBox(
@@ -381,10 +384,10 @@ class ProfileFormState extends State<ProfileForm> {
         InkWell(
           onTap: () {
             String latLang = "";
-            if (map.selectedPosition.latitude != 0 &&
-                map.selectedPosition.longitude != 0) {
+            if (mapProvider.selectedPosition.latitude != 0 &&
+                mapProvider.selectedPosition.longitude != 0) {
               latLang =
-                  '${map.selectedPosition.latitude},${map.selectedPosition.longitude}';
+                  '${mapProvider.selectedPosition.latitude},${mapProvider.selectedPosition.longitude}';
             }
             Navigator.push(
               context,
@@ -393,13 +396,14 @@ class ProfileFormState extends State<ProfileForm> {
                       latLng: latLang,
                       onTap: (value) {
                         // patient.patient.update((val) {
-                        //   if (value.latitude != 0 && value.longitude != 0) {
-                        List<double> listLatLong = [
-                          value.longitude,
-                          value.latitude
-                        ];
-                        patient.coordinate = jsonEncode(listLatLong);
-                        //   }
+                        if (value.latitude != 0 && value.longitude != 0) {
+                          List<double> listLatLong = [
+                            value.longitude,
+                            value.latitude
+                          ];
+                          patientProvider.patient.coordinate =
+                              jsonEncode(listLatLong);
+                        }
                         // });
                       })),
             );
@@ -432,7 +436,7 @@ class ProfileFormState extends State<ProfileForm> {
           ),
         ),
         Visibility(
-          visible: map.selectedDetailAddress != "",
+          visible: mapProvider.selectedDetailAddress != "",
           child: Column(
             children: [
               const SizedBox(height: 12),
@@ -449,7 +453,7 @@ class ProfileFormState extends State<ProfileForm> {
                   ),
                   Expanded(
                       child: Text(
-                    map.selectedDetailAddress,
+                    mapProvider.selectedDetailAddress,
                     style: AppTheme.bodyText
                         .copyWith(fontSize: 10, color: AppColors.primaryColor),
                   )),
@@ -580,27 +584,29 @@ class ProfileFormState extends State<ProfileForm> {
           },
         ),
         const SizedBox(height: 12),
-        _buildGender(),
+        _buildGender(patientProvider),
         const SizedBox(height: 16),
       ],
     );
   }
 
-  Widget _buildDetailPatient() {
+  Widget _buildDetailPatient(PatientProvider patientProvider) {
     return Column(
       children: [
         const SizedBox(
           height: 25,
         ),
-        _buildDetailMenu("Nama lengkap", patient.patient.name ?? "-"),
-        _buildDetailMenu("NIK", patient.patient.nik ?? "-"),
+        _buildDetailMenu("Nama lengkap", patientProvider.patient.name ?? "-"),
+        _buildDetailMenu("NIK", patientProvider.patient.nik ?? "-"),
         _buildDetailMenu(
-            "Alamat Domisili", patient.patient.domicilieAddress ?? "-"),
-        _buildDetailMenu("Alamat KTP", patient.patient.address ?? "-"),
-        _buildDetailMenu("Jenis Kelamin", getGender(patient.patient.gender)),
-        _buildDetailMenu("Tempat Lahir", patient.patient.pob ?? "-"),
-        _buildDetailMenu("Tanggal Lahir", patient.patient.dob ?? "-"),
-        _buildDetailMenu("Nomor Whatsapp", patient.patient.waNumber ?? "-"),
+            "Alamat Domisili", patientProvider.patient.domicilieAddress ?? "-"),
+        _buildDetailMenu("Alamat KTP", patientProvider.patient.address ?? "-"),
+        _buildDetailMenu(
+            "Jenis Kelamin", getGender(patientProvider.patient.gender)),
+        _buildDetailMenu("Tempat Lahir", patientProvider.patient.pob ?? "-"),
+        _buildDetailMenu("Tanggal Lahir", patientProvider.patient.dob ?? "-"),
+        _buildDetailMenu(
+            "Nomor Whatsapp", patientProvider.patient.waNumber ?? "-"),
       ],
     );
   }
@@ -642,7 +648,7 @@ class ProfileFormState extends State<ProfileForm> {
     );
   }
 
-  Widget _buildGender() {
+  Widget _buildGender(PatientProvider patientProvider) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -685,19 +691,15 @@ class ProfileFormState extends State<ProfileForm> {
                     ),
                   ),
                   value: "male",
-                  selected: (patient.patient.gender ?? "") == "male",
-                  groupValue: gender,
+                  selected: (patientProvider.patient.gender ?? "") == "male",
+                  groupValue: patientProvider.gender,
                   activeColor: const Color(0XFF051033),
                   selectedTileColor: const Color(0XFF051033),
                   tileColor: const Color(0XFF4A5568),
                   contentPadding: const EdgeInsets.all(0),
                   onChanged: (value) {
-                    setState(() {
-                      gender = value.toString();
-                      patient.patient.update((val) {
-                        val?.gender = value.toString();
-                      });
-                    });
+                    patientProvider.setGender(value.toString());
+                    patientProvider.patient.gender = value.toString();
                   },
                 ),
               ),
@@ -715,19 +717,15 @@ class ProfileFormState extends State<ProfileForm> {
                     ),
                   ),
                   value: "female",
-                  selected: (patient.patient.gender ?? "") == "female",
-                  groupValue: gender,
+                  selected: (patientProvider.patient.gender ?? "") == "female",
+                  groupValue: patientProvider.gender,
                   activeColor: const Color(0XFF051033),
                   selectedTileColor: const Color(0XFF051033),
                   tileColor: const Color(0XFF4A5568),
                   contentPadding: const EdgeInsets.all(0),
                   onChanged: (value) {
-                    setState(() {
-                      gender = value.toString();
-                      patient.patient.update((val) {
-                        val?.gender = value.toString();
-                      });
-                    });
+                    patientProvider.setGender(value.toString());
+                    patientProvider.patient.gender = value.toString();
                   },
                 ),
               ),

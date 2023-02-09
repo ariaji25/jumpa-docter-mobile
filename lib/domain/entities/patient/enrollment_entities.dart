@@ -1,4 +1,4 @@
-import 'package:jd_mobile/domain/entities/event_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/event_entities.dart';
 
 class EnrollmentEntities {
   List<EventEntities>? events;

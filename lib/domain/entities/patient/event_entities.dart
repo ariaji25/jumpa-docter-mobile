@@ -1,7 +1,7 @@
-import 'package:jd_mobile/domain/entities/datavalue_entities.dart';
-import 'package:jd_mobile/domain/entities/element_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/datavalue_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/element_entities.dart';
 
-import '../../data/models/datavalue_model.dart';
+import '../../../data/models/datavalue_model.dart';
 
 class EventEntities extends ElementsEntities {
   List<DataValueEntities>? dataValues;

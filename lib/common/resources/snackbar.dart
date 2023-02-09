@@ -20,6 +20,7 @@ class SnackBarCustom {
     Map<String, dynamic> data = getProperty(typeMessage);
     Flushbar(
       title: title,
+      titleColor: data['color'],
       messageText: Text(
         message,
         style: AppTheme.subtitle.copyWith(

@@ -1,8 +1,8 @@
 // ignore_for_file: annotate_overrides, overridden_fields
 
-import 'package:jd_mobile/domain/entities/datavalue_entities.dart';
-import 'package:jd_mobile/domain/entities/element_entities.dart';
-import 'package:jd_mobile/domain/entities/event_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/datavalue_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/element_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/event_entities.dart';
 
 import 'datavalue_model.dart';
 

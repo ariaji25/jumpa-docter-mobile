@@ -42,7 +42,7 @@ class HttpService {
   }
 
   void setToken({required String token}) {
-    _dio.options.headers['Authorization'] = token;
+    _dio.options.headers['Authorization'] = "Bearer $token";
   }
 
   void removeToken() {

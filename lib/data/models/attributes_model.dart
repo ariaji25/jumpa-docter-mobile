@@ -1,6 +1,6 @@
 // ignore_for_file: annotate_overrides, overridden_fields
 
-import 'package:jd_mobile/domain/entities/attribute_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/attribute_entities.dart';
 
 class AttributesModel extends AttributesEntities {
   String? lastUpdated;

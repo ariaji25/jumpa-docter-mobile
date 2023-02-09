@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:jd_mobile/common/constants/app_const.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/data/models/enrollment_model.dart';
-import 'package:jd_mobile/data/models/patient_model.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:jd_mobile/domain/entities/patient_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import 'package:jd_mobile/domain/usecases/patient/create_patient.dart';
-import '../../data/models/detail_patient_model.dart';
+
+import '../../../data/models/detail_patient_model.dart';
 
 class PatientProvider extends ChangeNotifier {
   PatientProvider({this.createPatient});
 
   final CreatePatient? createPatient;
-
-  var loading = false;
   var loadDetail = false;
   var patient = PatientEntities();
   var detailPatient = DetailPatientModel();
@@ -22,30 +19,45 @@ class PatientProvider extends ChangeNotifier {
   var enrollment = EnrollmentModel();
   var enrollmentHistory = EnrollmentModel();
   var segmentedControlValue = true;
+  var showBtnEdit = true;
+  String gender = "";
   String _errorMessage = "";
 
   String get errorMessage => _errorMessage;
-  RequestState _state = RequestState.Empty;
+  RequestState _requestState = RequestState.Empty;
 
-  RequestState get state => _state;
+  RequestState get requestState => _requestState;
+
+  void setRequestState(RequestState state) {
+    _requestState = state;
+    notifyListeners();
+  }
 
   void addStorage() async {
     // Create storage
     const storage = FlutterSecureStorage();
-    var auth = await storage.read(key: AppConst.authToken);
+  }
+
+  void setGender(value) {
+    gender = value;
+    notifyListeners();
   }
 
   Future<void> patientCreate() async {
-    _state = RequestState.Loading;
-    notifyListeners();
+    setRequestState(RequestState.Loading);
     final result = await createPatient!(patient);
     result.fold((l) {
-      _state = RequestState.Error;
+      setRequestState(RequestState.Error);
       _errorMessage = l.message;
       notifyListeners();
     }, (r) {
-      _state = RequestState.Loaded;
+      setRequestState(RequestState.Loaded);
       notifyListeners();
     });
+  }
+
+  void setShowBtnEdit(status) {
+    showBtnEdit = status;
+    notifyListeners();
   }
 }

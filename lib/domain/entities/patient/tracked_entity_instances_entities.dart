@@ -1,5 +1,5 @@
-import 'package:jd_mobile/domain/entities/attribute_entities.dart';
-import 'package:jd_mobile/domain/entities/enrollment_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/attribute_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/enrollment_entities.dart';
 
 class TrackedEntityInstancesEntities {
   String? created;

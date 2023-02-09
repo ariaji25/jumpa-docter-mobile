@@ -8,5 +8,14 @@ abstract class PatientApi {
   @POST("/api/trackedEntityInstances")
   Future createPatient(@Body() Map<String, dynamic> data);
 
+  @POST("/api/patient/generate/nrm/v2")
+  Future createPatientNrm(@Body() Map<String, dynamic> data);
+
+  @PUT("/api/trackedEntityInstances")
+  Future updatePatient(@Body() Map<String, dynamic> data);
+
+  @GET("/api/trackedEntityInstances?program=El6a2lnac0D&ou=ZxIltg4P06f&filter=x9tchw0swEu:eq:{phone}")
+  Future detailPatientByNrm(@Path('phone') String phoneNumber);
+
   factory PatientApi(Dio dio, {String baseUrl}) = _PatientApi;
 }

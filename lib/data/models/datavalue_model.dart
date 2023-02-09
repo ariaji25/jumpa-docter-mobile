@@ -1,6 +1,6 @@
 // ignore_for_file: annotate_overrides, overridden_fields
 
-import 'package:jd_mobile/domain/entities/datavalue_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/datavalue_entities.dart';
 
 class DataValueModel extends DataValueEntities {
   DataValueModel({
