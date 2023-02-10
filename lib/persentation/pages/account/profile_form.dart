@@ -50,8 +50,8 @@ class ProfileFormState extends State<ProfileForm> {
       }
 
       Future.delayed(const Duration(milliseconds: 200), () async {
-        final nrm = await Helpers.readLocalStorage(AppConst.nrmKey);
-        final phone = await Helpers.readLocalStorage(AppConst.phoneKey);
+        final nrm = await Helpers.readLocalStorage(AppConst.NRM_KEY);
+        final phone = await Helpers.readLocalStorage(AppConst.PHONE_NUMBER_KEY);
         patientProvider.patient.nrm = nrm;
         patientProvider.patient.waNumber = phone;
 

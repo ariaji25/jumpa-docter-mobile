@@ -112,7 +112,7 @@ class PatientProvider extends ChangeNotifier {
     }, (r) async {
       isNewPatient = false;
       notifyListeners();
-      storage.write(key: AppConst.teiKey, value: r);
+      storage.write(key: AppConst.TEI_KEY, value: r);
       await patientDetailByNrm();
     });
   }
@@ -154,13 +154,13 @@ class PatientProvider extends ChangeNotifier {
   }
 
   Future<void> patientDetailByNrm() async {
-    String? phoneNumber = await storage.read(key: AppConst.phoneKey);
+    String? phoneNumber = await storage.read(key: AppConst.PHONE_NUMBER_KEY);
     final result = await detailPatientByNrm!(phoneNumber ?? "");
     result.fold((l) {
       setRequestState(RequestState.Error);
       _errorMessage = l.message;
       notifyListeners();
-      if (l.message == AppConst.invalidToken || l.message == AppConst.invalidTokenOther) {
+      if (l.message == AppConst.INVALID_TOKEN || l.message == AppConst.INVALID_TOKEN_OTHER) {
         setIsInvalidToken(true);
       }
     }, (r) {
@@ -175,7 +175,7 @@ class PatientProvider extends ChangeNotifier {
         notifyListeners();
 
         final teiRef = res.trackedEntityInstances![0].trackedEntityInstance;
-        storage.write(key: AppConst.teiKey, value: teiRef);
+        storage.write(key: AppConst.TEI_KEY, value: teiRef);
 
         final patientAttributes = PatientModel.fromAttributes(
           res.trackedEntityInstances![0].attributes ?? [],
@@ -187,7 +187,7 @@ class PatientProvider extends ChangeNotifier {
         notifyListeners();
 
         storage.write(
-            key: AppConst.currentUser,
+            key: AppConst.CURRENT_USER,
             value: PatientModel.fromEntities(patient).toStorage().toString());
         setRequestState(RequestState.Loaded);
       }

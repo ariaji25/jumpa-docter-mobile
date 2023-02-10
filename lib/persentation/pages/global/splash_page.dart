@@ -84,7 +84,7 @@ class _SplashPageState extends State<SplashPage> {
     var duration = const Duration(seconds: 3);
     return Timer(duration, () async {
       final String? phone =
-          await const FlutterSecureStorage().read(key: AppConst.phoneKey);
+          await const FlutterSecureStorage().read(key: AppConst.PHONE_NUMBER_KEY);
       if (phone != null && phone.isNotEmpty) {
         Navigator.of(context).pushNamedAndRemoveUntil(
             BasePage.routeName, (Route<dynamic> route) => false);

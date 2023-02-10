@@ -56,7 +56,7 @@ class BasePageState extends State<BasePage> {
           Provider.of<PatientProvider>(context, listen: false);
       Future.delayed(const Duration(milliseconds: 300), () async {
         String token =
-            await const FlutterSecureStorage().read(key: AppConst.authToken) ??
+            await const FlutterSecureStorage().read(key: AppConst.AUTH_TOKEN) ??
                 "";
         di.getIt<HttpService>().setToken(token: token);
         await patientProvider.patientDetailByNrm();

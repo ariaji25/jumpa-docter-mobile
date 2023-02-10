@@ -247,7 +247,7 @@ class _OtpPageState extends State<OtpPage> {
     provider.signInUser().then((_) {
       if (provider.state == RequestState.Loaded) {
         const FlutterSecureStorage()
-            .write(key: AppConst.phoneKey, value: phoneNumber);
+            .write(key: AppConst.PHONE_NUMBER_KEY, value: phoneNumber);
         Navigator.pushNamedAndRemoveUntil(
           context,
           BasePage.routeName,

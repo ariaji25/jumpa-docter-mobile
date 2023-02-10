@@ -57,7 +57,7 @@ class AuthProvider extends ChangeNotifier {
       (r) {
         _state = RequestState.Loaded;
         di.getIt<HttpService>().setToken(token: r);
-        const FlutterSecureStorage().write(key: AppConst.authToken, value: r);
+        const FlutterSecureStorage().write(key: AppConst.AUTH_TOKEN, value: r);
         log("TOKEN -- $r");
         notifyListeners();
       },
@@ -86,9 +86,9 @@ class AuthProvider extends ChangeNotifier {
 
   Future logout() async {
     const storage = FlutterSecureStorage();
-    final token = await storage.read(key: AppConst.authToken);
+    final token = await storage.read(key: AppConst.AUTH_TOKEN);
     log("TOKEN IN LOGOUT $token");
     await storage.deleteAll();
-    log("TOKEN LOGOUT :: ${await storage.read(key: AppConst.authToken)}");
+    log("TOKEN LOGOUT :: ${await storage.read(key: AppConst.AUTH_TOKEN)}");
   }
 }
