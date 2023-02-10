@@ -39,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     final provider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppsBar(
         elevation: 0,
         isWhite: true,

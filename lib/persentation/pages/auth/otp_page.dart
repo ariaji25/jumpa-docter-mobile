@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/extensions/padding_ext.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
@@ -56,6 +58,7 @@ class _OtpPageState extends State<OtpPage> {
     final params = ModalRoute.of(context)?.settings.arguments as List<String>;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppsBar(
         elevation: 0,
         isWhite: true,
@@ -198,7 +201,7 @@ class _OtpPageState extends State<OtpPage> {
             ),
             const SizedBox(height: 30),
             InkWell(
-              onTap: () => _onLanjut(provider),
+              onTap: () => _onLanjut(provider, params[1]),
               child: Container(
                 height: 47,
                 decoration: BoxDecoration(
@@ -238,11 +241,13 @@ class _OtpPageState extends State<OtpPage> {
     }
   }
 
-  void _onLanjut(AuthProvider provider) {
+  void _onLanjut(AuthProvider provider, String phoneNumber) {
     closeKeyboard();
     provider.smsCode = _otpCtrl.text;
     provider.signInUser().then((_) {
       if (provider.state == RequestState.Loaded) {
+        const FlutterSecureStorage()
+            .write(key: AppConst.phoneKey, value: phoneNumber);
         Navigator.pushNamedAndRemoveUntil(
           context,
           BasePage.routeName,

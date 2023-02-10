@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/index.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/data/datasources/http_services.dart';
@@ -12,19 +12,24 @@ import 'package:jd_mobile/injection.dart' as di;
 
 class AuthProvider extends ChangeNotifier {
   final SignIn signIn;
+
   AuthProvider({required this.signIn});
 
   RequestState _state = RequestState.Empty;
+
   RequestState get state => _state;
 
   RequestState _requestState = RequestState.Empty;
+
   RequestState get requestState => _requestState;
+
   void setRequestState(RequestState state) {
     _requestState = state;
     notifyListeners();
   }
 
   String _errMsg = AppConst.EMPTY_STRING;
+
   String get errMsg => _errMsg;
 
   String verificationId = AppConst.EMPTY_STRING;
@@ -52,6 +57,7 @@ class AuthProvider extends ChangeNotifier {
       (r) {
         _state = RequestState.Loaded;
         di.getIt<HttpService>().setToken(token: r);
+        const FlutterSecureStorage().write(key: AppConst.authToken, value: r);
         log("TOKEN -- $r");
         notifyListeners();
       },
@@ -76,5 +82,13 @@ class AuthProvider extends ChangeNotifier {
       codeSent: codeSent,
       codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
     );
+  }
+
+  Future logout() async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: AppConst.authToken);
+    log("TOKEN IN LOGOUT $token");
+    await storage.deleteAll();
+    log("TOKEN LOGOUT :: ${await storage.read(key: AppConst.authToken)}");
   }
 }

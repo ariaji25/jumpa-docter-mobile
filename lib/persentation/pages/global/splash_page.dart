@@ -1,15 +1,24 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/persentation/pages/global/on_boarding_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider/auth/auth_provider.dart';
+import '../base/base_page.dart';
 
 class SplashPage extends StatefulWidget {
   static const routeName = "/SplashPage";
+
   const SplashPage({Key? key}) : super(key: key);
 
   @override
@@ -30,16 +39,13 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom],
-    );
     _initPackageInfo();
     _startSplashPage();
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return Scaffold(
       key: _introKey,
       backgroundColor: Colors.white,
@@ -73,9 +79,19 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   _startSplashPage() async {
+    AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
     var duration = const Duration(seconds: 3);
-    return Timer(duration, () {
-      Navigator.pushNamed(context, OnBoardingPage.routeName);
+    return Timer(duration, () async {
+      final String? phone =
+          await const FlutterSecureStorage().read(key: AppConst.phoneKey);
+      if (phone != null && phone.isNotEmpty) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            BasePage.routeName, (Route<dynamic> route) => false);
+      } else {
+        Navigator.pushNamed(context, OnBoardingPage.routeName);
+        authProvider.logout();
+      }
     });
   }
 
