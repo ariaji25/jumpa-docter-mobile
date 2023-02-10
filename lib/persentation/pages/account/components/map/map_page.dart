@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../common/resources/assets.dart';
 import '../../../../../common/resources/colors.dart';
+import '../../../../../common/utils/state_enum.dart';
 import '../../../../widgets/app_bars.dart';
 import '../../../../widgets/buttons.dart';
 import '../../../../widgets/loading.dart';
@@ -30,17 +31,19 @@ class MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final map = Provider.of<MapProvider>(context, listen: false);
-      map.setLoading(true);
-      map.setMapPosition(const LatLng(-8.59050199305857, 116.11873215431551));
+      MapProvider mapProvider =
+          Provider.of<MapProvider>(context, listen: false);
+      mapProvider.setRequestState(RequestState.Loading);
+      mapProvider
+          .setMapPosition(const LatLng(-8.59050199305857, 116.11873215431551));
       if (widget.latLng == "" || widget.latLng == null) {
-        map.getPermissionLocationAllow();
+        mapProvider.getPermissionLocationAllow();
       } else {
         List<String> latLng = widget.latLng!.split(",");
-        map.setMapPosition(LatLng(
+        mapProvider.setMapPosition(LatLng(
             double.parse(latLng[0] == "" ? "0" : latLng[0]),
             double.parse(latLng[1] == "" ? "0" : latLng[1])));
-        map.setLoading(false);
+        mapProvider.setRequestState(RequestState.Loaded);
       }
     });
   }
@@ -81,7 +84,7 @@ class MapPageState extends State<MapPage> {
         ),
       ),
       body: Consumer<MapProvider>(builder: (context, map, child) {
-        return map.loading
+        return map.requestState == RequestState.Loading
             ? const Loading()
             : Column(
                 children: [

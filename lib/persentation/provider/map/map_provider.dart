@@ -11,6 +11,7 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../common/constants/app_const.dart';
 import '../../../../common/resources/snackbar.dart';
+import '../../../common/utils/state_enum.dart';
 
 class MapProvider extends ChangeNotifier {
   var mapPosition = const LatLng(0, 0);
@@ -24,14 +25,21 @@ class MapProvider extends ChangeNotifier {
   var markers = <Marker>[];
   var loadingDetailLocation = false;
   var moveCameraFromSliding = true;
-  var loading = false;
+  RequestState _requestState = RequestState.Loading;
+
+  RequestState get requestState => _requestState;
+
+  void setRequestState(RequestState state) {
+    _requestState = state;
+    notifyListeners();
+  }
 
   void getPermissionLocationAllow() async {
     var status = await Permission.location.status;
     if (status.isGranted) {
       permissionLocationAllow = true;
-      getCurrentLocation();
       notifyListeners();
+      getCurrentLocation();
     } else {
       await Permission.location.request().then((status) {
         if (status.isGranted) {
@@ -39,7 +47,7 @@ class MapProvider extends ChangeNotifier {
           notifyListeners();
           getCurrentLocation();
         } else {
-          setLoading(false);
+          setRequestState(RequestState.Loaded);
         }
       });
     }
@@ -48,7 +56,6 @@ class MapProvider extends ChangeNotifier {
   void getCurrentLocation() async {
     await Geolocator.getCurrentPosition().then((currLocation) {
       setMapPosition(LatLng(currLocation.latitude, currLocation.longitude));
-      setLoading(false);
     });
   }
 
@@ -214,11 +221,6 @@ class MapProvider extends ChangeNotifier {
       return sbuffer.toString();
     }
     return "";
-  }
-
-  void setLoading(status) {
-    loading = status;
-    notifyListeners();
   }
 
   void setMapPosition(value) {
