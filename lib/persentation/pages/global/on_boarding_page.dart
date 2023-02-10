@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:jd_mobile/common/extensions/padding_ext.dart';
+import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
@@ -16,6 +18,7 @@ import 'package:jd_mobile/common/extensions/context_ext.dart';
 
 class OnBoardingPage extends StatefulWidget {
   static const routeName = "/OnBoardingPage";
+
   const OnBoardingPage({Key? key}) : super(key: key);
 
   @override
@@ -106,6 +109,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       LoginPage.routeName,
       (route) => false,
     );
+  }
+
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    super.initState();
   }
 
   @override

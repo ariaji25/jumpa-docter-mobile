@@ -13,4 +13,15 @@ class LogoWidget {
       color: AppColors.whiteColor,
     ),
   );
+
+  static Widget logoIcon({double height=29.62,double width=128,Color color=AppColors.primaryColor}){
+    return SizedBox(
+      height:height,
+      width: width,
+      child: Image.asset(
+        "${Assets.logoPath}/lg_white.png",
+        color: color,
+      ),
+    );
+  }
 }

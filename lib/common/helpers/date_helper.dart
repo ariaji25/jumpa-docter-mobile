@@ -17,4 +17,9 @@ class DateHelper {
     }
     return null;
   }
+
+  static String dhis2DateFormat(DateTime date) {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    return formattedDate;
+  }
 }

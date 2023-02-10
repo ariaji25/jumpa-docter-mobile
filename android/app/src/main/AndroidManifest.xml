@@ -1,9 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cdi.jumpa_dokter">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <application
         android:label="JumpaDokter"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+       <!-- TODO: Add your Google Maps API key here -->
+       <meta-data
+           android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyCPSjkk8X9GAigUMdM1aCMD427I-tu3dIk" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

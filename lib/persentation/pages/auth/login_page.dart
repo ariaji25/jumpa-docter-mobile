@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/LoginPage";
+
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -38,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     final provider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppsBar(
         elevation: 0,
         isWhite: true,
@@ -198,11 +200,11 @@ class _LoginPageState extends State<LoginPage> {
   void _onLanjut(AuthProvider provider, String phoneNumber) {
     if (_phoneNumber.text.isEmpty) {
       closeKeyboard();
-      SnackBarCustom.failSnackBar(
-        context,
-        title: "Ops!",
-        description: "Silahkan mengisi nomor hp terlebih dahulu!",
-      );
+      SnackBarCustom.showSnackBarMessage(
+          context: context,
+          title: "Ops!",
+          message: "Silahkan mengisi nomor hp terlebih dahulu!",
+          typeMessage: SnackBarType.error);
     } else {
       provider.setRequestState(RequestState.Loading);
       provider.requestOtp(
@@ -211,10 +213,11 @@ class _LoginPageState extends State<LoginPage> {
         verificationCompleted: (phoneAuthCredential) {},
         verificationFailed: (err) {
           provider.setRequestState(RequestState.Error);
-          SnackBarCustom.failSnackBar(
-            context,
+          SnackBarCustom.showSnackBarMessage(
+            context: context,
             title: "Opps!",
-            description: err.toString(),
+            message: err.toString(),
+            typeMessage: SnackBarType.error,
           );
         },
         codeSent: (verificationId, resendToken) async {

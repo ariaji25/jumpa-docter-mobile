@@ -6,6 +6,8 @@ import 'package:jd_mobile/common/routes/routes.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
 import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
+import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
+import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:provider/provider.dart';
 import 'injection.dart' as di;
 
@@ -24,6 +26,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => di.getIt<AuthProvider>()),
+        ChangeNotifierProvider(create: (_) => di.getIt<PatientProvider>()),
+        ChangeNotifierProvider(create: (_) => di.getIt<MapProvider>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: kDebugMode,
