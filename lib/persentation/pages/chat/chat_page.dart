@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
+import 'package:jd_mobile/persentation/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/theme.dart';
 import '../../../common/utils/state_enum.dart';
@@ -12,6 +13,7 @@ import 'components/card_chat.dart';
 import 'specialization_page.dart';
 
 class ChatPage extends StatefulWidget {
+  static const routeName = "/ChatPage";
   const ChatPage({Key? key}) : super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<RoomChatProvider>(context, listen: false).getRooms();
+      Provider.of<RoomChatProvider>(context, listen: false).getListRooms();
     });
   }
 

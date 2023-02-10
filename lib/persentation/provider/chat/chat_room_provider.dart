@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
+
 enum TypeMessage { FILE, TEXT, IMAGE }
 
-class ChatRoomViewModel extends ChangeNotifier {
+class ChatRoomProvider extends ChangeNotifier {
   final messageController = TextEditingController();
   final controllerCD = CountdownTimerController(
       endTime: DateTime.now().millisecondsSinceEpoch +
@@ -15,4 +16,24 @@ class ChatRoomViewModel extends ChangeNotifier {
   String runningTime = "";
   bool warningEndTime = false;
   bool endTime = false;
+
+  void setRunningTime(value) {
+    runningTime = value;
+    notifyListeners();
+  }
+
+  void setWarningEndTime(value) {
+    warningEndTime = value;
+    notifyListeners();
+  }
+
+  void setEndTime(value) {
+    endTime = value;
+    notifyListeners();
+  }
+
+  void setSecond(value) {
+    second = value;
+    notifyListeners();
+  }
 }

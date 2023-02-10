@@ -1,70 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:jd_mobile/domain/entities/chat/room_chat_entities.dart';
+import 'package:jd_mobile/domain/usecases/chat/get_rooms.dart';
 
 import '../../../common/utils/state_enum.dart';
 
 class RoomChatProvider extends ChangeNotifier {
+  RoomChatProvider({this.getRooms});
+
+  final GetRooms? getRooms;
   RequestState _state = RequestState.Loading;
-  String errorMessage = "Error";
+  String _errorMessage = "Error";
+
+  String get errorMessage => _errorMessage;
 
   RequestState get state => _state;
-  List<DataRoomChat> results = [];
+  List<RoomChatEntities> results = [];
 
-  void setState(RequestState newState) {
+  void setRequestState(RequestState newState) {
     _state = newState;
     notifyListeners();
   }
 
-  void getRooms() async {
-    try {
-      await chatService.getRooms(1, 10).then((value) async {
-        setState(RequestState.Loading);
-        results = value.data ?? [];
-        setState(RequestState.Loaded);
-      }).onError((error, stackTrace) {
-        errorMessage = error.toString();
-        results = [
-          DataRoomChat(
-              id: "876786",
-              dmToName: "Muh",
-              dmToId: "dmToId",
-              roomType: "roomType",
-              createdAt: DateTime.parse("2023-01-17T00:00:00.00"),
-              lastMessage: LastMessage(
-                  id: "asfsaf-asfda-sfasf-asff",
-                  message: "Sakit pak",
-                  author: "asfafkasf-afasf-asfsa-f",
-                  attachment: [
-                    Attachment(
-                        id: "asfsfaas-safsa-afas-fadsf",
-                        url: "https://my.com/image",
-                        type: "image/png")
-                  ],
-                  roomId: "asfsafa-asfasf-asfsaf-as",
-                  sendAt: DateTime.parse("2023-01-01T00:00:00.000Z"))),
-          DataRoomChat(
-              id: "876786",
-              dmToName: "Ari Purnama",
-              dmToId: "f00c2c23-8437-4bc2-9679-3dd039b752ac",
-              roomType: "DIRECT_MESSAGE",
-              createdAt: DateTime.parse("2023-01-17T00:00:00.00"),
-              lastMessage: LastMessage(
-                  id: "asfsaf-asfda-sfasf-asff",
-                  message: "Sakit pak",
-                  author: "asfafkasf-afasf-asfsa-f",
-                  attachment: [
-                    Attachment(
-                        id: "asfsfaas-safsa-afas-fadsf",
-                        url: "https://my.com/image",
-                        type: "image/png")
-                  ],
-                  roomId: "asfsafa-asfasf-asfsaf-as",
-                  sendAt: DateTime.parse("2023-01-01T00:00:00.000Z"))),
-        ];
-        setState(RequestState.Loaded);
-      });
-    } catch (e) {
-      errorMessage = e.toString();
-      setState(RequestState.Error);
-    }
+  void getListRooms() async {
+    setRequestState(RequestState.Loading);
+    final result = await getRooms!({"page":10,"limit":10});
+    result.fold((l) {
+      setRequestState(RequestState.Error);
+      _errorMessage = l.message;
+      notifyListeners();
+    }, (r) {
+      setRequestState(RequestState.Loaded);
+    });
   }
 }

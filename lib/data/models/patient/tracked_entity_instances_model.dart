@@ -3,7 +3,7 @@
 import 'package:jd_mobile/domain/entities/patient/attribute_entities.dart';
 import 'package:jd_mobile/domain/entities/patient/tracked_entity_instances_entities.dart';
 
-import '../../domain/entities/patient/enrollment_entities.dart';
+import '../../../domain/entities/patient/enrollment_entities.dart';
 import 'attributes_model.dart';
 import 'enrollment_model.dart';
 

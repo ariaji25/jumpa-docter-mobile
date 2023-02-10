@@ -1,11 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/size.dart';
+import 'package:provider/provider.dart';
 import '../../../common/resources/assets.dart';
 import '../../../common/resources/colors.dart';
 import '../../../common/theme/theme.dart';
+import '../../provider/chat/chat_room_provider.dart';
 import '../../widgets/app_bars.dart';
+import '../../widgets/buttons.dart';
+import '../feedback/feedback_doctor_page.dart';
 import 'components/card_chat_room.dart';
 import 'components/item_file_attach.dart';
 import 'components/profile_chat.dart';
@@ -25,37 +30,42 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   void initState() {
-    _chatRoomViewModel.warningEndTime.value = false;
-    _chatRoomViewModel.endTime.value = false;
-    startTimer();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ChatRoomProvider chatRoomProvider =
+          Provider.of<ChatRoomProvider>(context, listen: false);
+      chatRoomProvider.setWarningEndTime(false);
+      chatRoomProvider.setEndTime(false);
+      startTimer(chatRoomProvider);
+    });
     super.initState();
   }
 
-  void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
+  void startTimer(ChatRoomProvider chatRoomProvider) {
+    timer = Timer.periodic(
+        const Duration(seconds: 1), (_) => addTime(chatRoomProvider));
   }
 
-  void addTime() {
+  void addTime(ChatRoomProvider chatRoomProvider) {
     final addSeconds = countDown ? -1 : 1;
-    _chatRoomViewModel.second.value =
-        _chatRoomViewModel.duration.value.inSeconds + addSeconds;
-    if (_chatRoomViewModel.second.value < 0) {
+    chatRoomProvider
+        .setSecond(chatRoomProvider.duration.inSeconds + addSeconds);
+    if (chatRoomProvider.second < 0) {
       timer?.cancel();
     } else {
-      _chatRoomViewModel.duration.value =
-          Duration(seconds: _chatRoomViewModel.second.value);
+      chatRoomProvider.duration = Duration(seconds: chatRoomProvider.second);
     }
 
-    final minutes = CountHelper.twoDigits(
-        _chatRoomViewModel.duration.value.inMinutes.remainder(60));
-    final seconds = CountHelper.twoDigits(
-        _chatRoomViewModel.duration.value.inSeconds.remainder(60));
-    _chatRoomViewModel.runningTime.value = "$minutes.$seconds";
-    if (_chatRoomViewModel.runningTime.value == "00.00") {
-      context.closeKeyboard();
-      _chatRoomViewModel.endTime.value = true;
-    } else if (_chatRoomViewModel.runningTime.value == "05.00") {
-      _chatRoomViewModel.warningEndTime.value = true;
+    final minutes =
+        Helpers.twoDigits(chatRoomProvider.duration.inMinutes.remainder(60));
+    final seconds =
+        Helpers.twoDigits(chatRoomProvider.duration.inSeconds.remainder(60));
+
+    chatRoomProvider.setRunningTime("$minutes.$seconds");
+    if (chatRoomProvider.runningTime == "00.00") {
+      Helpers.closeKeyboard();
+      chatRoomProvider.endTime = true;
+    } else if (chatRoomProvider.runningTime == "05.00") {
+      chatRoomProvider.warningEndTime = true;
     }
   }
 
@@ -66,9 +76,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   Widget build(BuildContext context) {
+    ChatRoomProvider chatRoomProvider =
+        Provider.of<ChatRoomProvider>(context, listen: true);
     return Scaffold(
-      body: Obx(() {
-        return Scaffold(
+        body: Scaffold(
             backgroundColor: AppColors.grey100Color,
             resizeToAvoidBottomInset: false,
             appBar: AppsBar(
@@ -120,18 +131,18 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 ],
               ),
               bottom: PreferredSize(
-                child: Container(color: AppColors.primaryColor, height: 1.0),
                 preferredSize: const Size.fromHeight(1.0),
+                child: Container(color: AppColors.primaryColor, height: 1.0),
               ),
             ),
-            bottomNavigationBar: _chatRoomViewModel.endTime.value
+            bottomNavigationBar: chatRoomProvider.endTime
                 ? Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _dialogRatingDoctor(),
+                      _dialogRatingDoctor(chatRoomProvider),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 22, horizontal: margin),
+                            vertical: 22, horizontal: SizeConstants.margin),
                         color: AppColors.grey200Color,
                         child: Text(
                           "Waktu konsultasi habis anda tidak bisa mengirim pesan lagi",
@@ -147,10 +158,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 : Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _dialogOutInTheLastTwoWeeks(),
+                      _dialogOutInTheLastTwoWeeks(chatRoomProvider),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: margin),
+                            vertical: 10, horizontal: SizeConstants.margin),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           boxShadow: [
@@ -167,8 +178,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           children: [
                             Expanded(
                               child: TextFormField(
-                                  controller: _chatRoomViewModel
-                                      .messageController.value,
+                                  controller:
+                                      chatRoomProvider.messageController,
                                   autofocus: false,
                                   focusNode: FocusNode(canRequestFocus: false),
                                   onSaved: (val) {},
@@ -189,8 +200,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                 insetPadding:
                                                     const EdgeInsets.only(
                                                         bottom: 70,
-                                                        left: margin,
-                                                        right: margin),
+                                                        left: SizeConstants
+                                                            .margin,
+                                                        right: SizeConstants
+                                                            .margin),
                                                 elevation: 0,
                                                 backgroundColor:
                                                     Colors.transparent,
@@ -331,213 +344,203 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       ),
                     ],
                   ),
-            body: Obx(() {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: SizeConstants.margin),
-                    color: _chatRoomViewModel.endTime.value
-                        ? const Color(0XFFEF0C11)
-                        : (_chatRoomViewModel.warningEndTime.value
-                            ? const Color(0XFFFFE6E4)
-                            : const Color(0XFFE2E8F0)),
-                    child: _chatRoomViewModel.endTime.value
-                        ? Center(
-                            child: Text(
-                            "Waktu konsultasi habis",
-                            textAlign: TextAlign.center,
-                            style: AppTheme.bodyText
-                                .copyWith(fontSize: 12, color: Colors.white),
-                          ))
-                        : Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Waktu konsultasi : ${_chatRoomViewModel.runningTime.value}",
-                                  style: AppTheme.bodyText.copyWith(
-                                      fontSize: 12,
-                                      color: _chatRoomViewModel
-                                              .warningEndTime.value
-                                          ? const Color(0XFFF1774A)
-                                          : const Color(0XFF505780),
-                                      fontWeight: FontWeight.w500),
-                                ),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 14, horizontal: SizeConstants.margin),
+                  color: chatRoomProvider.endTime
+                      ? const Color(0XFFEF0C11)
+                      : (chatRoomProvider.warningEndTime
+                          ? const Color(0XFFFFE6E4)
+                          : const Color(0XFFE2E8F0)),
+                  child: chatRoomProvider.endTime
+                      ? Center(
+                          child: Text(
+                          "Waktu konsultasi habis",
+                          textAlign: TextAlign.center,
+                          style: AppTheme.bodyText
+                              .copyWith(fontSize: 12, color: Colors.white),
+                        ))
+                      : Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Waktu konsultasi : ${chatRoomProvider.runningTime}",
+                                style: AppTheme.bodyText.copyWith(
+                                    fontSize: 12,
+                                    color: chatRoomProvider.warningEndTime
+                                        ? const Color(0XFFF1774A)
+                                        : const Color(0XFF505780),
+                                    fontWeight: FontWeight.w500),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  // Helper.closeKeyboard();
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                          ),
-                                          elevation: 0,
-                                          backgroundColor: Colors.transparent,
-                                          child: Wrap(
-                                            children: [
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 20,
-                                                        horizontal: 25),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16)),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Image.asset(
-                                                      "${Assets.iconsPath}/ask-question.png",
-                                                      height: 80,
-                                                      width: 100,
-                                                    ),
-                                                    Text(
-                                                      "Akhiri konsultasi ?",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: AppTheme.bodyText
-                                                          .copyWith(
-                                                              fontSize: 16,
-                                                              color: AppColors
-                                                                  .primaryColorDarkColor),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      "Apakah kamu yakin ingin mengakhiri konsultasi bersama dokter?",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: AppTheme.bodyText
-                                                          .copyWith(
-                                                              fontSize: 12,
-                                                              color: AppColors
-                                                                  .primaryColorLightColor),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: ButtonCustom(
-                                                            title: "Ya",
-                                                            onTap: () {
-                                                              _chatRoomViewModel
-                                                                  .endTime
-                                                                  .value = true;
-                                                              timer?.cancel();
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            disabled: false,
-                                                            loading: false,
-                                                            borderRadius: 4,
-                                                            marginBottom: 0,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical: 8,
-                                                                    horizontal:
-                                                                        8),
-                                                          ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // Helper.closeKeyboard();
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        elevation: 0,
+                                        backgroundColor: Colors.transparent,
+                                        child: Wrap(
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 20,
+                                                      horizontal: 25),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          16)),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    "${Assets.iconsPath}/ask-question.png",
+                                                    height: 80,
+                                                    width: 100,
+                                                  ),
+                                                  Text(
+                                                    "Akhiri konsultasi ?",
+                                                    textAlign: TextAlign.center,
+                                                    style: AppTheme.bodyText
+                                                        .copyWith(
+                                                            fontSize: 16,
+                                                            color: AppColors
+                                                                .primaryColorDarkColor),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    "Apakah kamu yakin ingin mengakhiri konsultasi bersama dokter?",
+                                                    textAlign: TextAlign.center,
+                                                    style: AppTheme.bodyText
+                                                        .copyWith(
+                                                            fontSize: 12,
+                                                            color: AppColors
+                                                                .primaryColorLightColor),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: ButtonCustom(
+                                                          title: "Ya",
+                                                          onTap: () {
+                                                            chatRoomProvider.setEndTime(true);
+                                                            timer?.cancel();
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          disabled: false,
+                                                          loading: false,
+                                                          borderRadius: 4,
+                                                          marginBottom: 0,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 8,
+                                                                  horizontal:
+                                                                      8),
                                                         ),
-                                                        const SizedBox(
-                                                          width: 10,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: ButtonCustom(
+                                                          title: "Tidak",
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          disabled: false,
+                                                          loading: false,
+                                                          borderRadius: 4,
+                                                          marginBottom: 0,
+                                                          borderColor: AppColors
+                                                              .primaryColor,
+                                                          backgroundColor:
+                                                              AppColors
+                                                                  .whiteColor,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 8,
+                                                                  horizontal:
+                                                                      8),
                                                         ),
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: ButtonCustom(
-                                                            title: "Tidak",
-                                                            onTap: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            disabled: false,
-                                                            loading: false,
-                                                            borderRadius: 4,
-                                                            marginBottom: 0,
-                                                            borderColor: AppColors
-                                                                .primaryColor,
-                                                            backgroundColor:
-                                                                AppColors
-                                                                    .whiteColor,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical: 8,
-                                                                    horizontal:
-                                                                        8),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        );
-                                      });
-                                },
-                                child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 16),
-                                    decoration: BoxDecoration(
-                                        color: const Color(0XFFEF0C11),
-                                        borderRadius: BorderRadius.circular(4)),
-                                    child: Text(
-                                      "Akhiri",
-                                      style: AppTheme.bodyText.copyWith(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w400),
-                                    )),
-                              )
-                            ],
-                          ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 16),
+                                  decoration: BoxDecoration(
+                                      color: const Color(0XFFEF0C11),
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: Text(
+                                    "Akhiri",
+                                    style: AppTheme.bodyText.copyWith(
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400),
+                                  )),
+                            )
+                          ],
+                        ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: widget.emptyChat
+                        ? _emptyChat()
+                        : ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            reverse: true,
+                            shrinkWrap: true,
+                            itemCount: 20,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ChatRoomItemWidget(
+                                sender: index % 2 == 0,
+                                typeChat: index == 0
+                                    ? TypeMessage.FILE
+                                    : index == 2
+                                        ? TypeMessage.IMAGE
+                                        : TypeMessage.TEXT,
+                              );
+                            }),
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: widget.emptyChat
-                          ? _emptyChat()
-                          : ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              reverse: true,
-                              shrinkWrap: true,
-                              itemCount: 20,
-                              itemBuilder: (BuildContext context, int index) {
-                                return ChatRoomItemWidget(
-                                  sender: index % 2 == 0,
-                                  typeChat: index == 0
-                                      ? TypeChat.file
-                                      : index == 2
-                                          ? TypeChat.image
-                                          : TypeChat.text,
-                                );
-                              }),
-                    ),
-                  )
-                ],
-              );
-            }));
-      }),
-    );
+                )
+              ],
+            )));
   }
 
   Widget _emptyChat() {
@@ -562,9 +565,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
-  Widget _dialogRatingDoctor() {
+  Widget _dialogRatingDoctor(ChatRoomProvider chatRoomProvider) {
     return Visibility(
-        visible: _chatRoomViewModel.endTime.value,
+        visible: chatRoomProvider.endTime,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           margin: const EdgeInsets.all(36),
@@ -594,7 +597,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               Buttons(
                 title: "Beri rating kepada dokter",
                 onTap: () {
-                  Get.to(() => const FeedbackDoctorScreen());
+                  Navigator.pushNamed(
+                    context,
+                    FeedbackDoctorPage.routeName,
+                  );
                 },
                 disabled: false,
                 loading: false,
@@ -606,11 +612,12 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         ));
   }
 
-  Widget _dialogOutInTheLastTwoWeeks() {
+  Widget _dialogOutInTheLastTwoWeeks(ChatRoomProvider chatRoomProvider) {
     return Visibility(
-        visible: widget.emptyChat && !_chatRoomViewModel.endTime.value,
+        visible: widget.emptyChat && !chatRoomProvider.endTime,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: SizeConstants.margin),
+          padding: const EdgeInsets.symmetric(
+              vertical: 20, horizontal: SizeConstants.margin),
           margin: const EdgeInsets.all(20),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(16)),

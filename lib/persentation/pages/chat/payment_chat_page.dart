@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:get/get.dart';
-import 'package:jd_mobile/common/const.dart';
-import 'package:jd_mobile/common/exts.dart';
+import 'package:jd_mobile/common/extensions/context_ext.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
-import 'package:jd_mobile/screens/chat/chat_room_page.dart';
+import 'package:jd_mobile/persentation/pages/chat/chat_room_page.dart';
+import 'package:jd_mobile/persentation/widgets/base_payment.dart';
 
-import '../../common/widgets/buttons.dart';
-import '../../common/widgets/text_field.dart';
-import '../homecare/components/base_payment.dart';
+import '../../../common/resources/assets.dart';
+import '../../../common/resources/colors.dart';
+import '../../../common/resources/size.dart';
+import '../../widgets/buttons.dart';
+import '../../widgets/text_field.dart';
 import 'components/profile_chat.dart';
 
 class PaymentChatPage extends StatefulWidget {
-  static const routeName = "/ListDoctorPage";
+  static const routeName = "/PaymentChatPage";
+
   const PaymentChatPage({Key? key}) : super(key: key);
 
   @override
@@ -28,11 +30,50 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BasePaymentScreen(
+    return BasePaymentPage(
       withSingleChildScrollView: false,
       btnTitle: "Bayar",
+      totalWidget: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: AppColors.grey200Color,
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Total yang harus dibayar",
+                textAlign: TextAlign.start,
+                style: AppTheme.bodyText.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryColorDarkColor),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "RP 150.000",
+                textAlign: TextAlign.start,
+                style: AppTheme.bodyText.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryColor),
+              ),
+            ],
+          )),
+      onNext: () async {
+        Navigator.pushNamed(
+          context,
+          ChatRoomPage.routeName,
+        );
+      },
+      loading: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: margin),
+        padding: const EdgeInsets.symmetric(horizontal: SizeConstants.margin),
         child: Column(
           children: [
             Expanded(
@@ -45,19 +86,19 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                     Center(
                       child: Text(
                         "Detail dan Pembayaran",
-                        style: kHeading5.copyWith(
+                        style: AppTheme.heading5.copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
-                            color: Themes.primaryColorDarkColor),
+                            color: AppColors.primaryColorDarkColor),
                       ),
                     ),
                     const SizedBox(height: 5),
                     Center(
                       child: Text(
                         "Detail dan pembayaran untuk melakukan chat dengan dokter",
-                        style: kSubtitle.copyWith(
+                        style: AppTheme.subtitle.copyWith(
                             fontWeight: FontWeight.w400,
-                            color: Themes.primaryColorDarkColor,
+                            color: AppColors.primaryColorDarkColor,
                             fontSize: 12),
                       ),
                     ),
@@ -68,9 +109,9 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                     const SizedBox(height: 25),
                     Text(
                       "Dokter",
-                      style: kSubtitle.copyWith(
+                      style: AppTheme.subtitle.copyWith(
                           fontSize: 14,
-                          color: Themes.primaryColorDarkColor,
+                          color: AppColors.primaryColorDarkColor,
                           fontWeight: FontWeight.w500),
                     ),
                     const SizedBox(height: 10),
@@ -87,9 +128,9 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                           children: [
                             Text(
                               "dr. Ralph Edwards",
-                              style: kBodyText.copyWith(
+                              style: AppTheme.bodyText.copyWith(
                                   fontSize: 14,
-                                  color: Themes.primaryColor,
+                                  color: AppColors.primaryColor,
                                   fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
@@ -97,9 +138,9 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                             ),
                             Text(
                               "Spesialisasi anak",
-                              style: kBodyText.copyWith(
+                              style: AppTheme.bodyText.copyWith(
                                   fontSize: 12,
-                                  color: Themes.grey800Color,
+                                  color: AppColors.grey800Color,
                                   fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(
@@ -116,7 +157,7 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                                       "Rp. 50.000",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: kBodyText.copyWith(
+                                      style: AppTheme.bodyText.copyWith(
                                           fontSize: 12,
                                           color: const Color(0XFFEF0C11),
                                           fontWeight: FontWeight.w500,
@@ -127,9 +168,10 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                                       "Rp. 30.000",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: kBodyText.copyWith(
+                                      style: AppTheme.bodyText.copyWith(
                                           fontSize: 12,
-                                          color: Themes.primaryColorDarkColor,
+                                          color:
+                                              AppColors.primaryColorDarkColor,
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ],
@@ -149,9 +191,9 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                     ),
                     Text(
                       "Virtual account",
-                      style: kSubtitle.copyWith(
+                      style: AppTheme.subtitle.copyWith(
                           fontSize: 14,
-                          color: Themes.primaryColorDarkColor,
+                          color: AppColors.primaryColorDarkColor,
                           fontWeight: FontWeight.w500),
                     ),
                     const SizedBox(height: 10),
@@ -165,9 +207,9 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                     ]),
                     Text(
                       "E-Wallet",
-                      style: kSubtitle.copyWith(
+                      style: AppTheme.subtitle.copyWith(
                           fontSize: 14,
-                          color: Themes.primaryColorDarkColor,
+                          color: AppColors.primaryColorDarkColor,
                           fontWeight: FontWeight.w500),
                     ),
                     const SizedBox(height: 10),
@@ -214,7 +256,7 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                               ),
                               Text(
                                 "Selesaikan pembayaran sebelum 18.00 WIB",
-                                style: kBodyText.copyWith(
+                                style: AppTheme.bodyText.copyWith(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
                                     color: const Color(0XFFF1774A)),
@@ -234,14 +276,15 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(
-                                color: Themes.primaryColorDarkColor, width: 1),
+                                color: AppColors.primaryColorDarkColor,
+                                width: 1),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Image.asset(
-                                "$iconsPath/promo.png",
+                                "${Assets.iconsPath}/promo.png",
                                 height: 16,
                               ),
                               const SizedBox(
@@ -251,15 +294,15 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                                 child: Text(
                                   "Masukkan kode promo (Jika ada)",
                                   textAlign: TextAlign.start,
-                                  style: kBodyText.copyWith(
+                                  style: AppTheme.bodyText.copyWith(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: Themes.primaryColorDarkColor),
+                                      color: AppColors.primaryColorDarkColor),
                                 ),
                               ),
                               const Icon(
                                 Icons.chevron_right,
-                                color: Themes.primaryColorDarkColor,
+                                color: AppColors.primaryColorDarkColor,
                                 size: 25,
                               ),
                             ],
@@ -278,48 +321,6 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
           ],
         ),
       ),
-      totalWidget: Container(
-          margin: const EdgeInsets.only(bottom: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Themes.grey200Color,
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Total yang harus dibayar",
-                textAlign: TextAlign.start,
-                style: kBodyText.copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Themes.primaryColorDarkColor),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                "RP 150.000",
-                textAlign: TextAlign.start,
-                style: kBodyText.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Themes.primaryColor),
-              ),
-            ],
-          )),
-      onNext: () async {
-        Get.to(
-          const ChatRoomScreen(),
-          arguments: [
-            // _PaymentChatScreenViewModel.PaymentChatScreenUrlModel.value,
-            // _pgCode,
-          ],
-        );
-      },
-      loading: false,
     );
   }
 
@@ -331,8 +332,10 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
       isScrollControlled: true,
       builder: (context) {
         return Container(
-          padding:
-              const EdgeInsets.only(left: margin, right: margin, bottom: 40),
+          padding: const EdgeInsets.only(
+              left: SizeConstants.margin,
+              right: SizeConstants.margin,
+              bottom: 40),
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -348,7 +351,7 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                 child: Container(
                   width: 58,
                   height: 3,
-                  color: Themes.greyOtherColor,
+                  color: AppColors.greyOtherColor,
                   margin: const EdgeInsets.symmetric(vertical: 10),
                 ),
               ),
@@ -356,7 +359,7 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
               Text(
                 "Masukkan kode promo",
                 textAlign: TextAlign.start,
-                style: kBodyText.copyWith(
+                style: AppTheme.bodyText.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: const Color(0XFF27272E)),
@@ -377,7 +380,7 @@ class _PaymentChatPageState extends State<PaymentChatPage> {
                 onChanged: (value) {},
               ),
               const SizedBox(
-                height: margin,
+                height: SizeConstants.margin,
               ),
               Buttons(
                 title: "OK",
@@ -425,8 +428,9 @@ class _PaymentTileState extends State<PaymentTile> {
         height: 50,
         decoration: BoxDecoration(
           border: Border.all(
-            color:
-                widget.isActive ? Themes.primaryColor : const Color(0XFFE4ECF7),
+            color: widget.isActive
+                ? AppColors.primaryColor
+                : const Color(0XFFE4ECF7),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(5),
@@ -436,7 +440,7 @@ class _PaymentTileState extends State<PaymentTile> {
           children: [
             Expanded(
               child: Image.asset(
-                "$logoPath/${widget.image}",
+                "${Assets.logoPath}/${widget.image}",
                 height: 15,
               ),
             ),
@@ -445,8 +449,8 @@ class _PaymentTileState extends State<PaymentTile> {
               flex: 7,
               child: Text(
                 widget.title,
-                style: kSubtitle.copyWith(
-                    color: Themes.primaryColor,
+                style: AppTheme.subtitle.copyWith(
+                    color: AppColors.primaryColor,
                     fontSize: 12,
                     fontWeight: FontWeight.w500),
               ),
@@ -455,7 +459,7 @@ class _PaymentTileState extends State<PaymentTile> {
               visible: widget.isActive,
               child: Icon(
                 Icons.check_circle_outline_sharp,
-                color: widget.isActive ? Colors.green : Themes.greyColor,
+                color: widget.isActive ? Colors.green : AppColors.greyColor,
               ),
             ),
           ],

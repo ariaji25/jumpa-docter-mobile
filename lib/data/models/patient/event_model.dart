@@ -3,7 +3,6 @@
 import 'package:jd_mobile/domain/entities/patient/datavalue_entities.dart';
 import 'package:jd_mobile/domain/entities/patient/element_entities.dart';
 import 'package:jd_mobile/domain/entities/patient/event_entities.dart';
-
 import 'datavalue_model.dart';
 
 class EventModel extends EventEntities with ElementsEntities {

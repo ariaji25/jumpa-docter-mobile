@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jd_mobile/common/extensions/context_ext.dart';
+import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
+import 'package:jd_mobile/domain/entities/chat/room_chat_entities.dart';
 
 import '../../../../common/resources/assets.dart';
 import '../../../../common/resources/colors.dart';
 
 class ChatItemWidget extends StatelessWidget {
   final bool isRead;
-  final DataRoomChat item;
+  final RoomChatEntities item;
   final Function onTap;
 
   const ChatItemWidget(
@@ -34,7 +36,7 @@ class ChatItemWidget extends StatelessWidget {
                 color: AppColors.primaryColor,
                 child: Center(
                     child: Text(
-                  NameHelper.getInitials(item.dmToName),
+                  Helpers.getInitials(item.dmToName),
                   style: AppTheme.bodyText.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -48,7 +50,7 @@ class ChatItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.dmToName,
+                  item.dmToName ?? "",
                   style: AppTheme.bodyText.copyWith(
                       fontSize: 14,
                       color: AppColors.primaryColor,
@@ -72,7 +74,7 @@ class ChatItemWidget extends StatelessWidget {
                     ),
                     Expanded(
                         child: Text(
-                      item.lastMessage.message,
+                      item.lastMessage?.message ?? "",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTheme.bodyText.copyWith(
@@ -91,10 +93,10 @@ class ChatItemWidget extends StatelessWidget {
               children: [
                 Text(
                   DateFormat("HH:mm")
-                      .format(item.lastMessage.sendAt)
+                      .format(item.lastMessage!.sendAt!)
                       .toString(),
-                  style: AppTheme.bodyText.copyWith(
-                      fontSize: 10, color: const Color(0XFFA0AEC0)),
+                  style: AppTheme.bodyText
+                      .copyWith(fontSize: 10, color: const Color(0XFFA0AEC0)),
                 ),
                 Visibility(
                   visible: !isRead,
@@ -107,8 +109,8 @@ class ChatItemWidget extends StatelessWidget {
                           vertical: 3, horizontal: 5),
                       child: Text(
                         "5",
-                        style: AppTheme.bodyText.copyWith(
-                            fontSize: 10, color: Colors.white),
+                        style: AppTheme.bodyText
+                            .copyWith(fontSize: 10, color: Colors.white),
                       )),
                 ),
               ],
