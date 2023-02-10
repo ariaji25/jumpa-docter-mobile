@@ -45,7 +45,7 @@ class AppTheme {
 
   static TextStyle get subtitle {
     return GoogleFonts.poppins(
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.15,
     );
@@ -53,7 +53,7 @@ class AppTheme {
 
   static TextStyle get bodyText {
     return GoogleFonts.poppins(
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
     );
