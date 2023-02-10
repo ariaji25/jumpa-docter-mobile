@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jd_mobile/common/const.dart';
-import 'package:jd_mobile/common/exts.dart';
-import 'package:jd_mobile/screens/chat/components/profile_chat.dart';
+import 'package:jd_mobile/common/extensions/context_ext.dart';
 
-import '../../../common/theme/theme.dart';
+import '../../../../common/resources/assets.dart';
+import '../../../../common/resources/colors.dart';
+import '../../../../common/theme/theme.dart';
+import 'profile_chat.dart';
 
 class DoctorItemWidget extends StatelessWidget {
   final Function onTap;
@@ -30,9 +31,9 @@ class DoctorItemWidget extends StatelessWidget {
                 children: [
                   Text(
                     "dr. Ralph Edwards",
-                    style: kBodyText.copyWith(
+                    style: AppTheme.bodyText.copyWith(
                         fontSize: 16,
-                        color: Themes.primaryColor,
+                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(
@@ -40,9 +41,9 @@ class DoctorItemWidget extends StatelessWidget {
                   ),
                   Text(
                     "Spesialisasi anak",
-                    style: kBodyText.copyWith(
+                    style: AppTheme.bodyText.copyWith(
                         fontSize: 12,
-                        color: Themes.grey800Color,
+                        color: AppColors.grey800Color,
                         fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
@@ -58,7 +59,7 @@ class DoctorItemWidget extends StatelessWidget {
                             color: const Color(0XFF2D3748),
                             borderRadius: BorderRadius.circular(2)),
                         child: Image.asset(
-                          "$iconsPath/doctor_item.png",
+                          "${Assets.iconsPath}/doctor_item.png",
                           height: 8,
                           width: 8,
                         ),
@@ -70,7 +71,7 @@ class DoctorItemWidget extends StatelessWidget {
                         "2 Thn",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: kBodyText.copyWith(
+                        style: AppTheme.bodyText.copyWith(
                             fontSize: 12,
                             color: const Color(0XFF2D3748),
                             fontWeight: FontWeight.w400),
@@ -79,7 +80,7 @@ class DoctorItemWidget extends StatelessWidget {
                         width: 10,
                       ),
                       Image.asset(
-                        "$iconsPath/star-fill.png",
+                        "${Assets.iconsPath}/star-fill.png",
                         height: 12,
                         width: 12,
                       ),
@@ -90,7 +91,7 @@ class DoctorItemWidget extends StatelessWidget {
                         "4.5",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: kBodyText.copyWith(
+                        style: AppTheme.bodyText.copyWith(
                             fontSize: 12,
                             color: const Color(0XFFFFA800),
                             fontWeight: FontWeight.w400),
@@ -111,7 +112,7 @@ class DoctorItemWidget extends StatelessWidget {
                             "Rp. 50.000",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: kBodyText.copyWith(
+                            style: AppTheme.bodyText.copyWith(
                                 fontSize: 12,
                                 color: const Color(0XFFEF0C11),
                                 fontWeight: FontWeight.w500,
@@ -121,9 +122,9 @@ class DoctorItemWidget extends StatelessWidget {
                             "Rp. 30.000",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: kBodyText.copyWith(
+                            style: AppTheme.bodyText.copyWith(
                                 fontSize: 12,
-                                color: Themes.primaryColorDarkColor,
+                                color: AppColors.primaryColorDarkColor,
                                 fontWeight: FontWeight.w500),
                           ),
                         ],
@@ -137,11 +138,11 @@ class DoctorItemWidget extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 15),
                           decoration: BoxDecoration(
-                              color: Themes.primaryColor,
+                              color: AppColors.primaryColor,
                               borderRadius: BorderRadius.circular(4)),
                           child: Row(
                             children: [
-                              SvgPicture.asset("$iconsPath/chat.svg",
+                              SvgPicture.asset("${Assets.iconsPath}/chat.svg",
                                   width: 12, height: 12, color: Colors.white),
                               const SizedBox(
                                 width: 8,
@@ -150,7 +151,7 @@ class DoctorItemWidget extends StatelessWidget {
                                 "Chat",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: kBodyText.copyWith(
+                                style: AppTheme.bodyText.copyWith(
                                     fontSize: 12,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400),

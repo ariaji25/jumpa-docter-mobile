@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:jd_mobile/common/const.dart';
-import 'package:jd_mobile/common/exts.dart';
-import 'package:jd_mobile/common/helper.dart';
+import 'package:jd_mobile/common/extensions/context_ext.dart';
+import 'package:jd_mobile/common/theme/theme.dart';
 
-import '../../../common/theme/theme.dart';
-import '../../../models/room_chat.dart';
+import '../../../../common/resources/assets.dart';
+import '../../../../common/resources/colors.dart';
 
 class ChatItemWidget extends StatelessWidget {
   final bool isRead;
@@ -32,11 +31,11 @@ class ChatItemWidget extends StatelessWidget {
               child: Container(
                 width: 50,
                 height: 50,
-                color: Themes.primaryColor,
+                color: AppColors.primaryColor,
                 child: Center(
                     child: Text(
                   NameHelper.getInitials(item.dmToName),
-                  style: kBodyText2.copyWith(
+                  style: AppTheme.bodyText.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
@@ -50,9 +49,9 @@ class ChatItemWidget extends StatelessWidget {
               children: [
                 Text(
                   item.dmToName,
-                  style: kBodyText.copyWith(
+                  style: AppTheme.bodyText.copyWith(
                       fontSize: 14,
-                      color: Themes.primaryColor,
+                      color: AppColors.primaryColor,
                       fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
@@ -63,7 +62,7 @@ class ChatItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SvgPicture.asset(
-                      "$iconsPath/check-all.svg",
+                      "${Assets.iconsPath}/check-all.svg",
                       width: 16,
                       height: 16,
                       color: Color(isRead ? 0XFF56B7CD : 0XFF718096),
@@ -76,7 +75,7 @@ class ChatItemWidget extends StatelessWidget {
                       item.lastMessage.message,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: kBodyText.copyWith(
+                      style: AppTheme.bodyText.copyWith(
                           fontSize: 14,
                           color: const Color(0XFF4A5568),
                           fontWeight: FontWeight.w400),
@@ -94,7 +93,7 @@ class ChatItemWidget extends StatelessWidget {
                   DateFormat("HH:mm")
                       .format(item.lastMessage.sendAt)
                       .toString(),
-                  style: kBodyText.copyWith(
+                  style: AppTheme.bodyText.copyWith(
                       fontSize: 10, color: const Color(0XFFA0AEC0)),
                 ),
                 Visibility(
@@ -102,13 +101,13 @@ class ChatItemWidget extends StatelessWidget {
                   child: Container(
                       margin: const EdgeInsets.only(top: 5),
                       decoration: BoxDecoration(
-                          color: Themes.redPrimaryColor,
+                          color: AppColors.redPrimaryColor,
                           borderRadius: BorderRadius.circular(16)),
                       padding: const EdgeInsets.symmetric(
                           vertical: 3, horizontal: 5),
                       child: Text(
                         "5",
-                        style: kBodyText.copyWith(
+                        style: AppTheme.bodyText.copyWith(
                             fontSize: 10, color: Colors.white),
                       )),
                 ),

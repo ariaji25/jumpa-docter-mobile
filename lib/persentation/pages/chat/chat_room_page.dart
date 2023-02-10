@@ -1,19 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jd_mobile/common/resources/size.dart';
+import '../../../common/resources/assets.dart';
+import '../../../common/resources/colors.dart';
+import '../../../common/theme/theme.dart';
+import '../../widgets/app_bars.dart';
 import 'components/card_chat_room.dart';
 import 'components/item_file_attach.dart';
 import 'components/profile_chat.dart';
 
-class ChatRoomScreen extends StatefulWidget {
+class ChatRoomPage extends StatefulWidget {
+  static const routeName = "/ChatRoomPage";
   final bool emptyChat; // Example for test UI Empty chat
-  const ChatRoomScreen({Key? key, this.emptyChat = false}) : super(key: key);
+  const ChatRoomPage({Key? key, this.emptyChat = false}) : super(key: key);
 
   @override
-  State<ChatRoomScreen> createState() => _ChatRoomScreenState();
+  State<ChatRoomPage> createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomScreenState extends State<ChatRoomScreen> {
+class _ChatRoomPageState extends State<ChatRoomPage> {
   Timer? timer;
   bool countDown = true;
 
@@ -63,7 +69,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     return Scaffold(
       body: Obx(() {
         return Scaffold(
-            backgroundColor: Themes.grey100Color,
+            backgroundColor: AppColors.grey100Color,
             resizeToAvoidBottomInset: false,
             appBar: AppsBar(
               elevation: 0,
@@ -73,7 +79,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Get.back();
+                      Navigator.of(context).pop();
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
@@ -91,7 +97,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                           "dr. Anabelle Sp.A",
                           maxLines: 1,
                           overflow: TextOverflow.clip,
-                          style: kBodyText.copyWith(
+                          style: AppTheme.bodyText.copyWith(
                               color: Colors.white,
                               fontSize: 14,
                               fontWeight: FontWeight.w500),
@@ -103,7 +109,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                           "Sepsialisasi anak",
                           maxLines: 1,
                           overflow: TextOverflow.clip,
-                          style: kBodyText.copyWith(
+                          style: AppTheme.bodyText.copyWith(
                               color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.w400),
@@ -114,7 +120,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 ],
               ),
               bottom: PreferredSize(
-                child: Container(color: Themes.primaryColor, height: 1.0),
+                child: Container(color: AppColors.primaryColor, height: 1.0),
                 preferredSize: const Size.fromHeight(1.0),
               ),
             ),
@@ -126,13 +132,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 22, horizontal: margin),
-                        color: Themes.grey200Color,
+                        color: AppColors.grey200Color,
                         child: Text(
                           "Waktu konsultasi habis anda tidak bisa mengirim pesan lagi",
                           textAlign: TextAlign.center,
-                          style: kBodyText.copyWith(
+                          style: AppTheme.bodyText.copyWith(
                               fontSize: 12,
-                              color: Themes.primaryColor,
+                              color: AppColors.primaryColor,
                               fontWeight: FontWeight.w400),
                         ),
                       ),
@@ -217,12 +223,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                             colors: const Color(
                                                                 0XFFFFEDE3),
                                                             imagePath:
-                                                                "$iconsPath/file.png",
+                                                                "${Assets.iconsPath}/file.png",
                                                             size: 36,
-                                                            titleStyle:
-                                                                kSubtitle
-                                                                    .copyWith(
-                                                              color: Themes
+                                                            titleStyle: AppTheme
+                                                                .subtitle
+                                                                .copyWith(
+                                                              color: AppColors
                                                                   .grey700Color,
                                                               fontSize: 12,
                                                             ),
@@ -233,12 +239,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                             colors: const Color(
                                                                 0XFFDEFFEE),
                                                             imagePath:
-                                                                "$iconsPath/gambar.png",
+                                                                "${Assets.iconsPath}/gambar.png",
                                                             size: 36,
-                                                            titleStyle:
-                                                                kSubtitle
-                                                                    .copyWith(
-                                                              color: Themes
+                                                            titleStyle: AppTheme
+                                                                .subtitle
+                                                                .copyWith(
+                                                              color: AppColors
                                                                   .grey700Color,
                                                               fontSize: 12,
                                                             ),
@@ -249,12 +255,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                             colors: const Color(
                                                                 0XFFE1E8FF),
                                                             imagePath:
-                                                                "$iconsPath/foto.png",
+                                                                "${Assets.iconsPath}/foto.png",
                                                             size: 36,
-                                                            titleStyle:
-                                                                kSubtitle
-                                                                    .copyWith(
-                                                              color: Themes
+                                                            titleStyle: AppTheme
+                                                                .subtitle
+                                                                .copyWith(
+                                                              color: AppColors
                                                                   .grey700Color,
                                                               fontSize: 12,
                                                             ),
@@ -270,15 +276,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                       },
                                       icon: const Icon(
                                         Icons.add_circle_outline,
-                                        color: Themes.primaryColor,
+                                        color: AppColors.primaryColor,
                                         size: 25,
                                       ),
                                     ),
-                                    fillColor: Themes.grey200Color,
+                                    fillColor: AppColors.grey200Color,
                                     filled: true,
                                     contentPadding: const EdgeInsets.all(10),
                                     hintText: "Tulis pesan...",
-                                    hintStyle: kBodyText.copyWith(
+                                    hintStyle: AppTheme.bodyText.copyWith(
                                         fontSize: 14,
                                         color: const Color(0XFFA6B7D4),
                                         fontWeight: FontWeight.w400),
@@ -312,11 +318,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 10),
                               decoration: BoxDecoration(
-                                  color: Themes.grey200Color,
+                                  color: AppColors.grey200Color,
                                   borderRadius: BorderRadius.circular(6)),
                               child: const Icon(
                                 Icons.send,
-                                color: Themes.primaryDarkLightColor,
+                                color: AppColors.primaryDarkLightColor,
                                 size: 25,
                               ),
                             )
@@ -331,7 +337,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: margin),
+                        vertical: 14, horizontal: SizeConstants.margin),
                     color: _chatRoomViewModel.endTime.value
                         ? const Color(0XFFEF0C11)
                         : (_chatRoomViewModel.warningEndTime.value
@@ -342,15 +348,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                             child: Text(
                             "Waktu konsultasi habis",
                             textAlign: TextAlign.center,
-                            style: kBodyText.copyWith(
-                                fontSize: 12, color: Colors.white),
+                            style: AppTheme.bodyText
+                                .copyWith(fontSize: 12, color: Colors.white),
                           ))
                         : Row(
                             children: [
                               Expanded(
                                 child: Text(
                                   "Waktu konsultasi : ${_chatRoomViewModel.runningTime.value}",
-                                  style: kBodyText.copyWith(
+                                  style: AppTheme.bodyText.copyWith(
                                       fontSize: 12,
                                       color: _chatRoomViewModel
                                               .warningEndTime.value
@@ -361,7 +367,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  context.closeKeyboard();
+                                  // Helper.closeKeyboard();
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -391,7 +397,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Image.asset(
-                                                      "$iconsPath/ask-question.png",
+                                                      "${Assets.iconsPath}/ask-question.png",
                                                       height: 80,
                                                       width: 100,
                                                     ),
@@ -399,10 +405,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                       "Akhiri konsultasi ?",
                                                       textAlign:
                                                           TextAlign.center,
-                                                      style: kBodyText2.copyWith(
-                                                          fontSize: 16,
-                                                          color: Themes
-                                                              .primaryColorDarkColor),
+                                                      style: AppTheme.bodyText
+                                                          .copyWith(
+                                                              fontSize: 16,
+                                                              color: AppColors
+                                                                  .primaryColorDarkColor),
                                                     ),
                                                     const SizedBox(
                                                       height: 10,
@@ -411,10 +418,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                       "Apakah kamu yakin ingin mengakhiri konsultasi bersama dokter?",
                                                       textAlign:
                                                           TextAlign.center,
-                                                      style: kBodyText2.copyWith(
-                                                          fontSize: 12,
-                                                          color: Themes
-                                                              .primaryColorLightColor),
+                                                      style: AppTheme.bodyText
+                                                          .copyWith(
+                                                              fontSize: 12,
+                                                              color: AppColors
+                                                                  .primaryColorLightColor),
                                                     ),
                                                     const SizedBox(
                                                       height: 10,
@@ -463,10 +471,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                                             loading: false,
                                                             borderRadius: 4,
                                                             marginBottom: 0,
-                                                            borderColor: Themes
+                                                            borderColor: AppColors
                                                                 .primaryColor,
                                                             backgroundColor:
-                                                                Themes
+                                                                AppColors
                                                                     .whiteColor,
                                                             padding:
                                                                 const EdgeInsets
@@ -494,7 +502,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                         borderRadius: BorderRadius.circular(4)),
                                     child: Text(
                                       "Akhiri",
-                                      style: kBodyText.copyWith(
+                                      style: AppTheme.bodyText.copyWith(
                                           fontSize: 12,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w400),
@@ -539,15 +547,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            "$iconsPath/empty_chat.png",
+            "${Assets.iconsPath}/empty_chat.png",
             height: 60,
             width: 60,
           ),
           Text(
             "Belum ada pesan\nSilahkan mulai percakapan dengan dokter anda.\n\nWaktu akan otomatis mulai berjalan ketika dokter pertama kali membalas pesan anda",
             textAlign: TextAlign.center,
-            style: kBodyText.copyWith(
-                fontSize: 14, color: Themes.primaryDarkLightColor),
+            style: AppTheme.bodyText
+                .copyWith(fontSize: 14, color: AppColors.primaryDarkLightColor),
           )
         ],
       ),
@@ -565,7 +573,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                "$iconsPath/ic_stars.png",
+                "${Assets.iconsPath}/ic_stars.png",
                 height: 60,
                 width: 60,
               ),
@@ -575,9 +583,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               Text(
                 "Terima kasih sudah berkonsultasi, jangan lupa berikan rating untuk dokter",
                 textAlign: TextAlign.center,
-                style: kBodyText.copyWith(
+                style: AppTheme.bodyText.copyWith(
                     fontSize: 14,
-                    color: Themes.primaryColorDarkColor,
+                    color: AppColors.primaryColorDarkColor,
                     fontWeight: FontWeight.w500),
               ),
               const SizedBox(
@@ -602,7 +610,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     return Visibility(
         visible: widget.emptyChat && !_chatRoomViewModel.endTime.value,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: margin),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: SizeConstants.margin),
           margin: const EdgeInsets.all(20),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(16)),
@@ -612,9 +620,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               Text(
                 "Pesan",
                 textAlign: TextAlign.left,
-                style: kBodyText.copyWith(
+                style: AppTheme.bodyText.copyWith(
                     fontSize: 14,
-                    color: Themes.primaryColorDarkColor,
+                    color: AppColors.primaryColorDarkColor,
                     fontWeight: FontWeight.w500),
               ),
               const SizedBox(
@@ -623,9 +631,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               Text(
                 "Apakah Saudara berpergian dalam dua minggu terakhir?",
                 textAlign: TextAlign.left,
-                style: kBodyText.copyWith(
+                style: AppTheme.bodyText.copyWith(
                     fontSize: 12,
-                    color: Themes.primaryColorLightColor,
+                    color: AppColors.primaryColorLightColor,
                     fontWeight: FontWeight.w400),
               ),
               const SizedBox(
@@ -658,8 +666,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                       loading: false,
                       borderRadius: 4,
                       marginBottom: 0,
-                      borderColor: Themes.primaryColor,
-                      backgroundColor: Themes.whiteColor,
+                      borderColor: AppColors.primaryColor,
+                      backgroundColor: AppColors.whiteColor,
                       padding: const EdgeInsets.symmetric(
                           vertical: 8, horizontal: 8),
                     ),

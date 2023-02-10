@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jd_mobile/common/resources/colors.dart';
 
-import '../../../common/const.dart';
-import '../../../common/theme/theme.dart';
+import '../../../../common/theme/theme.dart';
 
 class ItemFileAttach extends StatelessWidget {
   final String? title;
@@ -46,8 +46,8 @@ class ItemFileAttach extends StatelessWidget {
             title ?? "",
             textAlign: TextAlign.center,
             style: titleStyle ??
-                kSubtitle.copyWith(
-                  color: Themes.primaryColorDarkColor,
+                AppTheme.bodyText.copyWith(
+                  color: AppColors.primaryColorDarkColor,
                   fontSize: 12,
                 ),
           )

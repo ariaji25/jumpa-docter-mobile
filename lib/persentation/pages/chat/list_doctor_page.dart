@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:jd_mobile/common/const.dart';
-
-import '../../common/logo.dart';
-import '../../common/theme/theme.dart';
-import '../../common/widgets/appbar.dart';
+import 'package:jd_mobile/common/resources/size.dart';
+import 'package:jd_mobile/persentation/widgets/logo_widget.dart';
+import '../../../common/resources/assets.dart';
+import '../../../common/resources/colors.dart';
+import '../../../common/theme/theme.dart';
+import '../../widgets/app_bars.dart';
 import 'components/card_doctor.dart';
 import 'components/list_dropdown.dart';
 import 'payment_chat_page.dart';
 
-class ListDoctorScreen extends StatefulWidget {
-  const ListDoctorScreen({Key? key}) : super(key: key);
+class ListDoctorPage extends StatefulWidget {
+  static const routeName = "/ListDoctorPage";
+
+  const ListDoctorPage({Key? key}) : super(key: key);
 
   @override
-  State<ListDoctorScreen> createState() => _ListDoctorScreenState();
+  State<ListDoctorPage> createState() => _ListDoctorPageState();
 }
 
-class _ListDoctorScreenState extends State<ListDoctorScreen> {
+class _ListDoctorPageState extends State<ListDoctorPage> {
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -30,21 +32,23 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Get.back();
+                Navigator.of(context).pop();
               },
               icon: const Icon(Icons.arrow_back),
             ),
-            logoWhite
+            LogoWidget.logoWhite
           ],
         ),
         bottom: PreferredSize(
-          child: Container(color: Themes.primaryColor, height: 1.0),
           preferredSize: const Size.fromHeight(1.0),
+          child: Container(color: AppColors.primaryColor, height: 1.0),
         ),
       ),
       body: Padding(
-        padding:
-            const EdgeInsets.only(left: margin, right: margin, top: margin),
+        padding: const EdgeInsets.only(
+            left: SizeConstants.margin,
+            right: SizeConstants.margin,
+            top: SizeConstants.margin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,14 +61,15 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                   onSaved: (val) {},
                   cursorColor: Theme.of(context).colorScheme.primary,
                   decoration: InputDecoration(
-                    fillColor: Themes.grey200Color,
+                    fillColor: AppColors.grey200Color,
                     filled: true,
                     contentPadding: const EdgeInsets.all(10),
                     hintText: "Cari dokter",
-                    hintStyle: kBodyText.copyWith(
-                        fontSize: 12,
-                        color: const Color(0XFFA6B7D4),
-                        fontWeight: FontWeight.w400),
+                    hintStyle: AppTheme.bodyText.copyWith(
+                      fontSize: 12,
+                      color: const Color(0XFFA6B7D4),
+                      fontWeight: FontWeight.w400,
+                    ),
                     border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                         borderSide: BorderSide(
@@ -84,7 +89,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                           width: 1,
                         )),
                     prefixIcon: Image.asset(
-                      "$iconsPath/search.png",
+                      "${Assets.iconsPath}/search.png",
                     ),
                   )),
             ),
@@ -145,10 +150,11 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                       children: [
                         Text(
                           "Konsultasi bersama dokter dibawah ini",
-                          style: kBodyText.copyWith(
-                              fontSize: 14,
-                              color: Themes.primaryColorDarkColor,
-                              fontWeight: FontWeight.w400),
+                          style: AppTheme.bodyText.copyWith(
+                            fontSize: 14,
+                            color: AppColors.primaryColorDarkColor,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                         const SizedBox(
                           height: 15,
@@ -160,8 +166,9 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                               itemBuilder: (BuildContext context, int index) {
                                 return DoctorItemWidget(
                                   onTap: () {
-                                    Get.to(
-                                      () => const PaymentChatScreen(),
+                                    Navigator.pushNamed(
+                                      context,
+                                      PaymentChatPage.routeName,
                                     );
                                   },
                                 );
@@ -178,7 +185,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
 
   Widget _itemSelectText(String text) {
     return Text(text,
-        style: const TextStyle(color: Themes.grey700Color, fontSize: 14));
+        style: const TextStyle(color: AppColors.grey700Color, fontSize: 14));
   }
 
   Widget _itemSelectIcon(int length) {
@@ -187,12 +194,13 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(length.toString(),
-            style: const TextStyle(color: Themes.grey700Color, fontSize: 14)),
+            style:
+                const TextStyle(color: AppColors.grey700Color, fontSize: 14)),
         for (var i = 0; i < length; i++)
           Container(
             margin: const EdgeInsets.only(left: 5),
             child: Image.asset(
-              "$iconsPath/ic_stars.png",
+              "${Assets.iconsPath}/ic_stars.png",
               width: 10,
             ),
           ),
@@ -208,7 +216,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              "$iconsPath/empty_doctor.png",
+              "${Assets.iconsPath}/empty_doctor.png",
               height: 123,
               width: 171,
             ),
@@ -218,9 +226,9 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
             Text(
               "Dokter yang anda cari tidak ada",
               textAlign: TextAlign.center,
-              style: kBodyText.copyWith(
+              style: AppTheme.bodyText.copyWith(
                   fontSize: 14,
-                  color: Themes.primaryColorDarkColor,
+                  color: AppColors.primaryColorDarkColor,
                   fontWeight: FontWeight.w500),
             )
           ],

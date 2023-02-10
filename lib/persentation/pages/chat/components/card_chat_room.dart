@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:jd_mobile/common/const.dart';
-import 'package:jd_mobile/common/exts.dart';
-
-import '../../../common/theme/theme.dart';
+import 'package:jd_mobile/common/extensions/context_ext.dart';
+import '../../../../common/resources/assets.dart';
+import '../../../../common/resources/colors.dart';
+import '../../../../common/theme/theme.dart';
+import '../../../provider/chat/chat_room_provider.dart';
 import 'profile_chat.dart';
 
 class ChatRoomItemWidget extends StatefulWidget {
   final bool sender;
-  final String? typeChat;
+  final TypeMessage typeChat;
 
   const ChatRoomItemWidget(
-      {Key? key, required this.sender, this.typeChat = TypeChat.text})
+      {Key? key, required this.sender, this.typeChat = TypeMessage.TEXT})
       : super(key: key);
 
   @override
@@ -48,9 +48,9 @@ class _ChatRoomItemWidgetState extends State<ChatRoomItemWidget> {
             children: [
               Text(
                 widget.sender ? "Anda" : "dr. Anabelle Sp.A",
-                style: kBodyText.copyWith(
+                style: AppTheme.bodyText.copyWith(
                     fontSize: 14,
-                    color: Themes.primaryColorDarkColor,
+                    color: AppColors.primaryColorDarkColor,
                     fontWeight: FontWeight.w400),
               ),
               const SizedBox(
@@ -63,7 +63,7 @@ class _ChatRoomItemWidgetState extends State<ChatRoomItemWidget> {
               Text(
                 "14:01",
                 textAlign: widget.sender ? TextAlign.end : TextAlign.start,
-                style: kBodyText.copyWith(
+                style: AppTheme.bodyText.copyWith(
                     fontSize: 10,
                     color: const Color(0XFFA0AEC0),
                     fontWeight: FontWeight.w400),
@@ -89,18 +89,19 @@ class _ChatRoomItemWidgetState extends State<ChatRoomItemWidget> {
   }
 
   Widget _typeChat() {
-    if (widget.typeChat == TypeChat.file) {
+    if (widget.typeChat == TypeMessage.FILE) {
       return Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-            color:
-                widget.sender ? Themes.primaryColor : const Color(0XFFE4ECF7),
+            color: widget.sender
+                ? AppColors.primaryColor
+                : const Color(0XFFE4ECF7),
             borderRadius: BorderRadius.circular(10)),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           decoration: BoxDecoration(
               color: widget.sender
-                  ? Themes.primaryColorDarkColor.withOpacity(0.5)
+                  ? AppColors.primaryColorDarkColor.withOpacity(0.5)
                   : const Color(0XFFE4ECF7),
               borderRadius: BorderRadius.circular(10)),
           child: Row(
@@ -110,10 +111,10 @@ class _ChatRoomItemWidgetState extends State<ChatRoomItemWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SvgPicture.asset(
-                "$iconsPath/download.svg",
+                "${Assets.iconsPath}/download.svg",
                 width: 18,
                 height: 18,
-                color: widget.sender ? Colors.white : Themes.primaryColor,
+                color: widget.sender ? Colors.white : AppColors.primaryColor,
               ),
               const SizedBox(
                 width: 30,
@@ -121,9 +122,10 @@ class _ChatRoomItemWidgetState extends State<ChatRoomItemWidget> {
               Text(
                 "Diagnosa.pdf",
                 textAlign: widget.sender ? TextAlign.end : TextAlign.start,
-                style: kBodyText.copyWith(
+                style: AppTheme.bodyText.copyWith(
                     fontSize: 14,
-                    color: widget.sender ? Colors.white : Themes.primaryColor,
+                    color:
+                        widget.sender ? Colors.white : AppColors.primaryColor,
                     fontWeight: FontWeight.w400),
               ),
               const SizedBox(
@@ -131,26 +133,27 @@ class _ChatRoomItemWidgetState extends State<ChatRoomItemWidget> {
               ),
               Icon(
                 FontAwesomeIcons.file,
-                color: widget.sender ? Colors.white : Themes.primaryColor,
+                color: widget.sender ? Colors.white : AppColors.primaryColor,
                 size: 18,
               ),
             ],
           ),
         ),
       );
-    } else if (widget.typeChat == TypeChat.image) {
+    } else if (widget.typeChat == TypeMessage.IMAGE) {
       return Container(
         padding: const EdgeInsets.all(3),
         margin: EdgeInsets.only(
             right: widget.sender ? 0 : 75, left: widget.sender ? 75 : 0),
         decoration: BoxDecoration(
-            color:
-                widget.sender ? Themes.primaryColor : const Color(0XFFE4ECF7),
+            color: widget.sender
+                ? AppColors.primaryColor
+                : const Color(0XFFE4ECF7),
             borderRadius: BorderRadius.circular(6)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(6),
           child: Image.asset(
-            "$otherPath/artic.png",
+            "${Assets.othersPath}/artic.png",
             height: 140,
             width: 194,
             fit: BoxFit.cover,
@@ -161,15 +164,16 @@ class _ChatRoomItemWidgetState extends State<ChatRoomItemWidget> {
       return Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color:
-                widget.sender ? Themes.primaryColor : const Color(0XFFE4ECF7),
+            color: widget.sender
+                ? AppColors.primaryColor
+                : const Color(0XFFE4ECF7),
             borderRadius: BorderRadius.circular(10)),
         child: Text(
           "Apakah kamu merasa pusing?",
           textAlign: widget.sender ? TextAlign.end : TextAlign.start,
-          style: kBodyText.copyWith(
+          style: AppTheme.bodyText.copyWith(
               fontSize: 14,
-              color: widget.sender ? Colors.white : Themes.primaryColor,
+              color: widget.sender ? Colors.white : AppColors.primaryColor,
               fontWeight: FontWeight.w400),
         ),
       );

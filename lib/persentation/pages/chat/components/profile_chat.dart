@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/const.dart';
+import '../../../../common/resources/assets.dart';
 
 class ProfileChatWidget extends StatelessWidget {
   final double size;
@@ -13,7 +13,7 @@ class ProfileChatWidget extends StatelessWidget {
       children: [
         ClipOval(
           child: Image.asset(
-            "$otherPath/artic.png",
+            "${Assets.othersPath}/artic.png",
             height: size,
             width: size,
             fit: BoxFit.cover,

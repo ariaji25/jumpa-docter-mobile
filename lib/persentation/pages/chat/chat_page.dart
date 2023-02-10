@@ -4,6 +4,8 @@ import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:provider/provider.dart';
+import '../../../common/theme/theme.dart';
+import '../../../common/utils/state_enum.dart';
 import '../../provider/chat/room_chat_provider.dart';
 import 'chat_room_page.dart';
 import 'components/card_chat.dart';
@@ -43,7 +45,9 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Padding(
         padding:
-            const EdgeInsets.only(left: SizeConstants.margin, right: SizeConstants.margin, top: SizeConstants.margin),
+        const EdgeInsets.only(left: SizeConstants.margin,
+            right: SizeConstants.margin,
+            top: SizeConstants.margin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -52,13 +56,16 @@ class _ChatPageState extends State<ChatPage> {
                 autofocus: false,
                 focusNode: FocusNode(canRequestFocus: false),
                 onSaved: (val) {},
-                cursorColor: Theme.of(context).colorScheme.primary,
+                cursorColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
                 decoration: InputDecoration(
-                  fillColor: Themes.grey200Color,
+                  fillColor: AppColors.grey200Color,
                   filled: true,
                   contentPadding: const EdgeInsets.all(10),
                   hintText: "Cari Percakapan",
-                  hintStyle: kBodyText.copyWith(
+                  hintStyle: AppTheme.bodyText.copyWith(
                       fontSize: 12,
                       color: const Color(0XFFA6B7D4),
                       fontWeight: FontWeight.w400),
@@ -81,7 +88,7 @@ class _ChatPageState extends State<ChatPage> {
                         width: 1,
                       )),
                   prefixIcon: Image.asset(
-                    "$iconsPath/search.png",
+                    "${Assets.iconsPath}/search.png",
                   ),
                 )),
             const SizedBox(
@@ -89,9 +96,9 @@ class _ChatPageState extends State<ChatPage> {
             ),
             Expanded(
               child:
-                  Consumer<RoomChatProvider>(builder: (context, roomChat, _) {
+              Consumer<RoomChatProvider>(builder: (context, roomChat, _) {
                 if (roomChat.state == RequestState.Loading) {
-                  return const LoadingScreen();
+                  return const Loading();
                 } else if (roomChat.state == RequestState.Loaded) {
                   if (roomChat.results.isEmpty) {
                     return _emptyRoomChat();
@@ -101,9 +108,9 @@ class _ChatPageState extends State<ChatPage> {
                       children: [
                         Text(
                           "Chat Dokter",
-                          style: kBodyText.copyWith(
+                          style: AppTheme.bodyText.copyWith(
                               fontSize: 14,
-                              color: Themes.primaryColorDarkColor,
+                              color: AppColors.primaryColorDarkColor,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -115,12 +122,14 @@ class _ChatPageState extends State<ChatPage> {
                               itemCount: roomChat.results.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return ChatItemWidget(
-                                  item: roomChat.results[index],
-                                  isRead: index % 2 == 0,
-                                  onTap: () => Get.to(
-                                    () => ChatRoomScreen(
-                                        emptyChat: index % 2 != 0),
-                                  ),
+                                    item: roomChat.results[index],
+                                    isRead: index % 2 == 0,
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        ChatRoomPage.routeName,
+                                      );
+                                    }
                                 );
                               }),
                         ),
@@ -146,15 +155,15 @@ class _ChatPageState extends State<ChatPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            "$iconsPath/empty_chat.png",
+            "${Assets.iconsPath}/empty_chat.png",
             height: 60,
             width: 60,
           ),
           Text(
             "Belum ada pesan\nSilahkan mulai percakapan dengan dokter anda.",
             textAlign: TextAlign.center,
-            style: kBodyText.copyWith(
-                fontSize: 14, color: Themes.primaryDarkLightColor),
+            style: AppTheme.bodyText.copyWith(
+                fontSize: 14, color: AppColors.primaryDarkLightColor),
           )
         ],
       ),
@@ -168,7 +177,7 @@ class _ChatPageState extends State<ChatPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            "$iconsPath/empty_doctor.png",
+            "${Assets.iconsPath}/empty_doctor.png",
             height: 123,
             width: 171,
           ),
@@ -178,9 +187,9 @@ class _ChatPageState extends State<ChatPage> {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: kBodyText.copyWith(
+            style: AppTheme.bodyText.copyWith(
                 fontSize: 14,
-                color: Themes.primaryColorDarkColor,
+                color: AppColors.primaryColorDarkColor,
                 fontWeight: FontWeight.w500),
           )
         ],

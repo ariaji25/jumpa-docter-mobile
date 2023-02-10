@@ -12,14 +12,15 @@ import '../../common/widgets/text_field.dart';
 import '../homecare/components/base_payment.dart';
 import 'components/profile_chat.dart';
 
-class PaymentChatScreen extends StatefulWidget {
-  const PaymentChatScreen({Key? key}) : super(key: key);
+class PaymentChatPage extends StatefulWidget {
+  static const routeName = "/ListDoctorPage";
+  const PaymentChatPage({Key? key}) : super(key: key);
 
   @override
-  State<PaymentChatScreen> createState() => _PaymentChatScreenState();
+  State<PaymentChatPage> createState() => _PaymentChatPageState();
 }
 
-class _PaymentChatScreenState extends State<PaymentChatScreen> {
+class _PaymentChatPageState extends State<PaymentChatPage> {
   @override
   void initState() {
     super.initState();

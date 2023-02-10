@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/const.dart';
-import '../../../common/theme/theme.dart';
+import '../../../../common/resources/colors.dart';
+import '../../../../common/theme/theme.dart';
 
 class ListDropdown extends StatefulWidget {
   final String title;
@@ -26,19 +26,19 @@ class _ListDropdownState extends State<ListDropdown> {
         child: DropdownButton(
           value: value,
           focusColor: Colors.black,
-          style: const TextStyle(color: Themes.grey700Color, fontSize: 14),
+          style: const TextStyle(color: AppColors.grey700Color, fontSize: 14),
           alignment: Alignment.bottomCenter,
           icon: const Icon(
             Icons.arrow_drop_down,
-            color: Themes.primaryColorDarkColor,
+            color: AppColors.primaryColorDarkColor,
           ),
           underline: const SizedBox(),
           hint: Container(
             margin: const EdgeInsets.only(bottom: 15), //and here
             child: Text(
               widget.title,
-              style: kBodyText.copyWith(
-                  fontSize: 14, color: Themes.primaryColorDarkColor),
+              style: AppTheme.bodyText.copyWith(
+                  fontSize: 14, color: AppColors.primaryColorDarkColor),
             ),
           ),
           items: getItems(),
@@ -55,7 +55,7 @@ class _ListDropdownState extends State<ListDropdown> {
 
   List<DropdownMenuItem> getItems() {
     List<DropdownMenuItem> items = widget.items.entries
-        .map((entry) => DropdownMenuItem(child: entry.value, value: entry.key))
+        .map((entry) => DropdownMenuItem(value: entry.key, child: entry.value))
         .toList();
     return items;
   }

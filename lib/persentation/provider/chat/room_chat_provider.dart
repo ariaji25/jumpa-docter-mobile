@@ -16,8 +16,7 @@ class RoomChatProvider extends ChangeNotifier {
 
   void getRooms() async {
     try {
-      final token = GetStorage().read(authToken);
-      await chatService.getRooms(1, 10, token: token).then((value) async {
+      await chatService.getRooms(1, 10).then((value) async {
         setState(RequestState.Loading);
         results = value.data ?? [];
         setState(RequestState.Loaded);
