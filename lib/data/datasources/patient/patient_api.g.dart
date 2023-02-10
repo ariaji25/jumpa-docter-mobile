@@ -72,7 +72,7 @@ class _PatientApi implements PatientApi {
     final _data = <String, dynamic>{};
     _data.addAll(data);
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
-      method: 'PUT',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )

@@ -3,15 +3,12 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-
 import 'package:jd_mobile/common/utils/fialure.dart';
 import 'package:jd_mobile/data/datasources/patient/patient_api.dart';
 import 'package:jd_mobile/data/models/patient_model.dart';
-
 import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 
 import '../../../domain/repositories/patient/patient_repositorty.dart';
-import '../../models/detail_patient_model.dart';
 
 class PatientRepositoryImpl extends PatientRepository {
   final PatientApi api;
@@ -27,7 +24,7 @@ class PatientRepositoryImpl extends PatientRepository {
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {
-      return Left(ServerFailure(e.message));
+      return Left(ServerFailure(e.response?.data['message'] ?? e.message));
     }
   }
 
@@ -40,7 +37,7 @@ class PatientRepositoryImpl extends PatientRepository {
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {
-      return Left(ServerFailure(e.message));
+      return Left(ServerFailure(e.response?.data['message'] ?? e.message));
     }
   }
 
@@ -53,7 +50,7 @@ class PatientRepositoryImpl extends PatientRepository {
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {
-      return Left(ServerFailure(e.message));
+      return Left(ServerFailure(e.response?.data['message'] ?? e.message));
     }
   }
 
@@ -61,11 +58,11 @@ class PatientRepositoryImpl extends PatientRepository {
   Future<Either<Failure, String>> detailPatientByNrm(String phoneNumber) async {
     try {
       final result = await api.detailPatientByNrm(phoneNumber);
-      return Right(result);
+      return Right(jsonEncode(result));
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {
-      return Left(ServerFailure(e.message));
+      return Left(ServerFailure(e.response?.data['message'] ?? e.message));
     }
   }
 }

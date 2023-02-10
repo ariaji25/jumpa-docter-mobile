@@ -23,8 +23,11 @@ final GetIt getIt = GetIt.instance;
 Future setup() async {
   // Provider
   getIt.registerFactory<AuthProvider>(() => AuthProvider(signIn: getIt()));
-  getIt.registerFactory<PatientProvider>(
-      () => PatientProvider(createPatient: getIt()));
+  getIt.registerFactory<PatientProvider>(() => PatientProvider(
+      createPatient: getIt(),
+      createPatientNrm: getIt(),
+      updatePatient: getIt(),
+      detailPatientByNrm: getIt()));
   getIt.registerFactory<MapProvider>(() => MapProvider());
 
   // Repository

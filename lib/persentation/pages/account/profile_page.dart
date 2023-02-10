@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
+import 'package:jd_mobile/domain/entities/patient/attribute_entities.dart';
 import 'package:jd_mobile/persentation/pages/feedback/feedback_page.dart';
+import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/theme/theme.dart';
 import '../../widgets/confirm_modal.dart';
 import '../../widgets/privacy_policy.dart';
+import '../../widgets/profile_widget.dart';
 import '../../widgets/term_and_condition.dart';
 import '../auth/login_page.dart';
 import 'about_page.dart';
@@ -20,24 +24,31 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  String? _nrmPatient;
-
   @override
   void initState() {
-    Future.delayed(const Duration(milliseconds: 200), () {
-      //GET DATA NRM PASIEN
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      PatientProvider patientProvider =
+          Provider.of<PatientProvider>(context, listen: false);
+      patientProvider.setNrmPatient(patientProvider
+          .detailPatient.trackedEntityInstances?[0].attributes
+          ?.firstWhere((element) => element.attribute == "kOJUHSrbkBS",
+              orElse: () => AttributesEntities(value: "---------"))
+          .value??"-");
     });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    PatientProvider patientProvider =
+        Provider.of<PatientProvider>(context, listen: true);
     return Scaffold(
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Column(
           children: [
-            _buildHeader(),
+            _buildHeader(patientProvider),
             const SizedBox(height: 25),
             _menuItems(
               assets: "${Assets.iconsPath}/person.png",
@@ -111,7 +122,7 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(PatientProvider patientProvider) {
     return Container(
       height: 221,
       width: double.infinity,
@@ -133,20 +144,15 @@ class ProfilePageState extends State<ProfilePage> {
           Column(
             children: [
               Center(
-                child: Container(
-                  width: 90,
-                  height: 90,
-                  color: Colors.transparent,
-                  child: const Icon(
-                    Icons.account_circle,
-                    size: 90,
-                    color: AppColors.whiteColor,
-                  ),
+                child: ProfileInitialWidget(
+                  size: 90,
+                  name: patientProvider.patient.name ?? "",
+                  fontSize: 50,
                 ),
               ),
               const SizedBox(height: 7),
               Text(
-                "-",
+                patientProvider.patient.name ?? "-",
                 style: AppTheme.heading6.copyWith(
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.bold,
@@ -162,7 +168,7 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               Text(
-                _nrmPatient.toString(),
+                patientProvider.nrmPatient ?? "-",
                 style: AppTheme.heading6.copyWith(
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.w800,
@@ -194,7 +200,7 @@ class ProfilePageState extends State<ProfilePage> {
             assets != null
                 ? Image.asset(
                     assets,
-                    width: 12,
+                    width: 16,
                     color: isLogout ? Colors.red : null,
                   )
                 : Icon(
