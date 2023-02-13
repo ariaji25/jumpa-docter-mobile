@@ -90,5 +90,6 @@ class AuthProvider extends ChangeNotifier {
     log("TOKEN IN LOGOUT $token");
     await storage.deleteAll();
     log("TOKEN LOGOUT :: ${await storage.read(key: AppConst.AUTH_TOKEN)}");
+    await _auth.signOut();
   }
 }
