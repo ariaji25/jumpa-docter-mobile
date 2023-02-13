@@ -123,7 +123,7 @@ class _OtpPageState extends State<OtpPage> {
             RichText(
               text: TextSpan(
                 text:
-                    "Kami sudah mengirimkan kode OTP melalui\nWhatsapp ke nomor ",
+                    "Kami sudah mengirimkan kode OTP melalui\nSMS ke nomor ",
                 style: GoogleFonts.inter(
                   color: AppColors.primaryColorDarkColor,
                   fontSize: 12,
