@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
-import 'package:jd_mobile/data/models/enrollment_model.dart';
 import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import 'package:jd_mobile/domain/usecases/patient/create_patient.dart';
 import 'package:jd_mobile/domain/usecases/patient/create_patient_nrm.dart';
@@ -12,8 +11,9 @@ import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/update_patient.dart';
 
 import '../../../common/helpers/helpers.dart';
-import '../../../data/models/detail_patient_model.dart';
-import '../../../data/models/patient_model.dart';
+import '../../../data/models/patient/detail_patient_model.dart';
+import '../../../data/models/patient/enrollment_model.dart';
+import '../../../data/models/patient/patient_model.dart';
 
 class PatientProvider extends ChangeNotifier {
   PatientProvider(

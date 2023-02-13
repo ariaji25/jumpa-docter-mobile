@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/persentation/pages/account/profile_page.dart';
+import 'package:jd_mobile/persentation/pages/chat/chat_page.dart';
 import 'package:jd_mobile/persentation/pages/home/home_page.dart';
 import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:jd_mobile/persentation/widgets/logo_widget.dart';
@@ -41,7 +42,7 @@ class BasePageState extends State<BasePage> {
   int _currentIndex = 0;
   final _screens = [
     const HomePage(),
-    const HomePage(),
+    const ChatPage(),
     const HomePage(),
     const ProfilePage(),
   ];

@@ -24,6 +24,8 @@ class Helpers {
     return nama[0].toUpperCase();
   }
 
+  static String twoDigits(int n) => n.toString().padLeft(2, '0');
+
   static Future<String?> readLocalStorage(String key) async {
     return storage.read(key: key);
   }

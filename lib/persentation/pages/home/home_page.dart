@@ -7,6 +7,7 @@ import '../../../common/resources/colors.dart';
 import '../../../common/resources/size.dart';
 import '../../../common/theme/theme.dart';
 import '../../widgets/menu_item.dart';
+import '../chat/specialization_page.dart';
 import 'common/item_selected.dart';
 
 class HomePage extends StatefulWidget {
@@ -395,10 +396,9 @@ class HomeScreenState extends State<HomePage> {
         imagePath: "${Assets.iconsPath}/ic_chat.png",
         showBadge: true,
         onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
-            ComplaintPage.routeName,
-            (route) => false,
+            SpecializationPage.routeName,
           );
         },
       ),

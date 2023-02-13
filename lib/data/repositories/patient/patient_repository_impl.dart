@@ -5,10 +5,10 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:jd_mobile/common/utils/fialure.dart';
 import 'package:jd_mobile/data/datasources/patient/patient_api.dart';
-import 'package:jd_mobile/data/models/patient_model.dart';
 import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 
 import '../../../domain/repositories/patient/patient_repositorty.dart';
+import '../../models/patient/patient_model.dart';
 
 class PatientRepositoryImpl extends PatientRepository {
   final PatientApi api;
