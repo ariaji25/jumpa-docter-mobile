@@ -19,7 +19,7 @@ class ProfileInitialWidget extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        color: Colors.white,
+        color: const Color(0XFFE4ECF7),
         child: Center(
             child: Text(
           Helpers.getInitials(name),

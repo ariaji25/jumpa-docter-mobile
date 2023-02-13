@@ -56,6 +56,7 @@ class MapProvider extends ChangeNotifier {
   void getCurrentLocation() async {
     await Geolocator.getCurrentPosition().then((currLocation) {
       setMapPosition(LatLng(currLocation.latitude, currLocation.longitude));
+      setRequestState(RequestState.Loaded);
     });
   }
 

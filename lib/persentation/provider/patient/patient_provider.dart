@@ -9,6 +9,8 @@ import 'package:jd_mobile/domain/usecases/patient/create_patient.dart';
 import 'package:jd_mobile/domain/usecases/patient/create_patient_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/update_patient.dart';
+
+import '../../../common/helpers/helpers.dart';
 import '../../../data/models/patient/detail_patient_model.dart';
 import '../../../data/models/patient/enrollment_model.dart';
 import '../../../data/models/patient/patient_model.dart';
@@ -86,7 +88,7 @@ class PatientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String?> patientCreateNrm() async {
+  Future<void> patientCreateNrm() async {
     final result = await createPatientNrm!({
       "name": patient.name,
       "orgUnit": "ZxIltg4P06f",
@@ -95,10 +97,12 @@ class PatientProvider extends ChangeNotifier {
       setRequestState(RequestState.Error);
       _errorMessage = l.message;
       notifyListeners();
-    }, (r) {
-      return r;
+    }, (r) async {
+      patient.nrm = r;
+      notifyListeners();
+      await Helpers.writeLocalStorage(AppConst.NRM_KEY, r);
+      await patientCreate();
     });
-    return null;
   }
 
   Future<void> patientCreate() async {
@@ -175,11 +179,13 @@ class PatientProvider extends ChangeNotifier {
         notifyListeners();
 
         final teiRef = res.trackedEntityInstances![0].trackedEntityInstance;
+        notifyListeners();
         storage.write(key: AppConst.TEI_KEY, value: teiRef);
 
         final patientAttributes = PatientModel.fromAttributes(
           res.trackedEntityInstances![0].attributes ?? [],
         );
+        notifyListeners();
 
         patientAttributes.tei = teiRef;
         notifyListeners();
@@ -198,9 +204,7 @@ class PatientProvider extends ChangeNotifier {
     setRequestState(RequestState.Loading);
     if (isNewPatient) {
       // ASIGN NEW NRM
-      patient.nrm = await patientCreateNrm();
-
-      await patientCreate();
+      await patientCreateNrm();
     } else {
       await patientUpdate();
     }

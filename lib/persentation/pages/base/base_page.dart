@@ -299,7 +299,7 @@ class BasePageState extends State<BasePage> {
   }
 
   void isNewPatient(BuildContext context, PatientProvider patientProvider) {
-    if (patientProvider.isNewPatient && patientProvider.isInvalidToken) {
+    if (patientProvider.isNewPatient && !patientProvider.isInvalidToken) {
       confirmModal(
         context,
         "Pasien Baru",

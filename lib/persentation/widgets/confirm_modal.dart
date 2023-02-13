@@ -35,12 +35,12 @@ void confirmModal(
               onPressed: () {
                 Navigator.of(context).pop();
 
-                if (onOk != null) {
-                  onOk();
+                if (onCancel != null) {
+                  onCancel();
                 }
               },
               child: Text(
-                okText ?? 'Ya',
+                cancelText ?? 'Tidak',
               ),
             ),
             !isOne
@@ -48,15 +48,15 @@ void confirmModal(
                     onPressed: () {
                       Navigator.of(context).pop();
 
-                      if (onCancel != null) {
-                        onCancel();
+                      if (onOk != null) {
+                        onOk();
                       }
                     },
                     child: Text(
-                      cancelText ?? 'Tidak',
+                      okText ?? 'Ya',
                     ),
                   )
-                : const SizedBox.shrink()
+                : const SizedBox.shrink(),
           ],
         );
       });
