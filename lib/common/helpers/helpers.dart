@@ -27,4 +27,8 @@ class Helpers {
   static Future<String?> readLocalStorage(String key) async {
     return storage.read(key: key);
   }
+
+  static Future<void> writeLocalStorage(String key, String value) async {
+    return storage.write(key: key, value: value);
+  }
 }

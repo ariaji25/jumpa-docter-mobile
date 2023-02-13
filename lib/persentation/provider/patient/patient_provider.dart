@@ -11,6 +11,7 @@ import 'package:jd_mobile/domain/usecases/patient/create_patient_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/update_patient.dart';
 
+import '../../../common/helpers/helpers.dart';
 import '../../../data/models/detail_patient_model.dart';
 import '../../../data/models/patient_model.dart';
 
@@ -99,6 +100,7 @@ class PatientProvider extends ChangeNotifier {
     }, (r) async {
       patient.nrm = r;
       notifyListeners();
+      await Helpers.writeLocalStorage(AppConst.NRM_KEY, r);
       await patientCreate();
     });
   }
@@ -163,9 +165,7 @@ class PatientProvider extends ChangeNotifier {
       notifyListeners();
       if (l.message == AppConst.INVALID_TOKEN ||
           l.message == AppConst.INVALID_TOKEN_OTHER) {
-        if (l.message == AppConst.INVALID_TOKEN) {
-          setIsInvalidToken(true);
-        }
+        setIsInvalidToken(true);
       }
     }, (r) {
       DetailPatientModel res = DetailPatientModel.fromJson(jsonDecode(r));
@@ -179,11 +179,13 @@ class PatientProvider extends ChangeNotifier {
         notifyListeners();
 
         final teiRef = res.trackedEntityInstances![0].trackedEntityInstance;
+        notifyListeners();
         storage.write(key: AppConst.TEI_KEY, value: teiRef);
 
         final patientAttributes = PatientModel.fromAttributes(
           res.trackedEntityInstances![0].attributes ?? [],
         );
+        notifyListeners();
 
         patientAttributes.tei = teiRef;
         notifyListeners();
