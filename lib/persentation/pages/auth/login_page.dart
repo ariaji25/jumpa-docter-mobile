@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Text(
-              "Masuk dengan nomor HP yang terhubung Whatsapp",
+              "Masuk dengan nomor HP yang terhubungXE",
               style: AppTheme.bodyText.copyWith(
                 color: AppColors.primaryColor,
                 fontWeight: FontWeight.w400,
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 35),
             Text(
-              "Nomor Whatsapp",
+              "Nomor HP",
               style: AppTheme.bodyText.copyWith(
                 color: AppColors.primaryColorLightColor,
                 fontWeight: FontWeight.w400,
