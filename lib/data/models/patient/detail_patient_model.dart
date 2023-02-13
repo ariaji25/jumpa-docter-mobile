@@ -2,7 +2,6 @@
 
 import 'package:jd_mobile/domain/entities/patient/detail_patient_entities.dart';
 import 'package:jd_mobile/domain/entities/patient/tracked_entity_instances_entities.dart';
-
 import 'tracked_entity_instances_model.dart';
 
 class DetailPatientModel extends DetailPatientEntities{

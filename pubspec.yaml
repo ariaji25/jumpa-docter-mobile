@@ -39,6 +39,7 @@ dependencies:
   dropdown_search: ^2.0.0
   flutter_secure_storage: ^7.0.1
   another_flushbar: ^1.12.29
+  font_awesome_flutter: ^10.0.0
   # MAPS_FLUTTER
   google_maps_flutter: ^2.2.3
   geolocator: ^9.0.2
@@ -74,6 +75,7 @@ flutter:
     - assets/images/
     - assets/others/
     - assets/logo/
+    - assets/icons/spesialis/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -10,6 +10,12 @@ import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
 import 'package:jd_mobile/persentation/pages/order/complaint_page.dart';
 
 import '../../persentation/pages/account/profile_form.dart';
+import '../../persentation/pages/chat/chat_page.dart';
+import '../../persentation/pages/chat/chat_room_page.dart';
+import '../../persentation/pages/chat/list_doctor_page.dart';
+import '../../persentation/pages/chat/payment_chat_page.dart';
+import '../../persentation/pages/chat/specialization_page.dart';
+import '../../persentation/pages/feedback/feedback_doctor_page.dart';
 
 class AppRoutes {
   static Route generateRoute(RouteSettings settings) {
@@ -57,6 +63,36 @@ class AppRoutes {
       case MapPage.routeName:
         return CupertinoPageRoute(
           builder: (_) => MapPage(onTap: (value) {}),
+          settings: settings,
+        );
+      case ChatPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const ChatPage(),
+          settings: settings,
+        );
+      case ChatRoomPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const ChatRoomPage(),
+          settings: settings,
+        );
+      case ListDoctorPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const ListDoctorPage(),
+          settings: settings,
+        );
+      case PaymentChatPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const PaymentChatPage(),
+          settings: settings,
+        );
+      case SpecializationPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const SpecializationPage(),
+          settings: settings,
+        );
+      case FeedbackDoctorPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const FeedbackDoctorPage(),
           settings: settings,
         );
 

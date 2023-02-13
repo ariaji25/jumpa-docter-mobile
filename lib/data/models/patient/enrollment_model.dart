@@ -2,7 +2,6 @@
 
 import 'package:jd_mobile/domain/entities/patient/enrollment_entities.dart';
 import 'package:jd_mobile/domain/entities/patient/event_entities.dart';
-
 import 'event_model.dart';
 
 class EnrollmentModel extends EnrollmentEntities {
