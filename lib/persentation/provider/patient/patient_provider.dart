@@ -87,7 +87,7 @@ class PatientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String?> patientCreateNrm() async {
+  Future<void> patientCreateNrm() async {
     final result = await createPatientNrm!({
       "name": patient.name,
       "orgUnit": "ZxIltg4P06f",
@@ -96,10 +96,11 @@ class PatientProvider extends ChangeNotifier {
       setRequestState(RequestState.Error);
       _errorMessage = l.message;
       notifyListeners();
-    }, (r) {
-      return r;
+    }, (r) async {
+      patient.nrm = r;
+      notifyListeners();
+      await patientCreate();
     });
-    return null;
   }
 
   Future<void> patientCreate() async {
@@ -160,7 +161,8 @@ class PatientProvider extends ChangeNotifier {
       setRequestState(RequestState.Error);
       _errorMessage = l.message;
       notifyListeners();
-      if (l.message == AppConst.INVALID_TOKEN || l.message == AppConst.INVALID_TOKEN_OTHER) {
+      if (l.message == AppConst.INVALID_TOKEN ||
+          l.message == AppConst.INVALID_TOKEN_OTHER) {
         setIsInvalidToken(true);
       }
     }, (r) {
@@ -198,9 +200,7 @@ class PatientProvider extends ChangeNotifier {
     setRequestState(RequestState.Loading);
     if (isNewPatient) {
       // ASIGN NEW NRM
-      patient.nrm = await patientCreateNrm();
-
-      await patientCreate();
+      await patientCreateNrm();
     } else {
       await patientUpdate();
     }
