@@ -163,7 +163,9 @@ class PatientProvider extends ChangeNotifier {
       notifyListeners();
       if (l.message == AppConst.INVALID_TOKEN ||
           l.message == AppConst.INVALID_TOKEN_OTHER) {
-        setIsInvalidToken(true);
+        if (l.message == AppConst.INVALID_TOKEN) {
+          setIsInvalidToken(true);
+        }
       }
     }, (r) {
       DetailPatientModel res = DetailPatientModel.fromJson(jsonDecode(r));

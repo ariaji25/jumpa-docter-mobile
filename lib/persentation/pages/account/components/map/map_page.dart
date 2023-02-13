@@ -50,41 +50,41 @@ class MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    MapProvider mapProvider = Provider.of<MapProvider>(context, listen: true);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppsBar(
-        elevation: 0.0,
-        flexibleSpaceBar: FlexibleSpaceBar(
-          centerTitle: true,
-          title: Container(
-            margin: const EdgeInsets.only(right: 25),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    size: 32,
-                    color: AppColors.whiteColor,
+        resizeToAvoidBottomInset: false,
+        appBar: AppsBar(
+          elevation: 0.0,
+          flexibleSpaceBar: FlexibleSpaceBar(
+            centerTitle: true,
+            title: Container(
+              margin: const EdgeInsets.only(right: 25),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 32,
+                      color: AppColors.whiteColor,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "Tentukan pin lokasi",
-                  style: AppTheme.bodyText.copyWith(fontSize: 16),
-                )
-              ],
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Tentukan pin lokasi",
+                    style: AppTheme.bodyText.copyWith(fontSize: 16),
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      body: Consumer<MapProvider>(builder: (context, map, child) {
-        return map.requestState == RequestState.Loading
+        body: mapProvider.requestState == RequestState.Loading
             ? const Loading()
             : Column(
                 children: [
@@ -95,22 +95,24 @@ class MapPageState extends State<MapPage> {
                           mapToolbarEnabled: false,
                           zoomControlsEnabled: true,
                           onMapCreated: (GoogleMapController controller) async {
-                            if (!map.controller.isCompleted) {
-                              map.controller.complete(controller);
+                            if (!mapProvider.controller.isCompleted) {
+                              mapProvider.controller.complete(controller);
                             }
-                            map.getLocation(map.mapPosition).then((value) {
-                              map.setDetailAddress(value);
-                              map.setLoadingDetailLocation(false);
+                            mapProvider
+                                .getLocation(mapProvider.mapPosition)
+                                .then((value) {
+                              mapProvider.setDetailAddress(value);
+                              mapProvider.setLoadingDetailLocation(false);
                             });
                           },
-                          initialCameraPosition:
-                              CameraPosition(target: map.mapPosition, zoom: 20),
-                          markers: Set<Marker>.of(map.markers),
-                          mapType: map.mapType,
-                          // onCameraMove: map.onCameraMove,
+                          initialCameraPosition: CameraPosition(
+                              target: mapProvider.mapPosition, zoom: 20),
+                          markers: Set<Marker>.of(mapProvider.markers),
+                          mapType: mapProvider.mapType,
+                          // onCameraMove: mapProvider.onCameraMove,
                           onCameraMove: (position) {
-                            map.setMapPosition(position.target);
-                            map.onCameraMove();
+                            mapProvider.setMapPosition(position.target);
+                            mapProvider.onCameraMove();
                           },
                           indoorViewEnabled: true,
                         ),
@@ -132,7 +134,7 @@ class MapPageState extends State<MapPage> {
                                 size: 30,
                               ),
                             ),
-                            onTap: () => map.currentLocation(context),
+                            onTap: () => mapProvider.currentLocation(context),
                           ),
                         ),
                         Align(
@@ -146,9 +148,9 @@ class MapPageState extends State<MapPage> {
                           margin: const EdgeInsets.only(
                               top: 20, left: 25, right: 25),
                           child: GestureDetector(
-                            onTap: () => map.handlePressButton(context),
+                            onTap: () => mapProvider.handlePressButton(context),
                             child: TextFormField(
-                                controller: map.querySearchController,
+                                controller: mapProvider.querySearchController,
                                 autofocus: false,
                                 enabled: false,
                                 focusNode: FocusNode(canRequestFocus: false),
@@ -206,7 +208,7 @@ class MapPageState extends State<MapPage> {
                             Container(
                               margin: const EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 8),
-                              child: map.loadingDetailLocation
+                              child: mapProvider.loadingDetailLocation
                                   ? const Loading(size: 15)
                                   : Row(
                                       mainAxisAlignment:
@@ -226,19 +228,18 @@ class MapPageState extends State<MapPage> {
                                                 padding: const EdgeInsets.only(
                                                     left: 10),
                                                 child: Text(
-                                                  map.detailAddress == ""
+                                                  mapProvider.detailAddress ==
+                                                          ""
                                                       ? "Keterangan"
-                                                      : map.detailAddress,
-                                                  style: AppTheme.subtitle
-                                                      .copyWith(
-                                                          fontSize: 12,
-                                                          color:
-                                                              map.detailAddress ==
-                                                                      ""
-                                                                  ? AppColors
-                                                                      .greyColor
-                                                                  : Colors
-                                                                      .black),
+                                                      : mapProvider
+                                                          .detailAddress,
+                                                  style: AppTheme.subtitle.copyWith(
+                                                      fontSize: 12,
+                                                      color: mapProvider
+                                                                  .detailAddress ==
+                                                              ""
+                                                          ? AppColors.greyColor
+                                                          : Colors.black),
                                                 )))
                                       ],
                                     ),
@@ -249,11 +250,13 @@ class MapPageState extends State<MapPage> {
                             Buttons(
                               title: "Pilih Alamat",
                               onTap: () {
-                                map.querySearchController.text = "";
-                                map.setSelectedPosition(map.mapPosition);
-                                map.setSelectedDetailAddress(map.detailAddress);
+                                mapProvider.querySearchController.text = "";
+                                mapProvider.setSelectedPosition(
+                                    mapProvider.mapPosition);
+                                mapProvider.setSelectedDetailAddress(
+                                    mapProvider.detailAddress);
                                 Navigator.of(context).pop();
-                                widget.onTap(map.selectedPosition);
+                                widget.onTap(mapProvider.selectedPosition);
                               },
                               disabled: false,
                               loading: false,
@@ -266,8 +269,6 @@ class MapPageState extends State<MapPage> {
                     ],
                   )
                 ],
-              );
-      }),
-    );
+              ));
   }
 }
