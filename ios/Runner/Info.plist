@@ -56,5 +56,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>Aplikasi ini membutuhkan akses ke lokasi saat dibuka.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Aplikasi ini membutuhkan akses ke lokasi saat berada di latar belakang.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Aplikasi ini membutuhkan akses ke lokasi saat terbuka dan di latar belakang.</string>
 </dict>
 </plist>

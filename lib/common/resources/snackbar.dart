@@ -1,7 +1,5 @@
 import 'package:another_flushbar/flushbar.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
-import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
 
 import 'size.dart';

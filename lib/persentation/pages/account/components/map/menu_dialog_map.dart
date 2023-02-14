@@ -52,7 +52,7 @@ class MenuDialog extends StatelessWidget {
             ),
             Container(
               height: 1,
-              color: Color(0xFFEEEEEE),
+              color: const Color(0xFFEEEEEE),
               width: double.infinity,
               margin: const EdgeInsets.only(top: 5),
             )

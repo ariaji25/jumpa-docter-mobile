@@ -43,7 +43,7 @@ class DialogMapType extends StatelessWidget {
           ),
           Container(
             height: 1,
-            color: Color(0xFF757575),
+            color: const Color(0xFF757575),
             width: double.infinity,
           ),
           Container(
