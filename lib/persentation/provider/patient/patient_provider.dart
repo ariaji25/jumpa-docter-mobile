@@ -205,6 +205,7 @@ class PatientProvider extends ChangeNotifier {
     if (isNewPatient) {
       // ASIGN NEW NRM
       await patientCreateNrm();
+      setRequestState(RequestState.Loaded);
     } else {
       await patientUpdate();
     }

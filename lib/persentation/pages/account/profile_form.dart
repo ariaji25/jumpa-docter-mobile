@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -242,16 +243,16 @@ class ProfileFormState extends State<ProfileForm> {
         SnackBarCustom.showSnackBarMessage(
           context: context,
           title: "Berhasil !",
-          message:
-              "Berhasil ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"}  data pasien!",
+          message: "Berhasil ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"}  data pasien!",
           typeMessage: SnackBarType.success,
         );
-      } else {
+      } 
+      
+      if(patientProvider.requestState == RequestState.Error) {
         SnackBarCustom.showSnackBarMessage(
           context: context,
           title: "Ops !",
-          message:
-              "Gagal ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"} data. Coba lagi atau Hubungi Administrator!",
+          message: "Gagal ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"} data. Coba lagi atau Hubungi Administrator!",
           typeMessage: SnackBarType.error,
         );
       }
