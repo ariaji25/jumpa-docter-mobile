@@ -7,3 +7,8 @@ For branching and committing message :
    Example: `kanban-board#01 Your message here`
 
 Happy coding and be happy with your task :) ...
+
+
+
+Run this command in your terminal to generate json seriable files & Retrofit File
+- flutter packages pub run build_runner build --delete-conflicting-outputs
