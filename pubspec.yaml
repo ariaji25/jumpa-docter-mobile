@@ -39,7 +39,9 @@ dependencies:
   dropdown_search: ^2.0.0
   flutter_secure_storage: ^7.0.1
   another_flushbar: ^1.12.29
-  font_awesome_flutter: ^10.0.0
+  font_awesome_flutter: ^10.4.0
+  flutter_share: ^2.0.0
+  flutter_html: ^3.0.0-alpha.6
   # MAPS_FLUTTER
   google_maps_flutter: ^2.2.3
   geolocator: ^9.0.2

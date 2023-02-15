@@ -10,6 +10,8 @@ import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
 import 'package:jd_mobile/persentation/pages/order/complaint_page.dart';
 
 import '../../persentation/pages/account/profile_form.dart';
+import '../../persentation/pages/articles/article_page.dart';
+import '../../persentation/pages/articles/detail_article_page.dart';
 import '../../persentation/pages/chat/chat_page.dart';
 import '../../persentation/pages/chat/chat_room_page.dart';
 import '../../persentation/pages/chat/list_doctor_page.dart';
@@ -93,6 +95,16 @@ class AppRoutes {
       case FeedbackDoctorPage.routeName:
         return CupertinoPageRoute(
           builder: (_) => const FeedbackDoctorPage(),
+          settings: settings,
+        );
+      case ArticlePage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const ArticlePage(),
+          settings: settings,
+        );
+      case DetailArticlePage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const DetailArticlePage(),
           settings: settings,
         );
 

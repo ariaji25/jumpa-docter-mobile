@@ -8,6 +8,7 @@ import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
 import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:jd_mobile/persentation/provider/chat/chat_room_provider.dart';
 import 'package:jd_mobile/persentation/provider/chat/room_chat_provider.dart';
+import 'package:jd_mobile/persentation/provider/home/home_provider.dart';
 import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
 import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.getIt<MapProvider>()),
         ChangeNotifierProvider(create: (_) => di.getIt<ChatRoomProvider>()),
         ChangeNotifierProvider(create: (_) => di.getIt<RoomChatProvider>()),
+        ChangeNotifierProvider(create: (_) => di.getIt<HomeProvider>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: kDebugMode,

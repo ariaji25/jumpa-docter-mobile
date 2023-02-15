@@ -12,7 +12,7 @@ abstract class ArticleApi {
     @Query('search') String? seach,
   ]);
 
-  @GET("/api/article/tags")
+  @GET("/api/articles/tags")
   Future getTags();
 
   factory ArticleApi(Dio dio, {String baseUrl}) = _ArticleApi;
