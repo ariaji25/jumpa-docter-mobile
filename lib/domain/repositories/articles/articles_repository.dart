@@ -11,5 +11,5 @@ abstract class ArticleRepository {
     String? search,
   );
 
-  Future<Either<Failure, List<TagEntities>>> getTags();
+  Future<Either<Failure, TagEntities>> getTags();
 }

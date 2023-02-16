@@ -11,11 +11,13 @@ import 'package:jd_mobile/domain/repositories/articles/articles_repository.dart'
 
 class ArticleRepositoryImpl extends ArticleRepository {
   final ArticleApi api;
+
   ArticleRepositoryImpl({required this.api});
 
   @override
-  Future<Either<Failure, List<ArticlesEntities>>> getArticles(int page, int? limit, String? tag, String? search) async {
-   try {
+  Future<Either<Failure, List<ArticlesEntities>>> getArticles(
+      int page, int? limit, String? tag, String? search) async {
+    try {
       final result = await api.getArticles(page, limit, tag, search);
       return Right(ArticleBaseModel.fromJson(result["data"]).articles ?? []);
     } on SocketException {
@@ -26,10 +28,10 @@ class ArticleRepositoryImpl extends ArticleRepository {
   }
 
   @override
-  Future<Either<Failure, List<TagEntities>>> getTags() async {
+  Future<Either<Failure, TagEntities>> getTags() async {
     try {
       final result = await api.getTags();
-      return Right(result);
+      return Right(  TagEntities(data: result['data'].cast<String>()));
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {

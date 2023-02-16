@@ -64,7 +64,7 @@ class _ArticleApi implements ArticleApi {
     )
         .compose(
           _dio.options,
-          '/api/articles/tags',
+          '/api/article/tags',
           queryParameters: queryParameters,
           data: _data,
         )

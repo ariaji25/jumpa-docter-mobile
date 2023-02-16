@@ -65,7 +65,7 @@ Widget textfieldSearchArticleWidget({
   required Function onTap,
 }) {
   return Container(
-    height: 39,
+    height: 50,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6), color: const Color(0XFFEDF2F7)),
     child: TextFormField(

@@ -17,15 +17,15 @@ import '../../../data/models/patient/patient_model.dart';
 
 class PatientProvider extends ChangeNotifier {
   PatientProvider(
-      {this.createPatient,
-      this.createPatientNrm,
-      this.updatePatient,
-      this.detailPatientByNrm});
+      {required this.createPatient,
+      required this.createPatientNrm,
+      required this.updatePatient,
+      required this.detailPatientByNrm});
 
-  final CreatePatient? createPatient;
-  final CreatePatientNrm? createPatientNrm;
-  final UpdatePatient? updatePatient;
-  final DetailPatientByNrm? detailPatientByNrm;
+  CreatePatient createPatient;
+  CreatePatientNrm createPatientNrm;
+  UpdatePatient updatePatient;
+  DetailPatientByNrm detailPatientByNrm;
   final TextEditingController nrmCtrl = TextEditingController();
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController nikCtrl = TextEditingController();
@@ -89,7 +89,7 @@ class PatientProvider extends ChangeNotifier {
   }
 
   Future<void> patientCreateNrm() async {
-    final result = await createPatientNrm!({
+    final result = await createPatientNrm({
       "name": patient.name,
       "orgUnit": "ZxIltg4P06f",
     });
@@ -107,7 +107,7 @@ class PatientProvider extends ChangeNotifier {
 
   Future<void> patientCreate() async {
     setRequestState(RequestState.Loading);
-    final result = await createPatient!(patient);
+    final result = await createPatient(patient);
     result.fold((l) {
       setRequestState(RequestState.Error);
       _errorMessage = l.message;
@@ -124,7 +124,7 @@ class PatientProvider extends ChangeNotifier {
     setRequestState(RequestState.Loading);
     final detail = detailPatient.trackedEntityInstances?.first;
     if (detail != null) {
-      final result = await updatePatient!({
+      final result = await updatePatient({
         "trackedEntityInstance": detail.trackedEntityInstance,
         "orgUnit": detail.orgUnit,
         "attributes": [
@@ -158,7 +158,7 @@ class PatientProvider extends ChangeNotifier {
 
   Future<void> patientDetailByNrm() async {
     String? phoneNumber = await storage.read(key: AppConst.PHONE_NUMBER_KEY);
-    final result = await detailPatientByNrm!(phoneNumber ?? "");
+    final result = await detailPatientByNrm(phoneNumber ?? "");
     result.fold((l) {
       setRequestState(RequestState.Error);
       _errorMessage = l.message;

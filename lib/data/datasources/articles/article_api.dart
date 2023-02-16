@@ -9,10 +9,10 @@ abstract class ArticleApi {
     @Query('page') int? page,
     @Query('limit') int? limit, [
     @Query('tag') String? tag,
-    @Query('search') String? seach,
+    @Query('search') String? search,
   ]);
 
-  @GET("/api/articles/tags")
+  @GET("/api/article/tags")
   Future getTags();
 
   factory ArticleApi(Dio dio, {String baseUrl}) = _ArticleApi;

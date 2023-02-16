@@ -5,7 +5,8 @@ import 'package:jd_mobile/domain/entities/articles/article_entites.dart';
 
 import '../../../../common/resources/assets.dart';
 
-Widget cardTileArticle(ArticlesEntities data, Function onTap, int index, int length) {
+Widget cardTileArticle(
+    ArticlesEntities data, Function onTap, int index, int length) {
   return InkWell(
     onTap: () {
       onTap();
@@ -36,11 +37,12 @@ Widget cardTileArticle(ArticlesEntities data, Function onTap, int index, int len
               ? Container(
                   width: double.infinity,
                   height: 130,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  child: Image.asset(
-                    "${Assets.othersPath}/artic.png",
-                    fit: BoxFit.cover,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      "${Assets.othersPath}/artic.png",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 )
               : SizedBox(
@@ -65,10 +67,10 @@ Widget cardTileArticle(ArticlesEntities data, Function onTap, int index, int len
               data.title.toString(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style:AppTheme.subtitle.copyWith(
+              style: AppTheme.subtitle.copyWith(
                 fontWeight: FontWeight.w700,
                 color: AppColors.primaryColor,
-                fontSize: 12,
+                fontSize: 16,
               ),
             ),
           ),
@@ -78,38 +80,39 @@ Widget cardTileArticle(ArticlesEntities data, Function onTap, int index, int len
             padding: const EdgeInsets.all(6),
             child: Text(
               data.shortDesc.toString(),
-              maxLines: 4,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: AppTheme.subtitle.copyWith(
                 fontWeight: FontWeight.w600,
-                color: AppColors.greyColor,
+                color: AppColors.grey700Color,
                 fontSize: 12,
               ),
             ),
           ),
-          Wrap(
-              children: data.tags!.split(",").map(
-            (e) {
-              return Container(
-                  margin: const EdgeInsets.only(right: 2, bottom: 2),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(65),
-                    color: const Color(0xffE1E8FF)
-                  ),
-                  child: Text(
-                    e,
-                    style: AppTheme.bodyText.copyWith(
-                        color: AppColors.purplePrimaryTextColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                  ));
-            },
-          ).toList())
+          Visibility(
+            visible: data.tags != null && data.tags != "",
+            child: Wrap(
+                children: data.tags!.split(",").map(
+              (e) {
+                return Container(
+                    margin: const EdgeInsets.only(right: 2, bottom: 2),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(65),
+                        color: const Color(0xffE1E8FF)),
+                    child: Text(
+                      e,
+                      style: AppTheme.bodyText.copyWith(
+                          color: AppColors.purplePrimaryTextColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
+                    ));
+              },
+            ).toList()),
+          )
         ],
       ),
     ),
   );
 }
-

@@ -8,9 +8,9 @@ import 'package:jd_mobile/domain/usecases/articles/get_tags.dart';
 import '../../../common/utils/state_enum.dart';
 
 class ArticleProvider extends ChangeNotifier {
-  ArticleProvider({this.getArticles, this.getTags});
+  ArticleProvider({required this.getArticles, this.getTags});
 
-  final GetArticles? getArticles;
+  final GetArticles getArticles;
   final GetTags? getTags;
   int page = 1;
   int limit = 10;
@@ -44,7 +44,7 @@ class ArticleProvider extends ChangeNotifier {
 
   Future<void> getArticle() async {
     setRequestStateArticles(RequestState.Loading);
-    final result = await getArticles!(Tuple3(
+    final result = await getArticles(Tuple3(
         page,
         limit,
         BaseFilterEntity(
@@ -103,8 +103,10 @@ class ArticleProvider extends ChangeNotifier {
     }, (r) async {
       tag.add("Semua");
       notifyListeners();
-      tag.addAll(r ?? <String>[]);
-      notifyListeners();
+      r.data.forEach((String item) {
+        tag.add(item.split(":")[0]);
+        notifyListeners();
+      });
       setRequestStateArticleTags(RequestState.Loaded);
     });
   }
