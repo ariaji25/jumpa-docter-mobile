@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Text(
-              "Masuk dengan nomor HP yang terhubungXE",
+              "Masuk dengan nomor HP yang terhubung",
               style: AppTheme.bodyText.copyWith(
                 color: AppColors.primaryColor,
                 fontWeight: FontWeight.w400,

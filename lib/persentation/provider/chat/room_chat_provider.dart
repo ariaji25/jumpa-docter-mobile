@@ -26,7 +26,7 @@ class RoomChatProvider extends ChangeNotifier {
     final result = await getRooms!({"page":10,"limit":10});
     result.fold((l) {
       setRequestState(RequestState.Error);
-      _errorMessage = l.message;
+      _errorMessage = /*l.message*/"Data Kosong";
       notifyListeners();
     }, (r) {
       setRequestState(RequestState.Loaded);

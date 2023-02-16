@@ -8,8 +8,8 @@ abstract class ArticleRepository {
     int page,
     int? limit,
     String? tag,
-    String? seach,
+    String? search,
   );
 
-  Future<Either<Failure, List<TagEntities>>> getTags();
+  Future<Either<Failure, TagEntities>> getTags();
 }

@@ -4,19 +4,22 @@ import 'package:dio/dio.dart';
 import 'package:jd_mobile/common/utils/fialure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:jd_mobile/data/datasources/articles/article_api.dart';
+import 'package:jd_mobile/data/models/articles/article_base_model.dart';
 import 'package:jd_mobile/domain/entities/tag/tag_entities.dart';
 import 'package:jd_mobile/domain/entities/articles/article_entites.dart';
 import 'package:jd_mobile/domain/repositories/articles/articles_repository.dart';
 
 class ArticleRepositoryImpl extends ArticleRepository {
   final ArticleApi api;
+
   ArticleRepositoryImpl({required this.api});
 
   @override
-  Future<Either<Failure, List<ArticlesEntities>>> getArticles(int page, int? limit, String? tag, String? seach) async {
-   try {
-      final result = await api.getArticles(page, limit, tag, seach);
-      return Right(result["data"]);
+  Future<Either<Failure, List<ArticlesEntities>>> getArticles(
+      int page, int? limit, String? tag, String? search) async {
+    try {
+      final result = await api.getArticles(page, limit, tag, search);
+      return Right(ArticleBaseModel.fromJson(result["data"]).articles ?? []);
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {
@@ -25,10 +28,10 @@ class ArticleRepositoryImpl extends ArticleRepository {
   }
 
   @override
-  Future<Either<Failure, List<TagEntities>>> getTags() async {
+  Future<Either<Failure, TagEntities>> getTags() async {
     try {
       final result = await api.getTags();
-      return Right(result);
+      return Right(  TagEntities(data: result['data'].cast<String>()));
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {

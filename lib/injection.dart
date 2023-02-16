@@ -1,18 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:jd_mobile/data/datasources/articles/article_api.dart';
 import 'package:jd_mobile/data/datasources/chat/chat_api.dart';
 import 'package:jd_mobile/data/datasources/http_services.dart';
+import 'package:jd_mobile/data/repositories/articles/articles_repositpry_impl.dart';
 import 'package:jd_mobile/data/repositories/auth/auth_repository_impl.dart';
+import 'package:jd_mobile/domain/repositories/articles/articles_repository.dart';
 import 'package:jd_mobile/domain/repositories/auth/auth_repository.dart';
 import 'package:jd_mobile/domain/repositories/chat/chat_repository.dart';
+import 'package:jd_mobile/domain/usecases/articles/get_articles.dart';
+import 'package:jd_mobile/domain/usecases/articles/get_tags.dart';
 import 'package:jd_mobile/domain/usecases/auth/sign_in.dart';
 import 'package:jd_mobile/domain/usecases/chat/get_rooms.dart';
 import 'package:jd_mobile/domain/usecases/patient/create_patient_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/update_patient.dart';
+import 'package:jd_mobile/persentation/provider/article/article_provider.dart';
 import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:jd_mobile/persentation/provider/chat/chat_room_provider.dart';
 import 'package:jd_mobile/persentation/provider/chat/room_chat_provider.dart';
+import 'package:jd_mobile/persentation/provider/home/home_provider.dart';
 import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
 
 import 'data/datasources/firebase/auth/auth_firebase.dart';
@@ -38,6 +45,9 @@ Future setup() async {
   getIt.registerFactory<ChatRoomProvider>(() => ChatRoomProvider());
   getIt.registerFactory<RoomChatProvider>(
       () => RoomChatProvider(getRooms: getIt()));
+  getIt.registerFactory<HomeProvider>(() => HomeProvider());
+  getIt.registerFactory<ArticleProvider>(
+      () => ArticleProvider(getArticles: getIt(), getTags: getIt()));
 
   // Repository
   getIt.registerLazySingleton<AuthRepository>(
@@ -46,6 +56,8 @@ Future setup() async {
       () => PatientRepositoryImpl(api: getIt()));
   getIt.registerLazySingleton<ChatRepository>(
       () => ChatRepositoryImpl(api: getIt()));
+  getIt.registerLazySingleton<ArticleRepository>(
+      () => ArticleRepositoryImpl(api: getIt()));
 
   // Usecase
   getIt.registerLazySingleton<SignIn>(() => SignIn(getIt()));
@@ -56,6 +68,8 @@ Future setup() async {
   getIt.registerLazySingleton<DetailPatientByNrm>(
       () => DetailPatientByNrm(getIt()));
   getIt.registerLazySingleton<GetRooms>(() => GetRooms(getIt()));
+  getIt.registerLazySingleton<GetArticles>(() => GetArticles(getIt()));
+  getIt.registerLazySingleton<GetTags>(() => GetTags(getIt()));
 
   // External
   final auth = FirebaseAuth.instance;
@@ -68,4 +82,6 @@ Future setup() async {
   getIt.registerLazySingleton<PatientApi>(
       () => PatientApi(getIt<HttpService>().dio));
   getIt.registerLazySingleton<ChatApi>(() => ChatApi(getIt<HttpService>().dio));
+  getIt.registerLazySingleton<ArticleApi>(
+      () => ArticleApi(getIt<HttpService>().dio));
 }

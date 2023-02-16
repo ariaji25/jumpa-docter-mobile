@@ -9,7 +9,7 @@ abstract class ArticleApi {
     @Query('page') int? page,
     @Query('limit') int? limit, [
     @Query('tag') String? tag,
-    @Query('search') String? seach,
+    @Query('search') String? search,
   ]);
 
   @GET("/api/article/tags")
