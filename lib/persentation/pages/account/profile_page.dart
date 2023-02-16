@@ -59,12 +59,6 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 25),
             _menuItems(
-              assets: "${Assets.iconsPath}/gear.png",
-              key: "Pengaturan",
-              onTap: () {},
-            ),
-            const SizedBox(height: 25),
-            _menuItems(
               assets: "${Assets.iconsPath}/clipboard-check.png",
               key: "Syarat dan ketentuan",
               onTap: () {
