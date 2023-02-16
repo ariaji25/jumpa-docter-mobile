@@ -6,9 +6,11 @@ import 'package:jd_mobile/domain/entities/articles/article_entites.dart';
 import 'package:jd_mobile/persentation/widgets/logo_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/env/env.dart';
 import '../../../common/resources/colors.dart';
 import '../../../common/resources/size.dart';
 import '../../../common/theme/theme.dart';
+import '../../../injection.dart';
 import '../../provider/article/article_provider.dart';
 import '../../widgets/app_bars.dart';
 
@@ -24,6 +26,8 @@ class DetailArticlePage extends StatefulWidget {
 }
 
 class _DetailArticleState extends State<DetailArticlePage> {
+  final Env _env = getIt<Env>();
+
   @override
   Widget build(BuildContext context) {
     ArticleProvider articleProvider =
@@ -353,7 +357,7 @@ class _DetailArticleState extends State<DetailArticlePage> {
     await FlutterShare.share(
       title: '${articles.title}',
       text: '${articles.shortDesc}',
-      linkUrl: 'https://jumpadokter.com/articles/detail/${articles.id}',
+      linkUrl: '${_env.baseUrl ?? ''}/articles/detail/${articles.id}',
     );
   }
 }
