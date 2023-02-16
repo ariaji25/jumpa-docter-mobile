@@ -182,7 +182,7 @@ class HomeScreenState extends State<HomePage> {
                     ),
                   ),
                   Visibility(
-                    visible: articleProvider.requestStateArticles ==
+                    visible: articleProvider.requestStateArticleTags ==
                         RequestState.Loaded,
                     child: InkWell(
                       onTap: () {

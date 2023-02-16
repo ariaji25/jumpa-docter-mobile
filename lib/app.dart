@@ -5,6 +5,7 @@ import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/routes/routes.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
+import 'package:jd_mobile/persentation/provider/article/article_provider.dart';
 import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:jd_mobile/persentation/provider/chat/chat_room_provider.dart';
 import 'package:jd_mobile/persentation/provider/chat/room_chat_provider.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.getIt<ChatRoomProvider>()),
         ChangeNotifierProvider(create: (_) => di.getIt<RoomChatProvider>()),
         ChangeNotifierProvider(create: (_) => di.getIt<HomeProvider>()),
+        ChangeNotifierProvider(create: (_) => di.getIt<ArticleProvider>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: kDebugMode,

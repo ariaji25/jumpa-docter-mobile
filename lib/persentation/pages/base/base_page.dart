@@ -111,10 +111,9 @@ class BasePageState extends State<BasePage> {
                               const SizedBox(width: 5),
                               InkWell(
                                 onTap: () {
-                                  Navigator.pushNamedAndRemoveUntil(
+                                  Navigator.pushNamed(
                                     context,
-                                    LoginPage.routeName,
-                                    (route) => false,
+                                    ProfileForm.routeName,
                                   );
                                 },
                                 onDoubleTap: () {
