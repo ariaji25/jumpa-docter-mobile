@@ -29,6 +29,8 @@ import '../account/profile_form.dart';
 import '../auth/login_page.dart';
 import 'package:jd_mobile/injection.dart' as di;
 
+import '../notifications/notification_page.dart';
+
 class BasePage extends StatefulWidget {
   static const routeName = "/BasePage";
 
@@ -186,7 +188,7 @@ class BasePageState extends State<BasePage> {
                           onTap: () {
                             Navigator.pushNamedAndRemoveUntil(
                               context,
-                              LoginPage.routeName,
+                              NotificationPage.routeName,
                               (route) => false,
                             );
                           },

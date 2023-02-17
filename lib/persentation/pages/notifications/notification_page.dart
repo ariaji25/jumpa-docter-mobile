@@ -7,16 +7,16 @@ import '../../widgets/app_bars.dart';
 import '../../widgets/logo_widget.dart';
 import 'components/card_notification.dart';
 
-class NotificationScreen extends StatefulWidget {
-  static const routeName = "/NotificationScreen";
+class NotificationPage extends StatefulWidget {
+  static const routeName = "/NotificationPage";
 
-  const NotificationScreen({Key? key}) : super(key: key);
+  const NotificationPage({Key? key}) : super(key: key);
 
   @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
+  State<NotificationPage> createState() => _NotificationPageState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
