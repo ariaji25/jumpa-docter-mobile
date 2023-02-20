@@ -29,6 +29,8 @@ import '../account/profile_form.dart';
 import '../auth/login_page.dart';
 import 'package:jd_mobile/injection.dart' as di;
 
+import '../schedule/schedule.dart';
+
 class BasePage extends StatefulWidget {
   static const routeName = "/BasePage";
 
@@ -43,7 +45,7 @@ class BasePageState extends State<BasePage> {
   final _screens = [
     const HomePage(),
     const ChatPage(),
-    const HomePage(),
+    const SchedulePage(),
     const ProfilePage(),
   ];
 
