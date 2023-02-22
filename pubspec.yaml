@@ -45,6 +45,8 @@ dependencies:
   dotted_border: ^2.0.0+3
   custom_sliding_segmented_control: ^1.7.1
   flutter_inappwebview: ^5.5.0+2
+  screenshot: ^1.2.3
+  image_gallery_saver: ^1.7.1
   # MAPS_FLUTTER
   google_maps_flutter: ^2.2.3
   geolocator: ^9.0.2

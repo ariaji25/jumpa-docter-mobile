@@ -4,10 +4,12 @@ import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/domain/entities/services_jd/service_jd_entities.dart';
 import 'package:jd_mobile/persentation/pages/order/components/base_screen_order.dart';
 import 'package:jd_mobile/persentation/pages/order/components/button_item_selected.dart';
+import 'package:jd_mobile/persentation/pages/order/schedule_page.dart';
 import 'package:jd_mobile/persentation/widgets/text_field.dart';
 
 class ComplaintPage extends StatefulWidget {
   static const routeName = "/ComplaintPage";
+
   const ComplaintPage({super.key});
 
   @override
@@ -45,6 +47,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
       onNext: () {
         if (formkey.currentState!.validate()) {
           // TODO: GO TO DOCTOR SCREEN
+          Navigator.pushNamed(context, AppointmentSchedulePage.routeName);
         }
       },
       onBack: _onCancelOrder,
