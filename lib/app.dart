@@ -12,6 +12,7 @@ import 'package:jd_mobile/persentation/provider/chat/room_chat_provider.dart';
 import 'package:jd_mobile/persentation/provider/home/home_provider.dart';
 import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
 import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
+import 'package:jd_mobile/persentation/provider/schedule/schedule_provider.dart';
 import 'package:provider/provider.dart';
 import 'injection.dart' as di;
 
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.getIt<RoomChatProvider>()),
         ChangeNotifierProvider(create: (_) => di.getIt<HomeProvider>()),
         ChangeNotifierProvider(create: (_) => di.getIt<ArticleProvider>()),
+        ChangeNotifierProvider(create: (_) => di.getIt<ScheduleProvider>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: kDebugMode,

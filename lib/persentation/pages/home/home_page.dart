@@ -272,7 +272,7 @@ class HomeScreenState extends State<HomePage> {
                                 children: [
                                   article.thumbnail == null ||
                                           article.thumbnail == ""
-                                      ? Container(
+                                      ? SizedBox(
                                           width: double.infinity,
                                           height: 130,
                                           child: ClipRRect(
