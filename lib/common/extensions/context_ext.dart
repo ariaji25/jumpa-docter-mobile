@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 
+import '../../domain/entities/patient/event_entities.dart';
+
 extension SizeExtension on BuildContext {
   MediaQueryData get iMediaQuery => MediaQuery.of(this);
   Size get iSize => MediaQuery.of(this).size;
@@ -23,5 +25,12 @@ extension SizeExtension on BuildContext {
 
   Widget sbWidth({double? size}) {
     return SizedBox(width: size ?? padding2);
+  }
+}
+
+extension EventExt on EventEntities {
+  String getElementValue(key) {
+    final element = dataValues?.where((element) => element.dataElement == key);
+    return (element?.isNotEmpty ?? false) ? element!.first.value! : "-";
   }
 }

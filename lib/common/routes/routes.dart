@@ -18,6 +18,7 @@ import '../../persentation/pages/chat/list_doctor_page.dart';
 import '../../persentation/pages/chat/payment_chat_page.dart';
 import '../../persentation/pages/chat/specialization_page.dart';
 import '../../persentation/pages/feedback/feedback_doctor_page.dart';
+import '../../persentation/pages/webview/webview_page.dart';
 import '../../persentation/pages/notifications/notification_page.dart';
 
 class AppRoutes {
@@ -111,6 +112,11 @@ class AppRoutes {
       case NotificationPage.routeName:
         return CupertinoPageRoute(
           builder: (_) => const NotificationPage(),
+          settings: settings,
+        );
+      case WebViewPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const WebViewPage(),
           settings: settings,
         );
 

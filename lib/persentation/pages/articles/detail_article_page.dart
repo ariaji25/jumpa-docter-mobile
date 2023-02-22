@@ -376,8 +376,8 @@ class _DetailArticleState extends State<DetailArticlePage> {
 
   Future<void> share(ArticlesEntities articles) async {
     await FlutterShare.share(
-      title: '${articles.title}',
-      text: '${articles.shortDesc}',
+      title: articles.title ?? '-',
+      text: articles.shortDesc ?? '-',
       linkUrl: '${_env.baseUrl ?? ''}/articles/detail/${articles.id}',
     );
   }
