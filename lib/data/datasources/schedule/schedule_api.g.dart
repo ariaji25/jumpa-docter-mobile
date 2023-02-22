@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'article_api.dart';
+part of 'schedule_api.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'article_api.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _ArticleApi implements ArticleApi {
-  _ArticleApi(
+class _ScheduleApi implements ScheduleApi {
+  _ScheduleApi(
     this._dio, {
     this.baseUrl,
   });
@@ -19,40 +19,7 @@ class _ArticleApi implements ArticleApi {
   String? baseUrl;
 
   @override
-  Future<dynamic> getArticles(
-    page,
-    limit, [
-    tag,
-    search,
-  ]) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'page': page,
-      r'limit': limit,
-      r'tag': tag,
-      r'search': search,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/api/articles',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
-    return value;
-  }
-
-  @override
-  Future<dynamic> getTags() async {
+  Future<dynamic> getHistoryEnrollments(patientId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -64,7 +31,32 @@ class _ArticleApi implements ArticleApi {
     )
         .compose(
           _dio.options,
-          '/api/article/tags',
+          '/api/events?trackedEntityInstance=${patientId}&order=created:DESC&deleted=false&programStage=Aic2hFz57cE&fields=[*]',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> getEnrollments(
+    patientId,
+    currentTime,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/events?trackedEntityInstance=${patientId}&filter=Sd9Z8lFBuQB:like:Pelayanan&filter=AfjUIoWVeER:ge:${currentTime}&deleted=false&fields=[event,dataValues]&totalPages=true',
           queryParameters: queryParameters,
           data: _data,
         )
