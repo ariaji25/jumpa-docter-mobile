@@ -21,6 +21,7 @@ import 'components/card_field.dart';
 
 class SummaryPage extends StatefulWidget {
   static const routeName = "/SummaryPage";
+
   const SummaryPage({
     Key? key,
   }) : super(key: key);
@@ -68,8 +69,8 @@ class SummaryPageState extends State<SummaryPage> {
                     _buildItemSummary(key: "Layanan", value: "SERVICE"),
                     _buildItemSummary(key: "Tanggal", value: "VISIT DATE"),
                     _buildItemSummary(key: "Jam", value: "VISIT TIME"),
-                    cardFieldCustomWidget(
-                      key: "Biaya pemeriksaan",
+                    CardFieldWidget(
+                      keys: "Biaya pemeriksaan",
                       value: false ? Helpers.formatCurrency("PRICE") : "",
                       styleBackground: BoxDecoration(
                         color: AppColors.primaryColor,
@@ -311,8 +312,8 @@ class SummaryPageState extends State<SummaryPage> {
                           key: "Jam",
                           value: "VISIT TIME" ?? "",
                         ),
-                        cardFieldCustomWidget(
-                          key: "Biaya pemeriksaan",
+                        CardFieldWidget(
+                          keys: "Biaya pemeriksaan",
                           value: false ? Helpers.formatCurrency("PRICE") : "",
                           styleBackground: BoxDecoration(
                             color: AppColors.primaryColor,
@@ -437,8 +438,8 @@ class SummaryPageState extends State<SummaryPage> {
   Widget _buildItemSummary({required String key, String? value}) {
     return Column(
       children: [
-        cardFieldCustomWidget(
-          key: key,
+        CardFieldWidget(
+          keys: key,
           styleBackground: BoxDecoration(
             color: AppColors.grey200Color,
             borderRadius: BorderRadius.circular(3),

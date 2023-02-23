@@ -6,10 +6,14 @@ import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/persentation/pages/order/components/base_screen_order.dart';
 import 'package:jd_mobile/persentation/pages/order/components/card_field.dart';
 import 'package:jd_mobile/persentation/pages/order/components/service_item.dart';
+import 'package:jd_mobile/persentation/pages/order/schedule_page.dart';
 import 'package:jd_mobile/persentation/widgets/button_widget.dart';
+
+import '../schedule/schedule.dart';
 
 class DoctorPage extends StatefulWidget {
   static const routeName = "/DoctorPage";
+
   const DoctorPage({Key? key}) : super(key: key);
 
   @override
@@ -297,6 +301,7 @@ class _DoctorPageState extends State<DoctorPage> {
       ),
       onNext: () {
         //
+        Navigator.pushNamed(context, AppointmentSchedulePage.routeName);
       },
     );
   }
