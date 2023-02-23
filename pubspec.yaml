@@ -42,6 +42,9 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   flutter_share: ^2.0.0
   flutter_html: ^3.0.0-alpha.6
+  dotted_border: ^2.0.0+3
+  custom_sliding_segmented_control: ^1.7.1
+  flutter_inappwebview: ^5.5.0+2
   # MAPS_FLUTTER
   google_maps_flutter: ^2.2.3
   geolocator: ^9.0.2
