@@ -4,7 +4,7 @@ import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/domain/entities/services_jd/service_jd_entities.dart';
 import 'package:jd_mobile/persentation/pages/order/components/base_screen_order.dart';
 import 'package:jd_mobile/persentation/pages/order/components/button_item_selected.dart';
-import 'package:jd_mobile/persentation/pages/order/schedule_page.dart';
+import 'package:jd_mobile/persentation/pages/order/doctor_page.dart';
 import 'package:jd_mobile/persentation/widgets/text_field.dart';
 
 class ComplaintPage extends StatefulWidget {
@@ -39,15 +39,16 @@ class _ComplaintPageState extends State<ComplaintPage> {
         as JumpaDokterServiceEntities;
 
     return BaseOrderScreen(
-      title: params.title == "Swab Antigen" ? "" : "Detail Keluhan",
+      title: params.title == "Swab Antigen"
+          ? "Tujuan SWAB Antigen"
+          : "Detail Keluhan",
       subTitle: params.title == "Swab Antigen"
           ? ""
           : "Tambahkan rincian keluhan anda",
       btnTitle: "Lanjut",
       onNext: () {
         if (formkey.currentState!.validate()) {
-          // TODO: GO TO DOCTOR SCREEN
-          Navigator.pushNamed(context, AppointmentSchedulePage.routeName);
+          Navigator.pushNamed(context, DoctorPage.routeName);
         }
       },
       onBack: _onCancelOrder,
