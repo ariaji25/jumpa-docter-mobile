@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 
 class Helpers {
   Helpers._();
@@ -32,5 +33,11 @@ class Helpers {
 
   static Future<void> writeLocalStorage(String key, String value) async {
     return storage.write(key: key, value: value);
+  }
+
+  // Format string to currency rupiah
+  static String formatCurrency(String value) {
+    final formatter = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ');
+    return formatter.format(double.parse(value));
   }
 }

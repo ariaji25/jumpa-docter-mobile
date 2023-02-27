@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:jd_mobile/domain/entities/services_jd/service_jd_entities.dart';
 import 'package:jd_mobile/persentation/pages/articles/detail_article_page.dart';
 import 'package:jd_mobile/persentation/pages/order/complaint_page.dart';
 import 'package:jd_mobile/persentation/widgets/loading.dart';
@@ -377,10 +378,15 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.orangeColor,
         imagePath: "${Assets.iconsPath}/ic_home_umum.png",
         onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
             ComplaintPage.routeName,
-            (route) => false,
+            arguments: JumpaDokterServiceEntities(
+              title: "Pemeriksaan Umum",
+              logoPath: "${Assets.iconsPath}/ic_umum.png",
+              titleColor: AppColors.orangePrimaryColor,
+              serviceId: "yUIh9XQqwWy|MhyZyvVteRY",
+            ),
           );
         },
       ),
@@ -389,10 +395,15 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.redColor,
         imagePath: "${Assets.iconsPath}/ic_home_swab.png",
         onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
             ComplaintPage.routeName,
-            (route) => false,
+            arguments: JumpaDokterServiceEntities(
+              title: "Swab Antigen",
+              logoPath: "${Assets.iconsPath}/ic_swab.png",
+              titleColor: AppColors.redPrimaryColor,
+              serviceId: "LPH5Qihd5Ux|JtpO3a0CUhm",
+            ),
           );
         },
       ),
@@ -401,10 +412,15 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.greenColor,
         imagePath: "${Assets.iconsPath}/ic_home_gula.png",
         onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
             ComplaintPage.routeName,
-            (route) => false,
+            arguments: JumpaDokterServiceEntities(
+              title: "Periksa Gula Darah",
+              logoPath: "${Assets.iconsPath}/ic_gula.png",
+              titleColor: AppColors.greenPrimaryColor,
+              serviceId: "XwbXDJqe9Je|ytHrqQJuamG",
+            ),
           );
         },
       ),
@@ -413,10 +429,15 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.blueColor,
         imagePath: "${Assets.iconsPath}/ic_home_priksa.png",
         onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
             ComplaintPage.routeName,
-            (route) => false,
+            arguments: JumpaDokterServiceEntities(
+              title: "Periksa Kolesterol",
+              logoPath: "${Assets.iconsPath}/ic_priksa.png",
+              titleColor: AppColors.bluePrimaryColor,
+              serviceId: "n7XVDlPb8WJ|q8dFWkwNMJS",
+            ),
           );
         },
       ),
@@ -425,10 +446,15 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.purpleColor,
         imagePath: "${Assets.iconsPath}/ic_home_asam.png",
         onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
             ComplaintPage.routeName,
-            (route) => false,
+            arguments: JumpaDokterServiceEntities(
+              title: "Periksa Kolesterol",
+              logoPath: "${Assets.iconsPath}/ic_priksa.png",
+              titleColor: AppColors.bluePrimaryColor,
+              serviceId: "enzACS7PSah|gzhaZrxlnvQ",
+            ),
           );
         },
       ),
@@ -437,10 +463,15 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.pinkColor,
         imagePath: "${Assets.iconsPath}/ic_home_khitan.png",
         onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
             ComplaintPage.routeName,
-            (route) => false,
+            arguments: JumpaDokterServiceEntities(
+              serviceId: "fFLfhYeNaxA|lmeeX5ZJ8i2",
+              title: "Khitanan",
+              logoPath: "${Assets.iconsPath}/ic_khitan.png",
+              titleColor: AppColors.redPrimaryColor,
+            ),
           );
         },
       ),
@@ -449,10 +480,15 @@ class HomeScreenState extends State<HomePage> {
         colors: AppColors.yellowColor,
         imagePath: "${Assets.iconsPath}/ic_home_luka.png",
         onTap: () {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
             ComplaintPage.routeName,
-            (route) => false,
+            arguments: JumpaDokterServiceEntities(
+              serviceId: "b3KEOx3Aa0H|zclX2e1l3bcs",
+              title: "Perawatan Luka",
+              logoPath: "${Assets.iconsPath}/ic_luka.png",
+              titleColor: AppColors.yellowColor,
+            ),
           );
         },
       ),

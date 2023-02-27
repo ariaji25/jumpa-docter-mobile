@@ -18,6 +18,7 @@ class AppConst {
   static String INVALID_TOKEN_OTHER = "invalid-token";
   static String HOME_SERVICE = "Pelayanan di rumah";
   static String CLINIC_SERVICE = "Kunjungan Klinik";
+  static String OPEN_FEEDBACK_KEY = "OPEN_FEEDBACK";
   static Map<String, dynamic> STATUS_PAYMENT = {
     "0": "Menunggu proses pembayaran!",
     "1": "Pembayaran dalam proses!",

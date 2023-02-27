@@ -8,6 +8,7 @@ import 'package:jd_mobile/persentation/pages/base/base_page.dart';
 import 'package:jd_mobile/persentation/pages/global/on_boarding_page.dart';
 import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
 import 'package:jd_mobile/persentation/pages/order/complaint_page.dart';
+import 'package:jd_mobile/persentation/pages/order/doctor_page.dart';
 
 import '../../persentation/pages/account/profile_form.dart';
 import '../../persentation/pages/articles/article_page.dart';
@@ -18,6 +19,8 @@ import '../../persentation/pages/chat/list_doctor_page.dart';
 import '../../persentation/pages/chat/payment_chat_page.dart';
 import '../../persentation/pages/chat/specialization_page.dart';
 import '../../persentation/pages/feedback/feedback_doctor_page.dart';
+import '../../persentation/pages/order/schedule_page.dart';
+import '../../persentation/pages/order/summary_page.dart';
 import '../../persentation/pages/webview/webview_page.dart';
 import '../../persentation/pages/notifications/notification_page.dart';
 
@@ -117,6 +120,21 @@ class AppRoutes {
       case WebViewPage.routeName:
         return CupertinoPageRoute(
           builder: (_) => const WebViewPage(),
+          settings: settings,
+        );
+      case DoctorPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const DoctorPage(),
+          settings: settings,
+        );
+      case AppointmentSchedulePage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const AppointmentSchedulePage(),
+          settings: settings,
+        );
+      case SummaryPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const SummaryPage(),
           settings: settings,
         );
 
