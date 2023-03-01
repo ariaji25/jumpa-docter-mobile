@@ -1,11 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
+import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/domain/entities/services_jd/service_jd_entities.dart';
 import 'package:jd_mobile/persentation/pages/order/components/base_screen_order.dart';
 import 'package:jd_mobile/persentation/pages/order/components/button_item_selected.dart';
 import 'package:jd_mobile/persentation/pages/order/doctor_page.dart';
+import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
 import 'package:jd_mobile/persentation/widgets/text_field.dart';
+import 'package:provider/provider.dart';
 
 class ComplaintPage extends StatefulWidget {
   static const routeName = "/ComplaintPage";
@@ -17,6 +23,8 @@ class ComplaintPage extends StatefulWidget {
 }
 
 class _ComplaintPageState extends State<ComplaintPage> {
+  late OrderProvider orderProvider;
+
   final TextEditingController _complaintCtrl = TextEditingController();
   final TextEditingController _nik = TextEditingController();
   final TextEditingController _dobCtrl = TextEditingController();
@@ -30,6 +38,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
 
   @override
   void initState() {
+    orderProvider = Provider.of<OrderProvider>(context, listen: false);
     super.initState();
   }
 
@@ -47,9 +56,10 @@ class _ComplaintPageState extends State<ComplaintPage> {
           : "Tambahkan rincian keluhan anda",
       btnTitle: "Lanjut",
       onNext: () {
-        if (formkey.currentState!.validate()) {
-          Navigator.pushNamed(context, DoctorPage.routeName);
-        }
+        orderProvider.createBooking();
+        // if (formkey.currentState!.validate()) {
+        //   Navigator.pushNamed(context, DoctorPage.routeName);
+        // }
       },
       onBack: _onCancelOrder,
       loading: false,
@@ -100,7 +110,13 @@ class _ComplaintPageState extends State<ComplaintPage> {
               maxLines: 8,
               minLines: 8,
               isShowingLable: false,
-              onChanged: (value) {},
+              onChanged: (value) {
+                log("VAL -- $value");
+                // setState(() {
+                orderProvider.bookingEntites.complaint = value;
+                log(orderProvider.bookingEntites.complaint.toString());
+                // });
+              },
             ),
           ),
           const SizedBox(height: 25),
@@ -135,6 +151,112 @@ class _ComplaintPageState extends State<ComplaintPage> {
             ],
           ),
           const SizedBox(height: 25),
+          Visibility(
+            visible: _orderFor == 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "No NIK",
+                  style: AppTheme.subtitle.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.darkGreyColor,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                FutureBuilder(
+                  future: orderProvider.checkNikPatient(),
+                  builder: (context, value) {
+                    return Row(
+                      children: [
+                        Visibility(
+                          visible:
+                              orderProvider.requestState == RequestState.Loaded,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.grey200Color,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: Text(
+                              orderProvider.nikPatient ?? "-",
+                              style: AppTheme.bodyText.copyWith(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        orderProvider.requestState == RequestState.Loading
+                            ? const Center(
+                                child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primaryColor,
+                                ),
+                              ))
+                            : orderProvider.nikPatient != null
+                                ? RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const WidgetSpan(
+                                          child: Icon(
+                                            FeatherIcons.checkCircle,
+                                            color: AppColors.greenSuccessColor,
+                                            size: 12,
+                                          ),
+                                        ),
+                                        const WidgetSpan(
+                                          child: SizedBox(
+                                            width: 5,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: " Data NIK ditemukan",
+                                          style: AppTheme.subtitle.copyWith(
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.greenSuccessColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const WidgetSpan(
+                                          child: Icon(
+                                            FeatherIcons.x,
+                                            color: Color(0XFFEF0C11),
+                                            size: 12,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: " Data NIK tidak ditemukan",
+                                          style: AppTheme.subtitle.copyWith(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: const Color(0XFFEF0C11),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                      ],
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
           const SizedBox(height: 20),
         ],
       ),
@@ -146,10 +268,6 @@ class _ComplaintPageState extends State<ComplaintPage> {
   }
 
   void _onSelectedPatientType(int t) {
-    //
-  }
-
-  void getPatientByNIK() {
     //
   }
 

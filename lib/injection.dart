@@ -25,6 +25,7 @@ import 'package:jd_mobile/persentation/provider/chat/chat_room_provider.dart';
 import 'package:jd_mobile/persentation/provider/chat/room_chat_provider.dart';
 import 'package:jd_mobile/persentation/provider/home/home_provider.dart';
 import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
+import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
 import 'package:jd_mobile/persentation/provider/schedule/schedule_provider.dart';
 
 import 'data/datasources/firebase/auth/auth_firebase.dart';
@@ -42,47 +43,92 @@ final GetIt getIt = GetIt.instance;
 Future setup() async {
   // Provider
   getIt.registerFactory<AuthProvider>(() => AuthProvider(signIn: getIt()));
-  getIt.registerFactory<PatientProvider>(() => PatientProvider(
+  getIt.registerFactory<PatientProvider>(
+    () => PatientProvider(
       createPatient: getIt(),
       createPatientNrm: getIt(),
       updatePatient: getIt(),
-      detailPatientByNrm: getIt()));
+      detailPatientByNrm: getIt(),
+    ),
+  );
   getIt.registerFactory<MapProvider>(() => MapProvider());
   getIt.registerFactory<ChatRoomProvider>(() => ChatRoomProvider());
   getIt.registerFactory<RoomChatProvider>(
-      () => RoomChatProvider(getRooms: getIt()));
+    () => RoomChatProvider(
+      getRooms: getIt(),
+    ),
+  );
   getIt.registerFactory<HomeProvider>(() => HomeProvider());
   getIt.registerFactory<ArticleProvider>(
-      () => ArticleProvider(getArticles: getIt(), getTags: getIt()));
-  getIt.registerFactory<ScheduleProvider>(() => ScheduleProvider(
-      getEnrollments: getIt(), getHistoryEnrollments: getIt()));
+    () => ArticleProvider(
+      getArticles: getIt(),
+      getTags: getIt(),
+    ),
+  );
+  getIt.registerFactory<ScheduleProvider>(
+    () => ScheduleProvider(
+      getEnrollments: getIt(),
+      getHistoryEnrollments: getIt(),
+    ),
+  );
+  getIt.registerFactory<OrderProvider>(
+    () => OrderProvider(detailPatientByNrm: getIt()),
+  );
 
   // Repository
   getIt.registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(authFirebase: getIt()));
+    () => AuthRepositoryImpl(
+      authFirebase: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<PatientRepository>(
-      () => PatientRepositoryImpl(api: getIt()));
+    () => PatientRepositoryImpl(
+      api: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<ChatRepository>(
-      () => ChatRepositoryImpl(api: getIt()));
+    () => ChatRepositoryImpl(
+      api: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<ArticleRepository>(
-      () => ArticleRepositoryImpl(api: getIt()));
+    () => ArticleRepositoryImpl(
+      api: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<ScheduleRepository>(
-      () => ScheduleRepositoryImpl(api: getIt()));
+    () => ScheduleRepositoryImpl(
+      api: getIt(),
+    ),
+  );
 
   // Usecase
   getIt.registerLazySingleton<SignIn>(() => SignIn(getIt()));
-  getIt.registerLazySingleton<CreatePatient>(() => CreatePatient(getIt()));
-  getIt
-      .registerLazySingleton<CreatePatientNrm>(() => CreatePatientNrm(getIt()));
+  getIt.registerLazySingleton<CreatePatient>(
+    () => CreatePatient(
+      getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<CreatePatientNrm>(
+    () => CreatePatientNrm(
+      getIt(),
+    ),
+  );
   getIt.registerLazySingleton<UpdatePatient>(() => UpdatePatient(getIt()));
   getIt.registerLazySingleton<DetailPatientByNrm>(
-      () => DetailPatientByNrm(getIt()));
+    () => DetailPatientByNrm(
+      getIt(),
+    ),
+  );
   getIt.registerLazySingleton<GetRooms>(() => GetRooms(getIt()));
   getIt.registerLazySingleton<GetArticles>(() => GetArticles(getIt()));
   getIt.registerLazySingleton<GetTags>(() => GetTags(getIt()));
   getIt.registerLazySingleton<GetEnrollments>(() => GetEnrollments(getIt()));
   getIt.registerLazySingleton<GetHistoryEnrollments>(
-      () => GetHistoryEnrollments(getIt()));
+    () => GetHistoryEnrollments(
+      getIt(),
+    ),
+  );
 
   // External
   final auth = FirebaseAuth.instance;
@@ -91,12 +137,25 @@ Future setup() async {
   // Http Service
   getIt.registerLazySingleton<HttpService>(() => HttpService());
   getIt.registerLazySingleton<AuthFirebase>(
-      () => AuthFirebaseImpl(auth: getIt()));
+    () => AuthFirebaseImpl(
+      auth: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<PatientApi>(
       () => PatientApi(getIt<HttpService>().dio));
-  getIt.registerLazySingleton<ChatApi>(() => ChatApi(getIt<HttpService>().dio));
+  getIt.registerLazySingleton<ChatApi>(
+    () => ChatApi(
+      getIt<HttpService>().dio,
+    ),
+  );
   getIt.registerLazySingleton<ArticleApi>(
-      () => ArticleApi(getIt<HttpService>().dio));
+    () => ArticleApi(
+      getIt<HttpService>().dio,
+    ),
+  );
   getIt.registerLazySingleton<ScheduleApi>(
-      () => ScheduleApi(getIt<HttpService>().dio));
+    () => ScheduleApi(
+      getIt<HttpService>().dio,
+    ),
+  );
 }
