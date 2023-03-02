@@ -424,7 +424,7 @@ class SchedulePageState extends State<SchedulePage> {
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: (scheduleProvider.enrollmentHistory.events?.isEmpty ?? false)
-            ? buildEmpty("Anda belum memiliki\niwayat pesanan apapun")
+            ? buildEmpty("Anda belum memiliki\nriwayat pesanan apapun")
             : Column(
                 children: scheduleProvider.enrollmentHistory.events?.map(
                       (e) {
