@@ -56,10 +56,9 @@ class _ComplaintPageState extends State<ComplaintPage> {
           : "Tambahkan rincian keluhan anda",
       btnTitle: "Lanjut",
       onNext: () {
-        orderProvider.createBooking();
-        // if (formkey.currentState!.validate()) {
-        //   Navigator.pushNamed(context, DoctorPage.routeName);
-        // }
+        if (formkey.currentState!.validate()) {
+          Navigator.pushNamed(context, DoctorPage.routeName);
+        }
       },
       onBack: _onCancelOrder,
       loading: false,
@@ -113,8 +112,8 @@ class _ComplaintPageState extends State<ComplaintPage> {
               onChanged: (value) {
                 log("VAL -- $value");
                 // setState(() {
-                orderProvider.bookingEntites.complaint = value;
-                log(orderProvider.bookingEntites.complaint.toString());
+                orderProvider.bookingEntities.complaint = value;
+                log(orderProvider.bookingEntities.complaint.toString());
                 // });
               },
             ),

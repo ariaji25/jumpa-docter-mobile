@@ -9,24 +9,42 @@ import 'package:jd_mobile/data/models/booking/booking_model.dart';
 import 'package:jd_mobile/data/models/patient/detail_patient_model.dart';
 import 'package:jd_mobile/data/models/patient/patient_model.dart';
 import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/usecases/order/get_clinics_by_area.dart';
+import 'package:jd_mobile/domain/usecases/order/get_doctors.dart';
+import 'package:jd_mobile/domain/usecases/order/get_price_service.dart';
 import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nrm.dart';
 import 'package:logger/logger.dart';
 
+import '../../../domain/usecases/order/get_clinics.dart';
+
 class OrderProvider extends ChangeNotifier {
   final DetailPatientByNrm detailPatientByNrm;
-  OrderProvider({required this.detailPatientByNrm});
+  final GetClinics getClinics;
+  final GetClinicsByArea getClinicsByArea;
+  final GetDoctors getDoctors;
+  final GetPriceService getPriceService;
+
+  OrderProvider(
+      {required this.detailPatientByNrm,
+      required this.getClinics,
+      required this.getClinicsByArea,
+      required this.getDoctors,
+      required this.getPriceService});
 
   final storage = const FlutterSecureStorage();
-  final bookingEntites = BookingEntites();
+  final bookingEntities = BookingEntites();
 
   // Check NIK Patient
   String _errorMessage = "";
+
   String get errorMessage => _errorMessage;
 
   RequestState _requestState = RequestState.Empty;
+
   RequestState get requestState => _requestState;
 
   String? _nikPatient;
+
   String? get nikPatient => _nikPatient;
 
   Future<void> checkNikPatient() async {
@@ -53,7 +71,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   Future createBooking() async {
-    log(bookingEntites.complaint.toString());
-    Logger().d(BookingModel.formEntities(bookingEntites).toJson());
+    log(bookingEntities.complaint.toString());
+    Logger().d(BookingModel.formEntities(bookingEntities).toJson());
   }
 }
