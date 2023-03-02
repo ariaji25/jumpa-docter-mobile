@@ -13,6 +13,8 @@ import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
 import 'package:jd_mobile/persentation/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/confirm_modal.dart';
+
 class ComplaintPage extends StatefulWidget {
   static const routeName = "/ComplaintPage";
 
@@ -46,7 +48,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
   Widget build(BuildContext context) {
     final params = ModalRoute.of(context)?.settings.arguments
         as JumpaDokterServiceEntities;
-
+    orderProvider.setServiceId(params.serviceId);
     return BaseOrderScreen(
       title: params.title == "Swab Antigen"
           ? "Tujuan SWAB Antigen"
@@ -275,7 +277,16 @@ class _ComplaintPageState extends State<ComplaintPage> {
   }
 
   _onCancelOrder() {
-    Navigator.pop(context);
+      confirmModal(
+        context,
+        "Batalkan Pesanan",
+        "Yakin ingin membatalkan pesanan anda?",
+        onOk: () {
+          Navigator.of(context).pop();
+
+          orderProvider.clear();
+        },
+      );
   }
 
   _onCheckUseWaNumber(checked) {

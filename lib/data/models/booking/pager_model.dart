@@ -2,7 +2,17 @@
 import '../../../domain/entities/booking/pager_entities.dart';
 
 class PagerModel extends PagerEntities {
-  PagerModel({page, pageCount, total, pageSize});
+  int? page;
+  int? pageCount;
+  int? total;
+  int? pageSize;
+
+  PagerModel({
+    this.page,
+    this.pageCount,
+    this.total,
+    this.pageSize,
+  });
 
   PagerModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];

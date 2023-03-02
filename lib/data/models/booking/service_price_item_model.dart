@@ -1,20 +1,31 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: overridden_fields, annotate_overrides, must_be_immutable
 
 import 'package:jd_mobile/domain/entities/booking/service_price_item_entities.dart';
 
 class ServicePriceItemModel extends ServicePriceItemEntities {
   ServicePriceItemModel({
-    dataElement,
-    period,
-    orgUnit,
-    categoryOptionCombo,
-    attributeOptionCombo,
-    value,
-    storedBy,
-    created,
-    lastUpdated,
-    followup,
+    this.dataElement,
+    this.period,
+    this.orgUnit,
+    this.categoryOptionCombo,
+    this.attributeOptionCombo,
+    this.value,
+    this.storedBy,
+    this.created,
+    this.lastUpdated,
+    this.followup,
   });
+
+  String? dataElement;
+  String? period;
+  String? orgUnit;
+  String? categoryOptionCombo;
+  String? attributeOptionCombo;
+  String? value;
+  String? storedBy;
+  String? created;
+  String? lastUpdated;
+  bool? followup;
 
   factory ServicePriceItemModel.fromJson(Map<String, dynamic> json) =>
       ServicePriceItemModel(

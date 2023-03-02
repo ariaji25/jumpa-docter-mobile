@@ -27,10 +27,3 @@ extension SizeExtension on BuildContext {
     return SizedBox(width: size ?? padding2);
   }
 }
-
-extension EventExt on EventEntities {
-  String getElementValue(key) {
-    final element = dataValues?.where((element) => element.dataElement == key);
-    return (element?.isNotEmpty ?? false) ? element!.first.value! : "-";
-  }
-}

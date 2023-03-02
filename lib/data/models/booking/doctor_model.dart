@@ -1,11 +1,15 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: overridden_fields, annotate_overrides, must_be_immutable
 
 import 'package:jd_mobile/domain/entities/booking/doctor_entities.dart';
 
+import '../../../domain/entities/booking/pager_entities.dart';
+import '../../../domain/entities/booking/users_entities.dart';
 import 'pager_model.dart';
 import 'users_model.dart';
 
 class DoctorModel extends DoctorEntities {
+  PagerEntities? pager;
+  List<UsersEntities>? users;
   DoctorModel({pager, users});
 
   DoctorModel.fromJson(Map<String, dynamic> json) {
@@ -35,4 +39,10 @@ class DoctorModel extends DoctorEntities {
     }
     return data;
   }
+}
+
+class DoctorKeys {
+  static const String fullName = "HyfzjNVhlzM";
+  static const String nik = "xGjeKnsJobT";
+  static const String photoProfile = "Y1sUdrYBs4W";
 }

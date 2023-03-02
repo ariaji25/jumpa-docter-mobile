@@ -1,9 +1,15 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: overridden_fields, annotate_overrides, must_be_immutable
 
 import 'package:jd_mobile/domain/entities/booking/users_entities.dart';
 
 class UsersModel extends UsersEntities {
-  UsersModel({id, name});
+  String? id;
+  String? name;
+
+  UsersModel({
+    this.id,
+    this.name,
+  });
 
   UsersModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

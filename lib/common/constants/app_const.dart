@@ -19,6 +19,8 @@ class AppConst {
   static String HOME_SERVICE = "Pelayanan di rumah";
   static String CLINIC_SERVICE = "Kunjungan Klinik";
   static String OPEN_FEEDBACK_KEY = "OPEN_FEEDBACK";
+  static String HOME_CARE = "u210IplNxve";
+  static String ONSITE = "LYr2W0pIxX3";
   static Map<String, dynamic> STATUS_PAYMENT = {
     "0": "Menunggu proses pembayaran!",
     "1": "Pembayaran dalam proses!",

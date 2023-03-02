@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:jd_mobile/common/extensions/context_ext.dart';
+import 'package:jd_mobile/common/extensions/entities_ext.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/domain/entities/patient/event_entities.dart';
 import 'package:jd_mobile/persentation/pages/webview/webview_page.dart';

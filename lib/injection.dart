@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:jd_mobile/data/datasources/articles/article_api.dart';
 import 'package:jd_mobile/data/datasources/chat/chat_api.dart';
 import 'package:jd_mobile/data/datasources/http_services.dart';
+import 'package:jd_mobile/data/datasources/order/order_api.dart';
 import 'package:jd_mobile/data/datasources/schedule/schedule_api.dart';
 import 'package:jd_mobile/data/repositories/articles/articles_repositpry_impl.dart';
 import 'package:jd_mobile/data/repositories/auth/auth_repository_impl.dart';
@@ -178,6 +179,11 @@ Future setup() async {
   );
   getIt.registerLazySingleton<ScheduleApi>(
     () => ScheduleApi(
+      getIt<HttpService>().dio,
+    ),
+  );
+  getIt.registerLazySingleton<OrderApi>(
+        () => OrderApi(
       getIt<HttpService>().dio,
     ),
   );

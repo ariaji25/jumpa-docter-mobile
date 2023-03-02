@@ -101,6 +101,7 @@ class ArticleProvider extends ChangeNotifier {
       _errorMessage = l.message;
       notifyListeners();
     }, (r) async {
+      tag.clear();
       tag.add("Semua");
       notifyListeners();
       r.data.forEach((String item) {

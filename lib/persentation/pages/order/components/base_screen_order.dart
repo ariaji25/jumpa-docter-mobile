@@ -54,7 +54,13 @@ class BaseOrderScreen extends StatelessWidget {
                       },
                       icon: const Icon(Icons.arrow_back),
                     ),
-              LogoWidget.logoIcon(height: 23, width: 65, color: Colors.white),
+              Container(
+                  margin: const EdgeInsets.only(right: SizeConstants.margin),
+                  child: LogoWidget.logoIcon(
+                    height: 23,
+                    width: 65,
+                    color: Colors.white,
+                  )),
             ],
           ),
         ),
