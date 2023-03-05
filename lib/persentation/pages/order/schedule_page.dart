@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/persentation/pages/order/summary_page.dart';
+import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/resources/colors.dart';
 import '../../../common/theme/theme.dart';
@@ -26,11 +29,12 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
   DateTime? selectedDate;
   String? selectedTime;
   DateFormat dateFormat = DateFormat.Hm();
+  late OrderProvider orderProvider;
 
   @override
   void initState() {
     super.initState();
-
+    orderProvider = Provider.of<OrderProvider>(context, listen: false);
     dates = List.generate(
       7,
       (index) => DateTime.now().add(
@@ -40,10 +44,9 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
     selectedDate = dates![0];
 
     _generateTime();
-    // selectedTime = times![0];
 
     Future.delayed(const Duration(milliseconds: 300), () {
-      //TODO SET VISIT DATE BOOKING
+      orderProvider.bookingEntities.visitDate = DateHelper.dhis2DateFormat(selectedDate!);
     });
   }
 
@@ -125,7 +128,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                                 selectedTime = items;
                               });
 
-                              //TODO SET VISIT TIME BOOKING
+                              orderProvider.bookingEntities.visitDate = DateHelper.dhis2DateFormat(selectedDate!);
                             },
                             value: items,
                           );
@@ -142,7 +145,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                               selectedTime = items;
                             });
 
-                            //TODO SET VISIT TIME BOOKING
+                            orderProvider.bookingEntities.visitTime = items;
                           },
                           value: items,
                         );
@@ -159,7 +162,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
   }
 
   _onClickNext() {
-    if (/*VISIT TIME BOOKING IS NOT EMPTY ??*/ true) {
+    if ( orderProvider.bookingEntities.visitTime?.isNotEmpty ??true) {
       _makeAppointment();
     } else {
       _validate();
@@ -176,6 +179,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
   }
 
   _makeAppointment() async {
+    orderProvider.createBooking();
     if (/*TODO CHECK SERVICE ITEM SELECTED*/ false) {
       //TODO GO TO PAYMENT DETAIL
     } else {

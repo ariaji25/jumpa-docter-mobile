@@ -41,21 +41,20 @@ class _ComplaintPageState extends State<ComplaintPage> {
   @override
   void initState() {
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final params = ModalRoute.of(context)?.settings.arguments
-        as JumpaDokterServiceEntities;
+    final params = ModalRoute.of(context)?.settings.arguments as JumpaDokterServiceEntities;
     orderProvider.setServiceId(params.serviceId);
+    orderProvider.bookingEntities.service = params.title;
+    orderProvider.bookingEntities.orderType = "Diri Sendiri";
+
     return BaseOrderScreen(
-      title: params.title == "Swab Antigen"
-          ? "Tujuan SWAB Antigen"
-          : "Detail Keluhan",
-      subTitle: params.title == "Swab Antigen"
-          ? ""
-          : "Tambahkan rincian keluhan anda",
+      title: params.title == "Swab Antigen" ? "Tujuan SWAB Antigen" : "Detail Keluhan",
+      subTitle: params.title == "Swab Antigen" ? "" : "Tambahkan rincian keluhan anda",
       btnTitle: "Lanjut",
       onNext: () {
         if (formkey.currentState!.validate()) {
@@ -112,11 +111,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
               minLines: 8,
               isShowingLable: false,
               onChanged: (value) {
-                log("VAL -- $value");
-                // setState(() {
                 orderProvider.bookingEntities.complaint = value;
-                log(orderProvider.bookingEntities.complaint.toString());
-                // });
               },
             ),
           ),
@@ -277,16 +272,16 @@ class _ComplaintPageState extends State<ComplaintPage> {
   }
 
   _onCancelOrder() {
-      confirmModal(
-        context,
-        "Batalkan Pesanan",
-        "Yakin ingin membatalkan pesanan anda?",
-        onOk: () {
-          Navigator.of(context).pop();
+    confirmModal(
+      context,
+      "Batalkan Pesanan",
+      "Yakin ingin membatalkan pesanan anda?",
+      onOk: () {
+        Navigator.of(context).pop();
 
-          orderProvider.clear();
-        },
-      );
+        orderProvider.clear();
+      },
+    );
   }
 
   _onCheckUseWaNumber(checked) {
