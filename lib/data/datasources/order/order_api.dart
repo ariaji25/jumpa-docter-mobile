@@ -21,5 +21,8 @@ abstract class OrderApi {
       "/api/dataValueSets.json?period={period}&dataSet={dataSet}&orgUnit={orgUnit}")
   Future getPriceService(@Path('period') String period,@Path('dataSet') String dataSet,@Path('orgUnit') String orgUnit);
 
+  @POST("/api/events?strategy=CREATE_AND_UPDATE")
+  Future<String> createBooking(@Body() Map<String, dynamic> data);
+
   factory OrderApi(Dio dio, {String baseUrl}) = _OrderApi;
 }

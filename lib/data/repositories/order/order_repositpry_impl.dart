@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:jd_mobile/common/utils/fialure.dart';
+import 'package:jd_mobile/data/models/booking/booking_model.dart';
 import 'package:jd_mobile/data/models/patient/detail_patient_model.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
 
 import '../../../domain/entities/booking/clinic_entities.dart';
 import '../../../domain/entities/booking/service_price_entities.dart';
@@ -66,6 +68,18 @@ class OrderRepositoryImpl extends OrderRepository {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {
       return Left(ServerFailure(e.response?.data['message'] ?? e.message));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, String>> createBooking(BookingEntites booking) async {
+     try {
+      await api.createBooking(BookingModel.formEntities(booking).toJson());
+      return const Right("Success Created!");
+    } on SocketException {
+      return const Left(ConnectionFailure("Failed to connect to the network"));
+    } on DioError catch (e) {
+      return Left(ServerFailure(e.response?.data));
     }
   }
 }

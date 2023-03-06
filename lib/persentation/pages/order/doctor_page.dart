@@ -367,7 +367,6 @@ class _DoctorPageState extends State<DoctorPage> {
         ],
       ),
       onNext: () {
-        orderProvider.createBooking();
         if ((orderProvider.bookingEntities.clinicArea?.isNotEmpty ?? false) &&
             (orderProvider.bookingEntities.clinicName?.isNotEmpty ?? false) &&
             (orderProvider.bookingEntities.doctorName?.isNotEmpty ?? false)) {

@@ -179,7 +179,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
   }
 
   _makeAppointment() async {
-    orderProvider.createBooking();
+    orderProvider.makeAppointment();
     if (/*TODO CHECK SERVICE ITEM SELECTED*/ false) {
       //TODO GO TO PAYMENT DETAIL
     } else {

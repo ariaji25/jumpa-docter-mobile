@@ -16,6 +16,7 @@ import 'package:jd_mobile/domain/usecases/articles/get_articles.dart';
 import 'package:jd_mobile/domain/usecases/articles/get_tags.dart';
 import 'package:jd_mobile/domain/usecases/auth/sign_in.dart';
 import 'package:jd_mobile/domain/usecases/chat/get_rooms.dart';
+import 'package:jd_mobile/domain/usecases/order/create_booking.dart';
 import 'package:jd_mobile/domain/usecases/order/get_clinics.dart';
 import 'package:jd_mobile/domain/usecases/order/get_clinics_by_area.dart';
 import 'package:jd_mobile/domain/usecases/order/get_doctors.dart';
@@ -84,7 +85,9 @@ Future setup() async {
         getClinics: getIt(),
         getClinicsByArea: getIt(),
         getDoctors: getIt(),
-        getPriceService: getIt()),
+        getPriceService: getIt(),
+        createBooking: getIt(),
+      ),
   );
 
   // Repository
@@ -149,10 +152,10 @@ Future setup() async {
   );
 
   getIt.registerLazySingleton<GetClinics>(() => GetClinics(getIt()));
-  getIt
-      .registerLazySingleton<GetClinicsByArea>(() => GetClinicsByArea(getIt()));
+  getIt.registerLazySingleton<GetClinicsByArea>(() => GetClinicsByArea(getIt()));
   getIt.registerLazySingleton<GetDoctors>(() => GetDoctors(getIt()));
   getIt.registerLazySingleton<GetPriceService>(() => GetPriceService(getIt()));
+  getIt.registerLazySingleton<CreateBooking>(() => CreateBooking(getIt()));
 
   // External
   final auth = FirebaseAuth.instance;

@@ -11,6 +11,7 @@ import 'package:jd_mobile/data/models/patient/patient_model.dart';
 import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
 import 'package:jd_mobile/domain/entities/booking/organisation_units_entities.dart';
 import 'package:jd_mobile/domain/entities/booking/service_price_item_entities.dart';
+import 'package:jd_mobile/domain/usecases/order/create_booking.dart';
 import 'package:jd_mobile/domain/usecases/order/get_clinics_by_area.dart';
 import 'package:jd_mobile/domain/usecases/order/get_doctors.dart';
 import 'package:jd_mobile/domain/usecases/order/get_price_service.dart';
@@ -27,13 +28,16 @@ class OrderProvider extends ChangeNotifier {
   final GetClinicsByArea getClinicsByArea;
   final GetDoctors getDoctors;
   final GetPriceService getPriceService;
+  final CreateBooking createBooking;
 
-  OrderProvider(
-      {required this.detailPatientByNrm,
-      required this.getClinics,
-      required this.getClinicsByArea,
-      required this.getDoctors,
-      required this.getPriceService});
+  OrderProvider({
+    required this.detailPatientByNrm,
+    required this.getClinics,
+    required this.getClinicsByArea,
+    required this.getDoctors,
+    required this.getPriceService,
+    required this.createBooking,
+  });
 
   final storage = const FlutterSecureStorage();
   BookingEntites bookingEntities = BookingEntites();
@@ -63,6 +67,7 @@ class OrderProvider extends ChangeNotifier {
   RequestState _requestClinicsState = RequestState.Empty;
   RequestState _requestClinicsAreaState = RequestState.Empty;
   RequestState _requestPriceState = RequestState.Empty;
+  RequestState _makeAppointmentState = RequestState.Empty;
 
   RequestState get requestState => _requestState;
 
@@ -73,6 +78,8 @@ class OrderProvider extends ChangeNotifier {
   RequestState get requestClinicsAreaState => _requestClinicsAreaState;
 
   RequestState get requestPriceState => _requestPriceState;
+
+  RequestState get makeAppointmentState => _makeAppointmentState;
 
   void setRequestDoctorsState(RequestState state) {
     _requestDoctorsState = state;
@@ -249,9 +256,21 @@ class OrderProvider extends ChangeNotifier {
     });
   }
 
-  Future createBooking() async {
-    log(bookingEntities.complaint.toString());
-    Logger().d(BookingModel.formEntities(bookingEntities).toJson());
+  Future makeAppointment() async {
+    _makeAppointmentState = RequestState.Loading;
+    notifyListeners();
+
+    final ress = await createBooking(bookingEntities);
+    ress.fold(
+    (l) {
+      _makeAppointmentState = RequestState.Error;
+      _errorMessage = l.message;
+      notifyListeners();
+    }, 
+    (r) {
+       _makeAppointmentState = RequestState.Loaded;
+       notifyListeners();
+    });
   }
 
   clear() {
