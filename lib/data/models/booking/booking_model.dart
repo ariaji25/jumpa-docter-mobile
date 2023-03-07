@@ -1,4 +1,4 @@
-// ignore_for_file: overridden_fields, annotate_overrides
+// ignore_for_file: overridden_fields, annotate_overrides, must_be_immutable
 
 import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
@@ -22,6 +22,7 @@ class BookingModel extends BookingEntites {
   String? status;
   String? price;
   String? doctorId;
+  String? enrollment;
 
   BookingModel({
     this.teiReference,
@@ -42,6 +43,7 @@ class BookingModel extends BookingEntites {
     this.status,
     this.price,
     this.doctorId,
+    this.enrollment,
   });
 
   factory BookingModel.formEntities(BookingEntites d) {
@@ -64,6 +66,7 @@ class BookingModel extends BookingEntites {
       status: d.status,
       price: d.price,
       doctorId: d.doctorId,
+      enrollment: d.enrollment,
     );
   }
 
@@ -86,6 +89,7 @@ class BookingModel extends BookingEntites {
         {"value": price, "dataElement": 'NwHWGOgcihm'},
         {"value": doctorId, "dataElement": 'Mu6xWeUWtWV'},
       ],
+      "enrollment": enrollment,
       "event": "null",
       "program": "El6a2lnac0D",
       "programStage": "Aic2hFz57cE",

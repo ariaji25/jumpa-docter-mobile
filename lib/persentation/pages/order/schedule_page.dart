@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
+import 'package:jd_mobile/common/utils/state_enum.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
 import 'package:jd_mobile/persentation/pages/order/summary_page.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
+import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/resources/colors.dart';
 import '../../../common/theme/theme.dart';
+import '../homecare/payment.dart';
 import 'components/base_screen_order.dart';
 import 'components/date_card.dart';
 
@@ -24,40 +29,45 @@ class AppointmentSchedulePage extends StatefulWidget {
 }
 
 class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
-  List<DateTime>? dates;
-  List<String>? times;
-  DateTime? selectedDate;
-  String? selectedTime;
   DateFormat dateFormat = DateFormat.Hm();
   late OrderProvider orderProvider;
+  late PatientProvider patientProvider;
 
   @override
   void initState() {
     super.initState();
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    dates = List.generate(
+    patientProvider = Provider.of<PatientProvider>(context, listen: false);
+    orderProvider.setDates(List.generate(
       7,
       (index) => DateTime.now().add(
         Duration(days: index),
       ),
-    );
-    selectedDate = dates![0];
+    ));
+    orderProvider.setSelectedDate(orderProvider.dates![0]);
 
     _generateTime();
 
     Future.delayed(const Duration(milliseconds: 300), () {
-      orderProvider.bookingEntities.visitDate = DateHelper.dhis2DateFormat(selectedDate!);
+      BookingEntites bookingEntities = orderProvider.bookingEntities;
+      bookingEntities.visitDate =
+          DateHelper.dhis2DateFormat(orderProvider.selectedDate!);
+      orderProvider.updateBooking(bookingEntities);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    OrderProvider orderProvider =
+        Provider.of<OrderProvider>(context, listen: true);
     return BaseOrderScreen(
       title: "Pilih Jadwal Temu Dokter",
       subTitle: "Pilih jadwal untuk bertemu dokter anda",
       btnTitle: "Pesan",
-      onNext: _onClickNext,
-      loading: false,
+      onNext: () {
+        _onClickNext(orderProvider);
+      },
+      loading: orderProvider.makeAppointmentState == RequestState.Loading,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -78,20 +88,24 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
             height: 90,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: dates!.length,
+              itemCount: orderProvider.dates!.length,
               itemBuilder: (_, index) => Container(
                 margin: EdgeInsets.only(
-                  right: (index < dates!.length - 1) ? 5 : SizeConstants.margin,
+                  right: (index < orderProvider.dates!.length - 1)
+                      ? 5
+                      : SizeConstants.margin,
                 ),
                 child: DateCard(
-                  dates![index],
-                  isSelected: selectedDate == dates![index],
+                  orderProvider.dates![index],
+                  isSelected:
+                      orderProvider.selectedDate == orderProvider.dates![index],
                   onTap: () {
-                    setState(() {
-                      selectedDate = dates![index];
-                    });
-
-                    //TODO SET VISIT DATE BOOKING
+                    orderProvider.setSelectedDate(orderProvider.dates![index]);
+                    BookingEntites bookingEntities =
+                        orderProvider.bookingEntities;
+                    bookingEntities.visitDate =
+                        DateHelper.dhis2DateFormat(orderProvider.selectedDate!);
+                    orderProvider.updateBooking(bookingEntities);
                   },
                 ),
               ),
@@ -111,24 +125,25 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
               runSpacing: 10,
               alignment: WrapAlignment.spaceBetween,
               children: [
-                if (times != null)
-                  ...times!.map(
+                if (orderProvider.times != null)
+                  ...orderProvider.times!.map(
                     (items) {
                       DateTime beforeTimes = dateFormat.parse(items);
                       DateTime nowTimes = DateTime.now();
 
                       // * Check the day on the selected date is the same as today
-                      if (selectedDate!.day == DateTime.now().day) {
+                      if (orderProvider.selectedDate!.day ==
+                          DateTime.now().day) {
                         if (beforeTimes.hour > nowTimes.hour) {
                           // * Check the available hours are past the current hours
                           return TimeTable(
-                            isActive: selectedTime == items,
+                            isActive: orderProvider.selectedTime == items,
                             onTap: () {
-                              setState(() {
-                                selectedTime = items;
-                              });
-
-                              orderProvider.bookingEntities.visitDate = DateHelper.dhis2DateFormat(selectedDate!);
+                              orderProvider.setSelectedTime(items);
+                              BookingEntites bookingEntities =
+                                  orderProvider.bookingEntities;
+                              bookingEntities.visitTime =items;
+                              orderProvider.updateBooking(bookingEntities);
                             },
                             value: items,
                           );
@@ -139,13 +154,14 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                         }
                       } else {
                         return TimeTable(
-                          isActive: selectedTime == items,
+                          isActive: orderProvider.selectedTime == items,
                           onTap: () {
-                            setState(() {
-                              selectedTime = items;
-                            });
+                            orderProvider.setSelectedTime(items);
 
-                            orderProvider.bookingEntities.visitTime = items;
+                            BookingEntites bookingEntities =
+                                orderProvider.bookingEntities;
+                            bookingEntities.visitTime = items;
+                            orderProvider.updateBooking(bookingEntities);
                           },
                           value: items,
                         );
@@ -161,9 +177,9 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
     );
   }
 
-  _onClickNext() {
-    if ( orderProvider.bookingEntities.visitTime?.isNotEmpty ??true) {
-      _makeAppointment();
+  _onClickNext(OrderProvider orderProvider) {
+    if (orderProvider.bookingEntities.visitTime?.isNotEmpty ?? true) {
+      _makeAppointment(orderProvider);
     } else {
       _validate();
     }
@@ -178,15 +194,20 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
     );
   }
 
-  _makeAppointment() async {
-    orderProvider.makeAppointment();
-    if (/*TODO CHECK SERVICE ITEM SELECTED*/ false) {
-      //TODO GO TO PAYMENT DETAIL
+  _makeAppointment(OrderProvider orderProvider) async {
+    if (orderProvider.serviceItemSelected == 0) {
+      Navigator.pushNamed(context, PaymentPage.routeName);
     } else {
-      if (/*TODO CHECK ORDER TYPE*/ true) {
-        /*TODO CREATE BOOKING*/
+      if (orderProvider.bookingEntities.orderType == AppConst.ORDER_FOR_OTHER) {
+        // orderProvider.bookingEntities.teiReference =
+        //    orderProvider.patient.value.tei;
+        orderProvider.bookingEntities.refNIK = patientProvider.patient.nik;
+        orderProvider.bookingEntities.refNama = patientProvider.patient.name;
+        orderProvider.bookingEntities.orderType = AppConst.ORDER_BY_OTHER;
+        orderProvider.bookingEntities.status = "COMPLETED";
+        await orderProvider.makeAppointment();
 
-        if (/*TODO BOOKING FALSE*/ false) {
+        if (orderProvider.makeAppointmentState != RequestState.Loaded) {
           SnackBarCustom.showSnackBarMessage(
             context: context,
             title: "Hmmm !",
@@ -196,16 +217,29 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
         }
       }
 
-      if (/*TODO CHECK BOOKING TYPE*/ true) {
+      if ((orderProvider.makeAppointmentState == RequestState.Loaded &&
+              orderProvider.bookingEntities.orderType ==
+                  AppConst.ORDER_FOR_OTHER) ||
+          orderProvider.bookingEntities.orderType != AppConst.ORDER_FOR_OTHER) {
         // Store the booking history in patient
-        //TODO CREATE BOOKING
-        if (/*TODO BOOKING SUCCESS*/ true) {
+        orderProvider.bookingEntities.teiReference =
+            patientProvider.patient.tei;
+        // orderProvider.bookingEntities.refNIK =
+        //     orderProvider.patient.value.nik;
+        // orderProvider.bookingEntities.refNama =
+        //     orderProvider.patient.value.name;
+        orderProvider.bookingEntities.orderType = AppConst.ORDER_FOR_OTHER;
+        orderProvider.bookingEntities.status = "ACTIVE";
+        await orderProvider.makeAppointment();
+        if (orderProvider.makeAppointmentState == RequestState.Loaded) {
+          if (mounted) {
+            Navigator.pushNamed(context, SummaryPage.routeName);
+          }
           SnackBarCustom.showSnackBarMessage(
               context: context,
               title: "Yey !",
               message: "Berhasil memesan layanan.",
               typeMessage: SnackBarType.success);
-          Navigator.pushNamed(context, SummaryPage.routeName);
         } else {
           SnackBarCustom.showSnackBarMessage(
               context: context,
@@ -220,7 +254,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
   void _generateTime() {
     final now = DateTime.now();
     var time = DateTime(now.year, now.month, now.day, 9);
-    times = List.generate(25, (index) {
+    orderProvider.times = List.generate(25, (index) {
       if (index > 0) {
         time = time.add(const Duration(minutes: 30));
       }

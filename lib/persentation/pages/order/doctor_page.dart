@@ -58,12 +58,13 @@ class _DoctorPageState extends State<DoctorPage> {
 
   @override
   Widget build(BuildContext context) {
-    OrderProvider orderProvider =
-        Provider.of<OrderProvider>(context, listen: false);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
     return BaseOrderScreen(
       title: "Pilih jenis layanan dan dokter",
       subTitle: "Pilih layanan dan dokter terbaik untuk melayani anda",
       btnTitle: "Lanjut",
+      loading:
+          orderProvider.requestCreateEnrollmentState == RequestState.Loading,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -378,12 +379,24 @@ class _DoctorPageState extends State<DoctorPage> {
     );
   }
 
-  _onClickNext(OrderProvider orderProvider) {
+  _onClickNext(OrderProvider orderProvider) async {
     BookingEntites bookingEntities = orderProvider.bookingEntities;
     bookingEntities.price = orderProvider.price;
     orderProvider.updateBooking(bookingEntities);
-    Navigator.pushNamed(context, AppointmentSchedulePage.routeName,
-        arguments: _serviceItemSelected);
+    await orderProvider.createNewEnrollment();
+    if (orderProvider.requestCreateEnrollmentState == RequestState.Loaded) {
+      if (mounted) {
+        Navigator.pushNamed(context, AppointmentSchedulePage.routeName,
+            arguments: _serviceItemSelected);
+      }
+    } else if (orderProvider.requestCreateEnrollmentState ==
+        RequestState.Error) {
+      SnackBarCustom.showSnackBarMessage(
+          context: context,
+          title: "Opps !",
+          message: orderProvider.errorMessage,
+          typeMessage: SnackBarType.warning);
+    }
   }
 
   _validate() {

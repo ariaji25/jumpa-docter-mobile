@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
+import 'package:jd_mobile/domain/entities/patient/enrollment_entities.dart';
 import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import 'package:jd_mobile/domain/usecases/patient/create_patient.dart';
 import 'package:jd_mobile/domain/usecases/patient/create_patient_nrm.dart';
@@ -194,7 +195,14 @@ class PatientProvider extends ChangeNotifier {
 
         storage.write(
             key: AppConst.CURRENT_USER,
-            value: PatientModel.fromEntities(patient).toStorage().toString());
+            value: jsonEncode(PatientModel.fromEntities(patient).toStorage()));
+        List<String> listEnrollment = [];
+        for (var v in (res.trackedEntityInstances![0].enrollments ?? [])) {
+          listEnrollment.add(jsonEncode(v));
+        }
+        storage.write(
+            key: AppConst.ENROLLMENT_CURRENT_USER,
+            value: jsonEncode(listEnrollment));
         setRequestState(RequestState.Loaded);
       }
     });

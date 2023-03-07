@@ -14,6 +14,7 @@ class AppConst {
   static String PHONE_NUMBER_KEY = "PHONE_NUMBER_KEY";
   static String AUTH_TOKEN = "AUTH_TOKEN";
   static String CURRENT_USER = "CURRENT_USER";
+  static String ENROLLMENT_CURRENT_USER = "ENROLLMENT_CURRENT_USER";
   static String INVALID_TOKEN = "Token is invalid please login";
   static String INVALID_TOKEN_OTHER = "invalid-token";
   static String HOME_SERVICE = "Pelayanan di rumah";
@@ -21,6 +22,8 @@ class AppConst {
   static String OPEN_FEEDBACK_KEY = "OPEN_FEEDBACK";
   static String HOME_CARE = "u210IplNxve";
   static String ONSITE = "LYr2W0pIxX3";
+  static String ORDER_FOR_OTHER = 'Orang Lain';
+  static String ORDER_BY_OTHER = 'Dipesankan';
   static Map<String, dynamic> STATUS_PAYMENT = {
     "0": "Menunggu proses pembayaran!",
     "1": "Pembayaran dalam proses!",

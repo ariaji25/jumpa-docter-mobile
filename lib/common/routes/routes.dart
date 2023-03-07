@@ -19,6 +19,7 @@ import '../../persentation/pages/chat/list_doctor_page.dart';
 import '../../persentation/pages/chat/payment_chat_page.dart';
 import '../../persentation/pages/chat/specialization_page.dart';
 import '../../persentation/pages/feedback/feedback_doctor_page.dart';
+import '../../persentation/pages/homecare/payment.dart';
 import '../../persentation/pages/order/schedule_page.dart';
 import '../../persentation/pages/order/summary_page.dart';
 import '../../persentation/pages/webview/webview_page.dart';
@@ -135,6 +136,11 @@ class AppRoutes {
       case SummaryPage.routeName:
         return CupertinoPageRoute(
           builder: (_) => const SummaryPage(),
+          settings: settings,
+        );
+      case PaymentPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const PaymentPage(),
           settings: settings,
         );
 

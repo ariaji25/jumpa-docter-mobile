@@ -24,5 +24,8 @@ abstract class OrderApi {
   @POST("/api/events?strategy=CREATE_AND_UPDATE")
   Future<String> createBooking(@Body() Map<String, dynamic> data);
 
+  @POST("/api/enrollments")
+  Future createEnrollment(@Body() Map<String, dynamic> data);
+
   factory OrderApi(Dio dio, {String baseUrl}) = _OrderApi;
 }

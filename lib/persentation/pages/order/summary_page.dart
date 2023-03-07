@@ -7,13 +7,16 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
+import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../common/extensions/padding_ext.dart';
 import '../../../common/resources/assets.dart';
 import '../../../common/resources/colors.dart';
 import '../../../common/theme/theme.dart';
+import '../../provider/order/order_provider.dart';
 import '../../widgets/confirm_modal.dart';
 import '../base/base_page.dart';
 import 'components/base_screen_order.dart';
@@ -32,9 +35,13 @@ class SummaryPage extends StatefulWidget {
 
 class SummaryPageState extends State<SummaryPage> {
   ScreenshotController screenshotController = ScreenshotController();
+  late OrderProvider orderProvider;
+  late PatientProvider patientProvider;
 
   @override
   void initState() {
+    orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    patientProvider = Provider.of<PatientProvider>(context, listen: false);
     super.initState();
   }
 
@@ -64,14 +71,27 @@ class SummaryPageState extends State<SummaryPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildItemSummary(key: "No Rekam Medis", value: "NRM"),
-                    _buildItemSummary(key: "Nama pasien", value: "NAME"),
-                    _buildItemSummary(key: "Layanan", value: "SERVICE"),
-                    _buildItemSummary(key: "Tanggal", value: "VISIT DATE"),
-                    _buildItemSummary(key: "Jam", value: "VISIT TIME"),
+                    _buildItemSummary(
+                        key: "No Rekam Medis",
+                        value: patientProvider.patient.nrm ?? ""),
+                    _buildItemSummary(
+                        key: "Nama pasien",
+                        value: patientProvider.patient.name ?? ""),
+                    _buildItemSummary(
+                        key: "Layanan",
+                        value: orderProvider.bookingEntities.service),
+                    _buildItemSummary(
+                        key: "Tanggal",
+                        value: orderProvider.bookingEntities.visitDate),
+                    _buildItemSummary(
+                        key: "Jam",
+                        value: orderProvider.bookingEntities.visitTime),
                     CardFieldWidget(
                       keys: "Biaya pemeriksaan",
-                      value: false ? Helpers.formatCurrency("PRICE") : "",
+                      value: orderProvider.bookingEntities.price!.isNotEmpty
+                          ? Helpers.formatCurrency(
+                              orderProvider.bookingEntities.price.toString())
+                          : "",
                       styleBackground: BoxDecoration(
                         color: AppColors.primaryColor,
                         borderRadius: BorderRadius.circular(3),
@@ -124,7 +144,7 @@ class SummaryPageState extends State<SummaryPage> {
                       height: 10,
                     ),
                     Text(
-                      "clinicAddress" ?? "-",
+                      orderProvider.bookingEntities.clinicAddress ?? "",
                       style: AppTheme.bodyText.copyWith(
                           color: AppColors.primaryColor,
                           fontSize: 12,
@@ -279,7 +299,7 @@ class SummaryPageState extends State<SummaryPage> {
                             child: Padding(
                               padding: paddingTop(2),
                               child: Text(
-                                "NRM" ?? "",
+                                patientProvider.patient.nrm ?? "",
                                 textAlign: TextAlign.center,
                                 style: AppTheme.heading6.copyWith(
                                   fontSize: 20,
@@ -294,27 +314,31 @@ class SummaryPageState extends State<SummaryPage> {
                         const SizedBox(height: 25),
                         _buildItemSummary(
                           key: "No Rekam Medis",
-                          value: "NRM" ?? "",
+                          value: patientProvider.patient.nrm ?? "",
                         ),
                         _buildItemSummary(
                           key: "Nama pasien",
-                          value: "NAME" ?? "",
+                          value: patientProvider.patient.name ?? "",
                         ),
                         _buildItemSummary(
                           key: "Layanan",
-                          value: "SERVICE" ?? "",
+                          value: orderProvider.bookingEntities.service ?? "",
                         ),
                         _buildItemSummary(
                           key: "Tanggal",
-                          value: "VISIT DATE" ?? "",
+                          value: orderProvider.bookingEntities.visitDate ?? "",
                         ),
                         _buildItemSummary(
                           key: "Jam",
-                          value: "VISIT TIME" ?? "",
+                          value: orderProvider.bookingEntities.visitTime ?? "",
                         ),
                         CardFieldWidget(
                           keys: "Biaya pemeriksaan",
-                          value: false ? Helpers.formatCurrency("PRICE") : "",
+                          value: orderProvider.bookingEntities.price!.isNotEmpty
+                              ? Helpers.formatCurrency(orderProvider
+                                  .bookingEntities.price
+                                  .toString())
+                              : "",
                           styleBackground: BoxDecoration(
                             color: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(3),
@@ -373,7 +397,7 @@ class SummaryPageState extends State<SummaryPage> {
                     height: 10,
                   ),
                   Text(
-                    "CLINIC ADDRESS" ?? "-",
+                    orderProvider.bookingEntities.clinicAddress ?? "",
                     style: AppTheme.bodyText.copyWith(
                         color: AppColors.primaryColor,
                         fontSize: 12,
@@ -462,6 +486,7 @@ class SummaryPageState extends State<SummaryPage> {
   }
 
   _finish() async {
+    orderProvider.clear();
     const storage = FlutterSecureStorage();
     Navigator.pushNamed(
       context,
@@ -470,7 +495,9 @@ class SummaryPageState extends State<SummaryPage> {
     String isOpenFeedback =
         await storage.read(key: AppConst.OPEN_FEEDBACK_KEY) ?? 'false';
     if ((isOpenFeedback.toLowerCase() == "true")) {
-      Alerts.showAlertDialogFeedback(context);
+      if (mounted) {
+        Alerts.showAlertDialogFeedback(context);
+      }
       await storage.write(
           key: AppConst.OPEN_FEEDBACK_KEY, value: false.toString());
     }

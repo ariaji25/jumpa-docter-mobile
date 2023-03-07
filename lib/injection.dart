@@ -7,7 +7,7 @@ import 'package:jd_mobile/data/datasources/order/order_api.dart';
 import 'package:jd_mobile/data/datasources/schedule/schedule_api.dart';
 import 'package:jd_mobile/data/repositories/articles/articles_repositpry_impl.dart';
 import 'package:jd_mobile/data/repositories/auth/auth_repository_impl.dart';
-import 'package:jd_mobile/data/repositories/schedule/schedule_repositpry_impl.dart';
+import 'package:jd_mobile/data/repositories/schedule/schedule_repository_impl.dart';
 import 'package:jd_mobile/domain/repositories/articles/articles_repository.dart';
 import 'package:jd_mobile/domain/repositories/auth/auth_repository.dart';
 import 'package:jd_mobile/domain/repositories/chat/chat_repository.dart';
@@ -17,6 +17,7 @@ import 'package:jd_mobile/domain/usecases/articles/get_tags.dart';
 import 'package:jd_mobile/domain/usecases/auth/sign_in.dart';
 import 'package:jd_mobile/domain/usecases/chat/get_rooms.dart';
 import 'package:jd_mobile/domain/usecases/order/create_booking.dart';
+import 'package:jd_mobile/domain/usecases/order/create_enrollment.dart';
 import 'package:jd_mobile/domain/usecases/order/get_clinics.dart';
 import 'package:jd_mobile/domain/usecases/order/get_clinics_by_area.dart';
 import 'package:jd_mobile/domain/usecases/order/get_doctors.dart';
@@ -39,7 +40,7 @@ import 'data/datasources/firebase/auth/auth_firebase.dart';
 import 'data/datasources/firebase/auth/auth_firebase_impl.dart';
 import 'data/datasources/patient/patient_api.dart';
 import 'data/repositories/chat/chat_repository_impl.dart';
-import 'data/repositories/order/order_repositpry_impl.dart';
+import 'data/repositories/order/order_repository_impl.dart';
 import 'data/repositories/patient/patient_repository_impl.dart';
 import 'domain/repositories/patient/patient_repositorty.dart';
 import 'domain/repositories/schedule/schedule_repository.dart';
@@ -87,6 +88,7 @@ Future setup() async {
         getDoctors: getIt(),
         getPriceService: getIt(),
         createBooking: getIt(),
+        createEnrollment: getIt(),
       ),
   );
 
@@ -156,6 +158,7 @@ Future setup() async {
   getIt.registerLazySingleton<GetDoctors>(() => GetDoctors(getIt()));
   getIt.registerLazySingleton<GetPriceService>(() => GetPriceService(getIt()));
   getIt.registerLazySingleton<CreateBooking>(() => CreateBooking(getIt()));
+  getIt.registerLazySingleton<CreateEnrollment>(() => CreateEnrollment(getIt()));
 
   // External
   final auth = FirebaseAuth.instance;

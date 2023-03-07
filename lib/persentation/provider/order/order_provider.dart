@@ -1,14 +1,13 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
-import 'package:jd_mobile/data/models/booking/booking_model.dart';
 import 'package:jd_mobile/data/models/patient/detail_patient_model.dart';
 import 'package:jd_mobile/data/models/patient/patient_model.dart';
 import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/entities/booking/enrollment_entities.dart';
 import 'package:jd_mobile/domain/entities/booking/organisation_units_entities.dart';
 import 'package:jd_mobile/domain/entities/booking/service_price_item_entities.dart';
 import 'package:jd_mobile/domain/usecases/order/create_booking.dart';
@@ -16,10 +15,10 @@ import 'package:jd_mobile/domain/usecases/order/get_clinics_by_area.dart';
 import 'package:jd_mobile/domain/usecases/order/get_doctors.dart';
 import 'package:jd_mobile/domain/usecases/order/get_price_service.dart';
 import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nrm.dart';
-import 'package:logger/logger.dart';
 
 import '../../../domain/entities/booking/clinic_entities.dart';
 import '../../../domain/entities/patient/detail_patient_entities.dart';
+import '../../../domain/usecases/order/create_enrollment.dart';
 import '../../../domain/usecases/order/get_clinics.dart';
 
 class OrderProvider extends ChangeNotifier {
@@ -29,6 +28,7 @@ class OrderProvider extends ChangeNotifier {
   final GetDoctors getDoctors;
   final GetPriceService getPriceService;
   final CreateBooking createBooking;
+  final CreateEnrollment createEnrollment;
 
   OrderProvider({
     required this.detailPatientByNrm,
@@ -37,10 +37,12 @@ class OrderProvider extends ChangeNotifier {
     required this.getDoctors,
     required this.getPriceService,
     required this.createBooking,
+    required this.createEnrollment,
   });
 
   final storage = const FlutterSecureStorage();
   BookingEntites bookingEntities = BookingEntites();
+  EnrollmentEntities enrollmentEntities = EnrollmentEntities();
   DetailPatientEntities doctors = DetailPatientEntities();
   ClinicEntities clinics = ClinicEntities();
   ClinicEntities clinicsByArea = ClinicEntities();
@@ -50,6 +52,10 @@ class OrderProvider extends ChangeNotifier {
   bool newPatientAlreadyExist = false;
   String organisationUnitsId = "";
   int serviceItemSelected = 0;
+  List<DateTime>? dates;
+  List<String>? times;
+  DateTime? selectedDate;
+  String? selectedTime;
 
   // For get price list
   String serviceId = "";
@@ -68,6 +74,7 @@ class OrderProvider extends ChangeNotifier {
   RequestState _requestClinicsAreaState = RequestState.Empty;
   RequestState _requestPriceState = RequestState.Empty;
   RequestState _makeAppointmentState = RequestState.Empty;
+  RequestState _requestCreateEnrollmentState = RequestState.Empty;
 
   RequestState get requestState => _requestState;
 
@@ -80,6 +87,9 @@ class OrderProvider extends ChangeNotifier {
   RequestState get requestPriceState => _requestPriceState;
 
   RequestState get makeAppointmentState => _makeAppointmentState;
+
+  RequestState get requestCreateEnrollmentState =>
+      _requestCreateEnrollmentState;
 
   void setRequestDoctorsState(RequestState state) {
     _requestDoctorsState = state;
@@ -98,6 +108,16 @@ class OrderProvider extends ChangeNotifier {
 
   void setRequestPriceState(RequestState state) {
     _requestPriceState = state;
+    notifyListeners();
+  }
+
+  void setMakeAppointmentState(RequestState state) {
+    _makeAppointmentState = state;
+    notifyListeners();
+  }
+
+  void setRequestCreateEnrollmentState(RequestState state) {
+    _requestCreateEnrollmentState = state;
     notifyListeners();
   }
 
@@ -133,6 +153,26 @@ class OrderProvider extends ChangeNotifier {
 
   void updateBooking(BookingEntites bookingEntities) {
     bookingEntities = bookingEntities;
+    notifyListeners();
+  }
+
+  void setDates(List<DateTime>? value) {
+    dates = value;
+    notifyListeners();
+  }
+
+  void setTimes(List<String>? value) {
+    times = value;
+    notifyListeners();
+  }
+
+  void setSelectedDate(DateTime? value) {
+    selectedDate = value;
+    notifyListeners();
+  }
+
+  void setSelectedTime(String? value) {
+    selectedTime = value;
     notifyListeners();
   }
 
@@ -257,20 +297,47 @@ class OrderProvider extends ChangeNotifier {
   }
 
   Future makeAppointment() async {
-    _makeAppointmentState = RequestState.Loading;
+    setMakeAppointmentState(RequestState.Loading);
+    String teiKey = await storage.read(key: AppConst.TEI_KEY) ?? "";
+    bookingEntities.teiReference = teiKey;
     notifyListeners();
-
-    final ress = await createBooking(bookingEntities);
-    ress.fold(
-    (l) {
-      _makeAppointmentState = RequestState.Error;
+    final res = await createBooking(bookingEntities);
+    res.fold((l) {
+      setMakeAppointmentState(RequestState.Error);
       _errorMessage = l.message;
       notifyListeners();
-    }, 
-    (r) {
-       _makeAppointmentState = RequestState.Loaded;
-       notifyListeners();
+    }, (r) {
+      setMakeAppointmentState(RequestState.Loaded);
     });
+  }
+
+  Future createNewEnrollment() async {
+    String enrollmentCurrentUserStorage =
+        await storage.read(key: AppConst.ENROLLMENT_CURRENT_USER) ?? "";
+    List<EnrollmentEntities> listEnrollmentCurrentUser =
+        enrollmentCurrentUserStorage == ""
+            ? []
+            : jsonDecode(enrollmentCurrentUserStorage);
+    if (listEnrollmentCurrentUser.isEmpty) {
+      String teiKey = await storage.read(key: AppConst.TEI_KEY) ?? "";
+      setRequestCreateEnrollmentState(RequestState.Loading);
+      enrollmentEntities.program = "El6a2lnac0D";
+      enrollmentEntities.orgUnit = orgUnits;
+      enrollmentEntities.trackedEntityInstance = teiKey;
+      enrollmentEntities.trackedEntityType = "MvJlDDrR78m";
+      enrollmentEntities.status = "COMPLETED";
+      notifyListeners();
+      final res = await createEnrollment(enrollmentEntities);
+      res.fold((l) {
+        setRequestCreateEnrollmentState(RequestState.Error);
+        _errorMessage = l.message;
+        notifyListeners();
+      }, (r) {
+        setRequestCreateEnrollmentState(RequestState.Loaded);
+        bookingEntities.enrollment = r;
+        notifyListeners();
+      });
+    }
   }
 
   clear() {
@@ -282,7 +349,10 @@ class OrderProvider extends ChangeNotifier {
     newPatientAlreadyExist = false;
     organisationUnitsId = "";
     serviceItemSelected = 0;
-
+    dates = null;
+    times = null;
+    selectedDate = null;
+    selectedTime = null;
     // For get price list
     serviceId = "";
     orgUnits = "";
@@ -296,5 +366,6 @@ class OrderProvider extends ChangeNotifier {
     _requestClinicsState = RequestState.Empty;
     _requestClinicsAreaState = RequestState.Empty;
     _requestPriceState = RequestState.Empty;
+    _requestCreateEnrollmentState = RequestState.Empty;
   }
 }

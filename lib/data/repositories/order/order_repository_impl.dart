@@ -4,10 +4,12 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:jd_mobile/common/utils/fialure.dart';
 import 'package:jd_mobile/data/models/booking/booking_model.dart';
+import 'package:jd_mobile/data/models/booking/enrollment_model.dart';
 import 'package:jd_mobile/data/models/patient/detail_patient_model.dart';
 import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
 
 import '../../../domain/entities/booking/clinic_entities.dart';
+import '../../../domain/entities/booking/enrollment_entities.dart';
 import '../../../domain/entities/booking/service_price_entities.dart';
 import '../../../domain/entities/patient/detail_patient_entities.dart';
 import '../../../domain/repositories/order/order_repository.dart';
@@ -70,16 +72,30 @@ class OrderRepositoryImpl extends OrderRepository {
       return Left(ServerFailure(e.response?.data['message'] ?? e.message));
     }
   }
-  
+
   @override
   Future<Either<Failure, String>> createBooking(BookingEntites booking) async {
-     try {
+    try {
       await api.createBooking(BookingModel.formEntities(booking).toJson());
       return const Right("Success Created!");
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {
       return Left(ServerFailure(e.response?.data));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> createEnrollment(
+      EnrollmentEntities enrollment) async {
+    try {
+      final result = await api
+          .createEnrollment(EnrollmentModel.fromEntities(enrollment).toJson());
+      return Right(result['response']['importSummaries'][0]['reference']);
+    } on SocketException {
+      return const Left(ConnectionFailure("Failed to connect to the network"));
+    } on DioError catch (e) {
+      return Left(ServerFailure(e.response?.data['message']));
     }
   }
 }

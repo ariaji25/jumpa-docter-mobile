@@ -21,6 +21,7 @@ class BookingEntites extends Equatable {
   String? status;
   String? price;
   String? doctorId;
+  String? enrollment;
 
   BookingEntites({
     this.teiReference,
@@ -41,6 +42,7 @@ class BookingEntites extends Equatable {
     this.status,
     this.price,
     this.doctorId,
+    this.enrollment,
   });
 
   @override
@@ -63,5 +65,6 @@ class BookingEntites extends Equatable {
         status,
         price,
         doctorId,
+        enrollment,
       ];
 }
