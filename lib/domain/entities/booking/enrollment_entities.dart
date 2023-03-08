@@ -8,6 +8,18 @@ class EnrollmentEntities extends Equatable {
   String? trackedEntityInstance;
   String? trackedEntityType;
   String? status;
+  String? storedBy;
+  String? created;
+  String? createdAtClient;
+  String? enrollment;
+  String? lastUpdated;
+  String? lastUpdatedAtClient;
+  String? orgUnitName;
+  String? enrollmentDate;
+  String? completedDate;
+  bool? deleted;
+  String? incidentDate;
+  String? completedBy;
 
   EnrollmentEntities({
     this.program,
@@ -15,6 +27,18 @@ class EnrollmentEntities extends Equatable {
     this.trackedEntityInstance,
     this.trackedEntityType,
     this.status,
+    this.storedBy,
+    this.created,
+    this.createdAtClient,
+    this.enrollment,
+    this.lastUpdated,
+    this.lastUpdatedAtClient,
+    this.orgUnitName,
+    this.enrollmentDate,
+    this.completedDate,
+    this.deleted,
+    this.incidentDate,
+    this.completedBy,
   });
 
   @override
@@ -24,5 +48,17 @@ class EnrollmentEntities extends Equatable {
         trackedEntityInstance,
         trackedEntityType,
         status,
+        storedBy,
+        created,
+        createdAtClient,
+        enrollment,
+        lastUpdated,
+        lastUpdatedAtClient,
+        orgUnitName,
+        enrollmentDate,
+        completedDate,
+        deleted,
+        incidentDate,
+        completedBy,
       ];
 }

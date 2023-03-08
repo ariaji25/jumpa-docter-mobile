@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
+import 'package:jd_mobile/data/models/booking/enrollment_model.dart';
 import 'package:jd_mobile/data/models/patient/detail_patient_model.dart';
 import 'package:jd_mobile/data/models/patient/patient_model.dart';
 import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
@@ -312,15 +313,26 @@ class OrderProvider extends ChangeNotifier {
   }
 
   Future createNewEnrollment() async {
+    setRequestCreateEnrollmentState(RequestState.Loading);
     String enrollmentCurrentUserStorage =
         await storage.read(key: AppConst.ENROLLMENT_CURRENT_USER) ?? "";
-    List<EnrollmentEntities> listEnrollmentCurrentUser =
-        enrollmentCurrentUserStorage == ""
-            ? []
-            : jsonDecode(enrollmentCurrentUserStorage);
-    if (listEnrollmentCurrentUser.isEmpty) {
+    List<EnrollmentEntities> listEnrollmentCurrentUser = [];
+    if (enrollmentCurrentUserStorage != "") {
+      for (Map<String, dynamic> item
+          in jsonDecode(enrollmentCurrentUserStorage)) {
+        listEnrollmentCurrentUser.add(EnrollmentModel.fromJson(item));
+      }
+    }
+    List<EnrollmentEntities> filteredListEnrollment =
+        listEnrollmentCurrentUser.where((item) {
+      return item.orgUnit == orgUnits;
+    }).toList();
+    if (filteredListEnrollment.isNotEmpty) {
+      setRequestCreateEnrollmentState(RequestState.Loaded);
+      bookingEntities.enrollment = filteredListEnrollment.first.enrollment;
+      notifyListeners();
+    } else {
       String teiKey = await storage.read(key: AppConst.TEI_KEY) ?? "";
-      setRequestCreateEnrollmentState(RequestState.Loading);
       enrollmentEntities.program = "El6a2lnac0D";
       enrollmentEntities.orgUnit = orgUnits;
       enrollmentEntities.trackedEntityInstance = teiKey;
