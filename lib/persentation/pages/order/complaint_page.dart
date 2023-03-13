@@ -36,6 +36,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
   @override
   void initState() {
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    orderProvider.checkNikPatient();
     super.initState();
   }
 
@@ -192,119 +193,109 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 ),
               );
             }),
-            Visibility(
-              visible: orderProvider.orderFor == 0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "No NIK",
-                    style: AppTheme.subtitle.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.darkGreyColor,
+            Consumer<OrderProvider>(builder: (context, orderProvider, child) {
+              return Visibility(
+                visible: orderProvider.orderFor == 0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "No NIK",
+                      style: AppTheme.subtitle.copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.darkGreyColor,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Builder(builder: (context) {
-                    return FutureBuilder(
-                        future: null,
-                        builder: (context, AsyncSnapshot snapshot) {
-                          return Row(
-                            children: [
-                              Visibility(
-                                visible: orderProvider.requestState ==
-                                    RequestState.Loaded,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 16,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.grey200Color,
-                                    borderRadius: BorderRadius.circular(3),
-                                  ),
-                                  child: Text(
-                                    orderProvider.nikPatient ?? "-",
-                                    style: AppTheme.bodyText.copyWith(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Visibility(
+                          visible:
+                              orderProvider.requestState == RequestState.Loaded,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.grey200Color,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: Text(
+                              orderProvider.nikPatient ?? "-",
+                              style: AppTheme.bodyText.copyWith(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
                               ),
-                              const SizedBox(width: 20),
-                              orderProvider.requestState == RequestState.Loading
-                                  ? const Center(
-                                      child: SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ))
-                                  : orderProvider.nikPatient != null
-                                      ? RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              const WidgetSpan(
-                                                child: Icon(
-                                                  FeatherIcons.checkCircle,
-                                                  color: AppColors
-                                                      .greenSuccessColor,
-                                                  size: 12,
-                                                ),
-                                              ),
-                                              const WidgetSpan(
-                                                child: SizedBox(
-                                                  width: 5,
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text: " Data NIK ditemukan",
-                                                style:
-                                                    AppTheme.subtitle.copyWith(
-                                                  fontSize: 9,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: AppColors
-                                                      .greenSuccessColor,
-                                                ),
-                                              ),
-                                            ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        orderProvider.requestState == RequestState.Loading
+                            ? const Center(
+                                child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primaryColor,
+                                ),
+                              ))
+                            : orderProvider.nikPatient != null
+                                ? RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const WidgetSpan(
+                                          child: Icon(
+                                            FeatherIcons.checkCircle,
+                                            color: AppColors.greenSuccessColor,
+                                            size: 12,
                                           ),
-                                        )
-                                      : RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              const WidgetSpan(
-                                                child: Icon(
-                                                  FeatherIcons.x,
-                                                  color: Color(0XFFEF0C11),
-                                                  size: 12,
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text:
-                                                    " Data NIK tidak ditemukan",
-                                                style:
-                                                    AppTheme.subtitle.copyWith(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  color:
-                                                      const Color(0XFFEF0C11),
-                                                ),
-                                              ),
-                                            ],
+                                        ),
+                                        const WidgetSpan(
+                                          child: SizedBox(
+                                            width: 5,
                                           ),
-                                        )
-                            ],
-                          );
-                        });
-                  })
-                ],
-              ),
-            ),
+                                        ),
+                                        TextSpan(
+                                          text: " Data NIK ditemukan",
+                                          style: AppTheme.subtitle.copyWith(
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.greenSuccessColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const WidgetSpan(
+                                          child: Icon(
+                                            FeatherIcons.x,
+                                            color: Color(0XFFEF0C11),
+                                            size: 12,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: " Data NIK tidak ditemukan",
+                                          style: AppTheme.subtitle.copyWith(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: const Color(0XFFEF0C11),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                      ],
+                    )
+                  ],
+                ),
+              );
+            }),
             const SizedBox(height: 20),
           ],
         ));

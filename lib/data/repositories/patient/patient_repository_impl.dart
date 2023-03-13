@@ -67,7 +67,7 @@ class PatientRepositoryImpl extends PatientRepository {
   }
 
   @override
-  Future<Either<Failure, String>> detailPatientByNik(String nik) async{
+  Future<Either<Failure, String>> detailPatientByNik(String nik) async {
     try {
       final result = await api.detailPatientByNik(nik);
       return Right(jsonEncode(result));

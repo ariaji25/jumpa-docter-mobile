@@ -465,21 +465,6 @@ class OrderProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getPatients() async {
-    setRequestLoadPatientState(RequestState.Loading);
-    if (patientEntities.nrm != null) {
-      final result = await createPatient(patientEntities);
-      result.fold((l) {
-        setRequestLoadPatientState(RequestState.Error);
-        _errorMessage = l.message;
-        notifyListeners();
-      }, (res) {
-        // patientEntities = res;
-        notifyListeners();
-        setRequestLoadPatientState(RequestState.Loaded);
-      });
-    }
-  }
 
   Future<void> getPatientByNIK({String? nik}) async {
     setRequestLoadPatientState(RequestState.Loading);
