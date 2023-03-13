@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
@@ -142,7 +144,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                               orderProvider.setSelectedTime(items);
                               BookingEntites bookingEntities =
                                   orderProvider.bookingEntities;
-                              bookingEntities.visitTime =items;
+                              bookingEntities.visitTime = items;
                               orderProvider.updateBooking(bookingEntities);
                             },
                             value: items,

@@ -7,11 +7,13 @@ import 'package:jd_mobile/data/datasources/order/order_api.dart';
 import 'package:jd_mobile/data/datasources/schedule/schedule_api.dart';
 import 'package:jd_mobile/data/repositories/articles/articles_repositpry_impl.dart';
 import 'package:jd_mobile/data/repositories/auth/auth_repository_impl.dart';
+import 'package:jd_mobile/data/repositories/payment/payment_repository_impl.dart';
 import 'package:jd_mobile/data/repositories/schedule/schedule_repository_impl.dart';
 import 'package:jd_mobile/domain/repositories/articles/articles_repository.dart';
 import 'package:jd_mobile/domain/repositories/auth/auth_repository.dart';
 import 'package:jd_mobile/domain/repositories/chat/chat_repository.dart';
 import 'package:jd_mobile/domain/repositories/order/order_repository.dart';
+import 'package:jd_mobile/domain/repositories/payment/payment_repository.dart';
 import 'package:jd_mobile/domain/usecases/articles/get_articles.dart';
 import 'package:jd_mobile/domain/usecases/articles/get_tags.dart';
 import 'package:jd_mobile/domain/usecases/auth/sign_in.dart';
@@ -26,6 +28,9 @@ import 'package:jd_mobile/domain/usecases/patient/create_patient_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nik.dart';
 import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/update_patient.dart';
+import 'package:jd_mobile/domain/usecases/payment/create_payment.dart';
+import 'package:jd_mobile/domain/usecases/payment/get_payment_method.dart';
+import 'package:jd_mobile/domain/usecases/payment/get_payment_status.dart';
 import 'package:jd_mobile/domain/usecases/schedule/get_enrollments.dart';
 import 'package:jd_mobile/domain/usecases/schedule/get_history_enrollments.dart';
 import 'package:jd_mobile/persentation/provider/article/article_provider.dart';
@@ -35,6 +40,7 @@ import 'package:jd_mobile/persentation/provider/chat/room_chat_provider.dart';
 import 'package:jd_mobile/persentation/provider/home/home_provider.dart';
 import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
+import 'package:jd_mobile/persentation/provider/payment/payment_provider.dart';
 import 'package:jd_mobile/persentation/provider/schedule/schedule_provider.dart';
 
 import 'data/datasources/firebase/auth/auth_firebase.dart';
@@ -95,6 +101,13 @@ Future setup() async {
       detailPatientByNik: getIt(),
     ),
   );
+  getIt.registerFactory<PaymentProvider>(
+    () => PaymentProvider(
+      createPayment: getIt(),
+      getPaymentMethod: getIt(),
+      getPaymentStatus: getIt(),
+    ),
+  );
 
   // Repository
   getIt.registerLazySingleton<AuthRepository>(
@@ -122,9 +135,13 @@ Future setup() async {
       api: getIt(),
     ),
   );
-
   getIt.registerLazySingleton<OrderRepository>(
     () => OrderRepositoryImpl(
+      api: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<PaymentRespository>(
+    () => PaymentRepositoryImpl(
       api: getIt(),
     ),
   );
@@ -168,8 +185,10 @@ Future setup() async {
   getIt.registerLazySingleton<GetDoctors>(() => GetDoctors(getIt()));
   getIt.registerLazySingleton<GetPriceService>(() => GetPriceService(getIt()));
   getIt.registerLazySingleton<CreateBooking>(() => CreateBooking(getIt()));
-  getIt
-      .registerLazySingleton<CreateEnrollment>(() => CreateEnrollment(getIt()));
+  getIt.registerLazySingleton<CreateEnrollment>(() => CreateEnrollment(getIt()));
+  getIt.registerLazySingleton<GetPaymentMethod>(() => GetPaymentMethod(getIt()));
+  getIt.registerLazySingleton<GetPaymentStatus>(() => GetPaymentStatus(getIt()));
+  getIt.registerLazySingleton<CreatePayment>(() => CreatePayment(getIt()));
 
   // External
   final auth = FirebaseAuth.instance;

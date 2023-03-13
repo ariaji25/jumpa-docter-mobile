@@ -13,6 +13,7 @@ import 'package:jd_mobile/persentation/provider/home/home_provider.dart';
 import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
 import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
+import 'package:jd_mobile/persentation/provider/payment/payment_provider.dart';
 import 'package:jd_mobile/persentation/provider/schedule/schedule_provider.dart';
 import 'package:provider/provider.dart';
 import 'injection.dart' as di;
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.getIt<ArticleProvider>()),
         ChangeNotifierProvider(create: (_) => di.getIt<ScheduleProvider>()),
         ChangeNotifierProvider(create: (_) => di.getIt<OrderProvider>()),
+        ChangeNotifierProvider(create: (_) => di.getIt<PaymentProvider>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: kDebugMode,
