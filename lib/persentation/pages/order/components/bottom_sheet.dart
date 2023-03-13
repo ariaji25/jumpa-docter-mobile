@@ -22,7 +22,7 @@ bottomSheetWidget(
     isScrollControlled: true,
     builder: (context) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal:SizeConstants.margin),
+        padding: const EdgeInsets.symmetric(horizontal: SizeConstants.margin),
         height: MediaQuery.of(context).size.height * .80,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -97,7 +97,10 @@ bottomSheetWidget(
                           )
                         : controller.text.isNotEmpty
                             ? InkWell(
-                                onTap: onClear,
+                                onTap: onClear ??
+                                    () {
+                                      controller.clear();
+                                    },
                                 child: const Icon(
                                   Icons.clear,
                                   color: Color(0xFF0D0D0D),

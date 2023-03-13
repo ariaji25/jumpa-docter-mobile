@@ -23,6 +23,7 @@ import 'package:jd_mobile/domain/usecases/order/get_clinics_by_area.dart';
 import 'package:jd_mobile/domain/usecases/order/get_doctors.dart';
 import 'package:jd_mobile/domain/usecases/order/get_price_service.dart';
 import 'package:jd_mobile/domain/usecases/patient/create_patient_nrm.dart';
+import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nik.dart';
 import 'package:jd_mobile/domain/usecases/patient/detail_patient_by_nrm.dart';
 import 'package:jd_mobile/domain/usecases/patient/update_patient.dart';
 import 'package:jd_mobile/domain/usecases/schedule/get_enrollments.dart';
@@ -82,14 +83,17 @@ Future setup() async {
   );
   getIt.registerFactory<OrderProvider>(
     () => OrderProvider(
-        detailPatientByNrm: getIt(),
-        getClinics: getIt(),
-        getClinicsByArea: getIt(),
-        getDoctors: getIt(),
-        getPriceService: getIt(),
-        createBooking: getIt(),
-        createEnrollment: getIt(),
-      ),
+      detailPatientByNrm: getIt(),
+      getClinics: getIt(),
+      getClinicsByArea: getIt(),
+      getDoctors: getIt(),
+      getPriceService: getIt(),
+      createBooking: getIt(),
+      createEnrollment: getIt(),
+      createPatientNrm: getIt(),
+      createPatient: getIt(),
+      detailPatientByNik: getIt(),
+    ),
   );
 
   // Repository
@@ -143,6 +147,11 @@ Future setup() async {
       getIt(),
     ),
   );
+  getIt.registerLazySingleton<DetailPatientByNik>(
+    () => DetailPatientByNik(
+      getIt(),
+    ),
+  );
   getIt.registerLazySingleton<GetRooms>(() => GetRooms(getIt()));
   getIt.registerLazySingleton<GetArticles>(() => GetArticles(getIt()));
   getIt.registerLazySingleton<GetTags>(() => GetTags(getIt()));
@@ -154,11 +163,13 @@ Future setup() async {
   );
 
   getIt.registerLazySingleton<GetClinics>(() => GetClinics(getIt()));
-  getIt.registerLazySingleton<GetClinicsByArea>(() => GetClinicsByArea(getIt()));
+  getIt
+      .registerLazySingleton<GetClinicsByArea>(() => GetClinicsByArea(getIt()));
   getIt.registerLazySingleton<GetDoctors>(() => GetDoctors(getIt()));
   getIt.registerLazySingleton<GetPriceService>(() => GetPriceService(getIt()));
   getIt.registerLazySingleton<CreateBooking>(() => CreateBooking(getIt()));
-  getIt.registerLazySingleton<CreateEnrollment>(() => CreateEnrollment(getIt()));
+  getIt
+      .registerLazySingleton<CreateEnrollment>(() => CreateEnrollment(getIt()));
 
   // External
   final auth = FirebaseAuth.instance;
@@ -189,7 +200,7 @@ Future setup() async {
     ),
   );
   getIt.registerLazySingleton<OrderApi>(
-        () => OrderApi(
+    () => OrderApi(
       getIt<HttpService>().dio,
     ),
   );

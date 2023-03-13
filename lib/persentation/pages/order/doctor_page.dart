@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 import '../../../common/helpers/helpers.dart';
 import '../../../data/models/booking/doctor_model.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/universal_empty_state.dart';
 import 'components/bottom_sheet.dart';
 
 class DoctorPage extends StatefulWidget {
@@ -134,61 +135,70 @@ class _DoctorPageState extends State<DoctorPage> {
               onTap: () {
                 bottomSheetWidget(
                     context: context,
-                    onSearch: _onSearch,
+                    onSearch: (value){
+                      order.getListClinics();
+                    },
                     title: "Cari berdasarkan daerah Klinik",
                     inputType: TextInputType.text,
-                    onClear: () {},
+                    onClear: null,
                     child:
                         Consumer<OrderProvider>(builder: (context, order, _) {
                       return order.requestClinicsState == RequestState.Loaded
                           ? Expanded(
-                              child: ListView.builder(
-                                itemCount:
-                                    order.clinics.organisationUnits?.length ??
-                                        0,
-                                itemBuilder: (BuildContext context, int idx) {
-                                  final data =
-                                      order.clinics.organisationUnits?[idx] ??
-                                          OrganisationUnitsEntities();
+                              child: (order.clinics.organisationUnits?.length ??
+                                          0) >
+                                      0
+                                  ? ListView.builder(
+                                      itemCount: order.clinics.organisationUnits
+                                              ?.length ??
+                                          0,
+                                      itemBuilder:
+                                          (BuildContext context, int idx) {
+                                        final data = order.clinics
+                                                .organisationUnits?[idx] ??
+                                            OrganisationUnitsEntities();
 
-                                  return Padding(
-                                    padding: paddingBottom(16),
-                                    child: InkWell(
-                                      onTap: () {
-                                        BookingEntites bookingEntities =
-                                            order.bookingEntities;
-                                        bookingEntities.clinicArea =
-                                            data.displayName ?? "-";
-                                        bookingEntities.clinicAddress =
-                                            data.displayName ?? "-";
-                                        order.updateBooking(bookingEntities);
-                                        //* Filtered clinic by area
-                                        // _bookingViewModel.filterClinicByArea(
-                                        //   _bookingViewModel
-                                        //           .booking.value.clinicArea ??
-                                        //       "",
-                                        // );
+                                        return Padding(
+                                          padding: paddingBottom(16),
+                                          child: InkWell(
+                                            onTap: () {
+                                              BookingEntites bookingEntities =
+                                                  order.bookingEntities;
+                                              bookingEntities.clinicArea =
+                                                  data.displayName ?? "-";
+                                              bookingEntities.clinicAddress =
+                                                  data.displayName ?? "-";
+                                              order.updateBooking(
+                                                  bookingEntities);
+                                              //* Filtered clinic by area
+                                              // _bookingViewModel.filterClinicByArea(
+                                              //   _bookingViewModel
+                                              //           .booking.value.clinicArea ??
+                                              //       "",
+                                              // );
 
-                                        order.getListClinicsByArea(
-                                          data.id ?? "-",
-                                        );
+                                              order.getListClinicsByArea(
+                                                data.id ?? "-",
+                                              );
 
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: ListTile(
-                                        title: Text(
-                                          data.displayName ?? "-",
-                                          style: AppTheme.heading5.copyWith(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: ListTile(
+                                              title: Text(
+                                                data.displayName ?? "-",
+                                                style:
+                                                    AppTheme.heading5.copyWith(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
+                                        );
+                                      },
+                                    )
+                                  : universalEmptyState(),
                             )
                           : const Loading();
                     }));
@@ -206,7 +216,6 @@ class _DoctorPageState extends State<DoctorPage> {
                     bottomSheetWidget(
                         context: context,
                         onSearch: _onSearch,
-                        onClear: () {},
                         title: 'Cari berdasarkan nama Klinik',
                         inputType: TextInputType.text,
                         child: Consumer<OrderProvider>(

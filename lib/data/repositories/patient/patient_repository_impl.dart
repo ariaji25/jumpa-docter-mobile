@@ -33,7 +33,7 @@ class PatientRepositoryImpl extends PatientRepository {
       Map<String, dynamic> data) async {
     try {
       final result = await api.createPatientNrm(data);
-      return Right(result["data"]["nrm"] ?? "");
+      return Right(jsonEncode(result["data"]));
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {
@@ -58,6 +58,18 @@ class PatientRepositoryImpl extends PatientRepository {
   Future<Either<Failure, String>> detailPatientByNrm(String phoneNumber) async {
     try {
       final result = await api.detailPatientByNrm(phoneNumber);
+      return Right(jsonEncode(result));
+    } on SocketException {
+      return const Left(ConnectionFailure("Failed to connect to the network"));
+    } on DioError catch (e) {
+      return Left(ServerFailure(e.response?.data['message'] ?? e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> detailPatientByNik(String nik) async{
+    try {
+      final result = await api.detailPatientByNik(nik);
       return Right(jsonEncode(result));
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));

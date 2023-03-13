@@ -98,7 +98,7 @@ class PatientProvider extends ChangeNotifier {
       _errorMessage = l.message;
       notifyListeners();
     }, (r) async {
-      patient.nrm = r;
+      patient.nrm = jsonDecode(r)["nrm"] ?? "";
       notifyListeners();
       await Helpers.writeLocalStorage(AppConst.NRM_KEY, r);
       await patientCreate();

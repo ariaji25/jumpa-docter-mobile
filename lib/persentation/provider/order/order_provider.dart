@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
@@ -11,6 +11,7 @@ import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
 import 'package:jd_mobile/domain/entities/booking/enrollment_entities.dart';
 import 'package:jd_mobile/domain/entities/booking/organisation_units_entities.dart';
 import 'package:jd_mobile/domain/entities/booking/service_price_item_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import 'package:jd_mobile/domain/usecases/order/create_booking.dart';
 import 'package:jd_mobile/domain/usecases/order/get_clinics_by_area.dart';
 import 'package:jd_mobile/domain/usecases/order/get_doctors.dart';
@@ -21,6 +22,9 @@ import '../../../domain/entities/booking/clinic_entities.dart';
 import '../../../domain/entities/patient/detail_patient_entities.dart';
 import '../../../domain/usecases/order/create_enrollment.dart';
 import '../../../domain/usecases/order/get_clinics.dart';
+import '../../../domain/usecases/patient/create_patient.dart';
+import '../../../domain/usecases/patient/create_patient_nrm.dart';
+import '../../../domain/usecases/patient/detail_patient_by_nik.dart';
 
 class OrderProvider extends ChangeNotifier {
   final DetailPatientByNrm detailPatientByNrm;
@@ -30,6 +34,9 @@ class OrderProvider extends ChangeNotifier {
   final GetPriceService getPriceService;
   final CreateBooking createBooking;
   final CreateEnrollment createEnrollment;
+  final CreatePatientNrm createPatientNrm;
+  final CreatePatient createPatient;
+  final DetailPatientByNik detailPatientByNik;
 
   OrderProvider({
     required this.detailPatientByNrm,
@@ -39,15 +46,20 @@ class OrderProvider extends ChangeNotifier {
     required this.getPriceService,
     required this.createBooking,
     required this.createEnrollment,
+    required this.createPatientNrm,
+    required this.createPatient,
+    required this.detailPatientByNik,
   });
 
   final storage = const FlutterSecureStorage();
   BookingEntites bookingEntities = BookingEntites();
+  PatientEntities patientEntities = PatientEntities();
   EnrollmentEntities enrollmentEntities = EnrollmentEntities();
   DetailPatientEntities doctors = DetailPatientEntities();
   ClinicEntities clinics = ClinicEntities();
   ClinicEntities clinicsByArea = ClinicEntities();
   bool loadClinic = false;
+  bool loadPatient = false;
   List<OrganisationUnitsEntities> filteredClinics =
       <OrganisationUnitsEntities>[];
   bool newPatientAlreadyExist = false;
@@ -67,6 +79,18 @@ class OrderProvider extends ChangeNotifier {
   // Check NIK Patient
   String _errorMessage = "";
 
+  // Use phone number as wa number
+  bool waNumberEqPhoneNumber = false;
+
+  final TextEditingController complaintCtrl = TextEditingController();
+  final TextEditingController nik = TextEditingController();
+  final TextEditingController dobCtrl = TextEditingController();
+  final TextEditingController phoneNumberCtrl = TextEditingController();
+
+  int orderFor = 0;
+  int? patientType;
+  String search = "";
+
   String get errorMessage => _errorMessage;
 
   RequestState _requestState = RequestState.Empty;
@@ -76,6 +100,8 @@ class OrderProvider extends ChangeNotifier {
   RequestState _requestPriceState = RequestState.Empty;
   RequestState _makeAppointmentState = RequestState.Empty;
   RequestState _requestCreateEnrollmentState = RequestState.Empty;
+  RequestState _requestCreateNewPatientState = RequestState.Empty;
+  RequestState _requestLoadPatientState = RequestState.Empty;
 
   RequestState get requestState => _requestState;
 
@@ -91,6 +117,11 @@ class OrderProvider extends ChangeNotifier {
 
   RequestState get requestCreateEnrollmentState =>
       _requestCreateEnrollmentState;
+
+  RequestState get requestCreateNewPatientState =>
+      _requestCreateNewPatientState;
+
+  RequestState get requestLoadPatientState => _requestLoadPatientState;
 
   void setRequestDoctorsState(RequestState state) {
     _requestDoctorsState = state;
@@ -119,6 +150,16 @@ class OrderProvider extends ChangeNotifier {
 
   void setRequestCreateEnrollmentState(RequestState state) {
     _requestCreateEnrollmentState = state;
+    notifyListeners();
+  }
+
+  void setRequestCreateNewPatientState(RequestState state) {
+    _requestCreateNewPatientState = state;
+    notifyListeners();
+  }
+
+  void setRequestLoadPatientState(RequestState state) {
+    _requestLoadPatientState = state;
     notifyListeners();
   }
 
@@ -153,7 +194,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void updateBooking(BookingEntites bookingEntities) {
-    bookingEntities = bookingEntities;
+    this.bookingEntities = bookingEntities;
     notifyListeners();
   }
 
@@ -174,6 +215,36 @@ class OrderProvider extends ChangeNotifier {
 
   void setSelectedTime(String? value) {
     selectedTime = value;
+    notifyListeners();
+  }
+
+  void setErrorMessage(String value) {
+    _errorMessage = value;
+    notifyListeners();
+  }
+
+  void setOrderFor(int value) {
+    orderFor = value;
+    notifyListeners();
+  }
+
+  void setPatientType(int? value) {
+    patientType = value;
+    notifyListeners();
+  }
+
+  void setWaNumberEqPhoneNumber(bool value) {
+    waNumberEqPhoneNumber = value;
+    notifyListeners();
+  }
+
+  void updatePatient(PatientEntities patientEntities) {
+    this.patientEntities = patientEntities;
+    notifyListeners();
+  }
+
+  void setSearch(String value) {
+    search = value;
     notifyListeners();
   }
 
@@ -198,6 +269,7 @@ class OrderProvider extends ChangeNotifier {
 
       final PatientModel dataPatient = PatientModel.fromAttributes(res ?? []);
       _nikPatient = dataPatient.nik;
+      notifyListeners();
 
       _requestState = RequestState.Loaded;
       notifyListeners();
@@ -352,6 +424,93 @@ class OrderProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> createNRM() async {
+    setRequestCreateNewPatientState(RequestState.Loading);
+
+    final result = await createPatientNrm({
+      "name": patientEntities.name,
+      "orgUnit": "ZxIltg4P06f",
+    });
+    result.fold((l) {
+      setRequestCreateNewPatientState(RequestState.Error);
+      _errorMessage = l.message;
+      notifyListeners();
+    }, (res) {
+      final nrm = jsonDecode(res)["nrm"] ?? "";
+      final isExist = jsonDecode(res)["isExist"] ?? false;
+
+      newPatientAlreadyExist = isExist;
+      notifyListeners();
+      if (!isExist) {
+        patientEntities.nrm = nrm;
+        notifyListeners();
+      }
+    });
+  }
+
+  Future<void> createNewPatient() async {
+    await createNRM();
+    setRequestCreateNewPatientState(RequestState.Loading);
+    if (patientEntities.nrm != null) {
+      final result = await createPatient(patientEntities);
+      result.fold((l) {
+        setRequestCreateNewPatientState(RequestState.Error);
+        _errorMessage = l.message;
+        notifyListeners();
+      }, (res) {
+        patientEntities.tei = res;
+        notifyListeners();
+        setRequestCreateNewPatientState(RequestState.Loaded);
+      });
+    }
+  }
+
+  Future<void> getPatients() async {
+    setRequestLoadPatientState(RequestState.Loading);
+    if (patientEntities.nrm != null) {
+      final result = await createPatient(patientEntities);
+      result.fold((l) {
+        setRequestLoadPatientState(RequestState.Error);
+        _errorMessage = l.message;
+        notifyListeners();
+      }, (res) {
+        // patientEntities = res;
+        notifyListeners();
+        setRequestLoadPatientState(RequestState.Loaded);
+      });
+    }
+  }
+
+  Future<void> getPatientByNIK({String? nik}) async {
+    setRequestLoadPatientState(RequestState.Loading);
+    patientEntities = PatientEntities();
+    notifyListeners();
+
+    final result = await detailPatientByNik(nik ?? "");
+    result.fold((l) {
+      setRequestLoadPatientState(RequestState.Error);
+      _errorMessage = l.message;
+      notifyListeners();
+    }, (r) {
+      // Wrap detail patient if any
+      final res = DetailPatientModel.fromJson(jsonDecode(r));
+      if (res.trackedEntityInstances != null &&
+          res.trackedEntityInstances!.isNotEmpty &&
+          res.trackedEntityInstances![0].trackedEntityInstance != null) {
+        final teiRef = res.trackedEntityInstances![0].trackedEntityInstance;
+        final patient = PatientModel.fromAttributes(
+          res.trackedEntityInstances![0].attributes ?? [],
+        );
+
+        patient.tei = teiRef;
+        notifyListeners();
+        patientEntities = patient;
+        notifyListeners();
+        setRequestLoadPatientState(RequestState.Loaded);
+      }
+    });
+  }
+
   clear() {
     bookingEntities = BookingEntites();
     doctors = DetailPatientEntities();
@@ -361,6 +520,9 @@ class OrderProvider extends ChangeNotifier {
     newPatientAlreadyExist = false;
     organisationUnitsId = "";
     serviceItemSelected = 0;
+    orderFor = 0;
+    patientType = null;
+    search = "";
     dates = null;
     times = null;
     selectedDate = null;
