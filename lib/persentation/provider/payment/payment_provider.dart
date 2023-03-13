@@ -24,21 +24,41 @@ class PaymentProvider extends ChangeNotifier {
 
   PaymentEntites? _paymentEntites;
   PaymentEntites? get paymentEntites => _paymentEntites;
-  
+
   Future<void> getPayment() async {
     _stateGetMethod = RequestState.Loading;
     notifyListeners();
 
     final ress = await getPaymentMethod();
-    ress.fold(
-    (l) {
+    ress.fold((l) {
       _errMsg = l.message;
       _stateGetMethod = RequestState.Error;
       notifyListeners();
-    }, 
-    (r) {
+    }, (r) {
       _paymentEntites = r;
       _stateGetMethod = RequestState.Loaded;
+      notifyListeners();
+    });
+  }
+
+  RequestState _genratePaymentState = RequestState.Empty;
+  RequestState get genratePaymentState => _genratePaymentState;
+
+  String _paymentUrls = "";
+  String get paymentUrls => _paymentUrls;
+
+  Future<void> genratePayment(Map<String, dynamic> data) async {
+    _genratePaymentState = RequestState.Loading;
+    notifyListeners();
+
+    final ress = await createPayment(data);
+    ress.fold((l) {
+      _genratePaymentState = RequestState.Error;
+      _errMsg = l.message;
+      notifyListeners();
+    }, (r) {
+      _genratePaymentState = RequestState.Loaded;
+      _paymentUrls = r.paymentUrl ?? "-";
       notifyListeners();
     });
   }

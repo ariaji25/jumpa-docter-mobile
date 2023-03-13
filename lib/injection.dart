@@ -4,6 +4,7 @@ import 'package:jd_mobile/data/datasources/articles/article_api.dart';
 import 'package:jd_mobile/data/datasources/chat/chat_api.dart';
 import 'package:jd_mobile/data/datasources/http_services.dart';
 import 'package:jd_mobile/data/datasources/order/order_api.dart';
+import 'package:jd_mobile/data/datasources/payment/payment_api.dart';
 import 'package:jd_mobile/data/datasources/schedule/schedule_api.dart';
 import 'package:jd_mobile/data/repositories/articles/articles_repositpry_impl.dart';
 import 'package:jd_mobile/data/repositories/auth/auth_repository_impl.dart';
@@ -185,9 +186,12 @@ Future setup() async {
   getIt.registerLazySingleton<GetDoctors>(() => GetDoctors(getIt()));
   getIt.registerLazySingleton<GetPriceService>(() => GetPriceService(getIt()));
   getIt.registerLazySingleton<CreateBooking>(() => CreateBooking(getIt()));
-  getIt.registerLazySingleton<CreateEnrollment>(() => CreateEnrollment(getIt()));
-  getIt.registerLazySingleton<GetPaymentMethod>(() => GetPaymentMethod(getIt()));
-  getIt.registerLazySingleton<GetPaymentStatus>(() => GetPaymentStatus(getIt()));
+  getIt
+      .registerLazySingleton<CreateEnrollment>(() => CreateEnrollment(getIt()));
+  getIt
+      .registerLazySingleton<GetPaymentMethod>(() => GetPaymentMethod(getIt()));
+  getIt
+      .registerLazySingleton<GetPaymentStatus>(() => GetPaymentStatus(getIt()));
   getIt.registerLazySingleton<CreatePayment>(() => CreatePayment(getIt()));
 
   // External
@@ -220,6 +224,11 @@ Future setup() async {
   );
   getIt.registerLazySingleton<OrderApi>(
     () => OrderApi(
+      getIt<HttpService>().dio,
+    ),
+  );
+  getIt.registerLazySingleton<PaymentApi>(
+    () => PaymentApi(
       getIt<HttpService>().dio,
     ),
   );

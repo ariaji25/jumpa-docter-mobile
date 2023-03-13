@@ -76,8 +76,9 @@ class OrderRepositoryImpl extends OrderRepository {
   @override
   Future<Either<Failure, String>> createBooking(BookingEntites booking) async {
     try {
-      await api.createBooking(BookingModel.formEntities(booking).toJson());
-      return const Right("Success Created!");
+      final result =
+          await api.createBooking(BookingModel.formEntities(booking).toJson());
+      return Right(result["response"]["importSummaries"][0]["reference"]);
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));
     } on DioError catch (e) {

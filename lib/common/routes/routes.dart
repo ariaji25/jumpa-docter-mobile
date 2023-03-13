@@ -7,6 +7,8 @@ import 'package:jd_mobile/persentation/pages/auth/otp_page.dart';
 import 'package:jd_mobile/persentation/pages/base/base_page.dart';
 import 'package:jd_mobile/persentation/pages/global/on_boarding_page.dart';
 import 'package:jd_mobile/persentation/pages/global/splash_page.dart';
+import 'package:jd_mobile/persentation/pages/homecare/payment_detail.dart';
+import 'package:jd_mobile/persentation/pages/homecare/success.dart';
 import 'package:jd_mobile/persentation/pages/order/complaint_page.dart';
 import 'package:jd_mobile/persentation/pages/order/doctor_page.dart';
 
@@ -141,6 +143,16 @@ class AppRoutes {
       case PaymentPage.routeName:
         return CupertinoPageRoute(
           builder: (_) => const PaymentPage(),
+          settings: settings,
+        );
+      case PaymentDetailPage.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const PaymentDetailPage(),
+          settings: settings,
+        );
+      case PaymentSuccess.routeName:
+        return CupertinoPageRoute(
+          builder: (_) => const PaymentSuccess(),
           settings: settings,
         );
 

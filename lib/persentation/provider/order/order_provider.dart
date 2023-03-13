@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -81,6 +82,9 @@ class OrderProvider extends ChangeNotifier {
 
   // Use phone number as wa number
   bool waNumberEqPhoneNumber = false;
+
+  // Order ID
+  String reference = "";
 
   final TextEditingController complaintCtrl = TextEditingController();
   final TextEditingController nik = TextEditingController();
@@ -380,6 +384,7 @@ class OrderProvider extends ChangeNotifier {
       _errorMessage = l.message;
       notifyListeners();
     }, (r) {
+      reference = r;
       setMakeAppointmentState(RequestState.Loaded);
     });
   }
@@ -465,7 +470,6 @@ class OrderProvider extends ChangeNotifier {
     }
   }
 
-
   Future<void> getPatientByNIK({String? nik}) async {
     setRequestLoadPatientState(RequestState.Loading);
     patientEntities = PatientEntities();
@@ -518,6 +522,10 @@ class OrderProvider extends ChangeNotifier {
     dataSet = "";
     price = "";
 
+    // Booking ID
+    reference = "";
+    complaintCtrl.clear();
+
     // Check NIK Patient
     _errorMessage = "";
     _requestState = RequestState.Empty;
@@ -526,5 +534,6 @@ class OrderProvider extends ChangeNotifier {
     _requestClinicsAreaState = RequestState.Empty;
     _requestPriceState = RequestState.Empty;
     _requestCreateEnrollmentState = RequestState.Empty;
+    notifyListeners();
   }
 }

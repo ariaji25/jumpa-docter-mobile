@@ -53,4 +53,11 @@ class AppConst {
     "8": Colors.red,
     "9": Colors.red,
   };
+
+  static Map<String, String> pickIconPayment = {
+    "801": "bni.png",
+    "819": "dana.png",
+    "302": "link.png",
+    "812": "ovo.png"
+  };
 }

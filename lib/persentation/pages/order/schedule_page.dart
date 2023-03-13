@@ -8,6 +8,7 @@ import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/persentation/pages/homecare/payment_detail.dart';
 import 'package:jd_mobile/persentation/pages/order/summary_page.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
 import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
@@ -198,7 +199,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
 
   _makeAppointment(OrderProvider orderProvider) async {
     if (orderProvider.serviceItemSelected == 0) {
-      Navigator.pushNamed(context, PaymentPage.routeName);
+      Navigator.pushNamed(context, PaymentDetailPage.routeName);
     } else {
       if (orderProvider.bookingEntities.orderType == AppConst.ORDER_FOR_OTHER) {
         // orderProvider.bookingEntities.teiReference =
