@@ -9,7 +9,6 @@ import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/persentation/pages/webview/webview_page.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
-import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:jd_mobile/persentation/provider/payment/payment_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +29,6 @@ class _PaymentState extends State<PaymentPage> {
   var _pgCode = "801";
   late OrderProvider orderProvider;
   late PaymentProvider paymentProvider;
-  late PatientProvider patientProvider;
 
   @override
   void initState() {
@@ -38,7 +36,6 @@ class _PaymentState extends State<PaymentPage> {
     _init();
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
     paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
-    patientProvider = Provider.of<PatientProvider>(context, listen: false);
   }
 
   _init() async {
@@ -60,8 +57,8 @@ class _PaymentState extends State<PaymentPage> {
               "product_name": orderProvider.bookingEntities.serviceType,
               "product_price": "${orderProvider.bookingEntities.price}00",
               "payment_channel": _pgCode,
-              "patient_id": patientProvider.patient.tei,
-              "patient_name": patientProvider.patient.name,
+              "patient_id": orderProvider.patientEntities.tei,
+              "patient_name": orderProvider.patientEntities.name,
               "booking_date":
                   "${orderProvider.bookingEntities.visitDate} ${orderProvider.bookingEntities.visitTime}"
             }).then((value) {

@@ -1,4 +1,5 @@
 // ignore_for_file: overridden_fields, annotate_overrides
+
 import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import '../../../common/helpers/date_helper.dart';
 import '../../../domain/entities/patient/attribute_entities.dart';
