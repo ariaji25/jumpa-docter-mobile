@@ -16,7 +16,6 @@ import 'package:provider/provider.dart';
 
 import '../../../common/resources/colors.dart';
 import '../../../common/theme/theme.dart';
-import '../homecare/payment.dart';
 import 'components/base_screen_order.dart';
 import 'components/date_card.dart';
 
@@ -47,7 +46,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
         Duration(days: index),
       ),
     ));
-    orderProvider.setSelectedDate(orderProvider.dates![0]);
+    orderProvider.setSelectedDate(orderProvider.dates?[0]);
 
     _generateTime();
 
@@ -91,7 +90,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
             height: 90,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: orderProvider.dates!.length,
+              itemCount: orderProvider.dates?.length,
               itemBuilder: (_, index) => Container(
                 margin: EdgeInsets.only(
                   right: (index < orderProvider.dates!.length - 1)

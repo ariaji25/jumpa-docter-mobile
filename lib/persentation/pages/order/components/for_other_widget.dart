@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/persentation/pages/order/components/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,8 @@ import '../../../../common/resources/colors.dart';
 import '../../../../common/theme/theme.dart';
 import '../../../provider/order/order_provider.dart';
 import '../../../widgets/button_item_selected.dart';
+import '../../../widgets/loading.dart';
+import '../../../widgets/universal_empty_state.dart';
 import 'bottom_sheet.dart';
 
 class ForOtherWidget extends StatefulWidget {
@@ -61,57 +64,61 @@ class _ForOtherState extends State<ForOtherWidget> {
         ),
         const SizedBox(height: 20),
         if (widget.patientType == 1)
-          searchButton(
-            label: "Pilih pasien",
-            value: widget.orderProvider.patientEntities.name,
-            onTap: () {
-              bottomSheetWidget(
-                single: true,
-                context: context,
-                onSearch: widget.onSearch,
-                inputType: TextInputType.number,
-                isInputNIK: true,
-                child: Consumer<OrderProvider>(
-                  builder: (context, scheduleProvider, child) {
-                    return widget.orderProvider.loadPatient
-                        ? loadingWidget
-                        : Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {});
-                                Navigator.of(context).pop();
-                              },
-                              child: ListTile(
-                                leading:
-                                    widget.orderProvider.patientEntities.name !=
-                                            null
-                                        ? Image.asset(
-                                            '${Assets.logoPath}/launcher.png')
-                                        : const SizedBox.shrink(),
-                                title: Text(
-                                  widget.orderProvider.patientEntities.name ??
-                                      "",
-                                  style: AppTheme.heading6.copyWith(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  widget.orderProvider.patientEntities.name ??
-                                      "",
-                                  style: AppTheme.bodyText.copyWith(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                  },
-                ),
-              );
-            },
-          ),
+          Consumer<OrderProvider>(builder: (context, orderProvider, child) {
+            return searchButton(
+                label: "Pilih pasien",
+                value: orderProvider.patientEntities.name,
+                onTap: () {
+                  orderProvider.setRequestLoadPatientState(RequestState.Empty);
+                  bottomSheetWidget(
+                      single: true,
+                      context: context,
+                      onSearch: widget.onSearch,
+                      inputType: TextInputType.number,
+                      isInputNIK: true,
+                      child: Consumer<OrderProvider>(
+                          builder: (context, orderProvider, child) {
+                        return orderProvider.requestLoadPatientState ==
+                                RequestState.Loading
+                            ? const Loading()
+                            : orderProvider.requestLoadPatientState ==
+                                        RequestState.Loaded &&
+                                    orderProvider.patientEntities.name == null
+                                ? universalEmptyState()
+                                : Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: ListTile(
+                                        leading: orderProvider
+                                                    .patientEntities.name !=
+                                                null
+                                            ? Image.asset(
+                                                '${Assets.logoPath}/launcher.png')
+                                            : const SizedBox.shrink(),
+                                        title: Text(
+                                          orderProvider.patientEntities.name ??
+                                              "",
+                                          style: AppTheme.heading6.copyWith(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          orderProvider.patientEntities.name ??
+                                              "",
+                                          style: AppTheme.bodyText.copyWith(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                      }));
+                });
+          }),
       ],
     );
   }

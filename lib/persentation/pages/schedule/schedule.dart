@@ -385,22 +385,17 @@ class SchedulePageState extends State<SchedulePage> {
                                                         e.statusPayment) !=
                                                     "0",
                                                 onTap: () {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    WebViewPage
-                                                        .routeName, /*arguments: [
-                                                    // INDEX 0
-                                                    PaymentUrlModel(
-                                                      paymentUrl:
-                                                      e.getElementValue(
-                                                        e.paymentUrl,
-                                                      ),
-                                                    ),
-                                                    // INDEX 1
-                                                    e.getElementValue(
-                                                        e.pgCode),
-                                                  ]*/
-                                                  );
+                                                  Navigator.pushNamed(context,
+                                                      WebViewPage.routeName,
+                                                      arguments: [
+                                                        // INDEX 0
+                                                        e.getElementValue(
+                                                          e.paymentUrl,
+                                                        ),
+                                                        // INDEX 1
+                                                        e.getElementValue(
+                                                            e.pgCode),
+                                                      ]);
                                                 },
                                               ),
                                             ),

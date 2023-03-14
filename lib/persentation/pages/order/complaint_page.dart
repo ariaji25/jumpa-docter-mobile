@@ -365,7 +365,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
     orderProvider.createNewPatient().then((value) {
       Navigator.of(context).pop();
 
-      if (orderProvider.errorMessage.isEmpty) {
+      if (orderProvider.requestCreateNewPatientState == RequestState.Loaded) {
         if (!orderProvider.newPatientAlreadyExist) {
           SnackBarCustom.showSnackBarMessage(
               context: context,

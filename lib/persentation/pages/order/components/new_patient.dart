@@ -391,9 +391,9 @@ bottomSheetPatientWidget(
                         Buttons(
                           title: "Simpan",
                           onTap: onOrderForOther,
-                          loading: orderProvider.requestState ==
+                          loading: orderProvider.requestCreateNewPatientState ==
                               RequestState.Loading,
-                          disabled: orderProvider.requestState ==
+                          disabled: orderProvider.requestCreateNewPatientState ==
                               RequestState.Loading,
                         ),
                         const SizedBox(height: 16),
