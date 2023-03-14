@@ -272,6 +272,8 @@ class OrderProvider extends ChangeNotifier {
       _nikPatient = dataPatient.nik;
       notifyListeners();
 
+      updatePatient(PatientModel.fromEntities(dataPatient));
+
       _requestState = RequestState.Loaded;
       notifyListeners();
     });
