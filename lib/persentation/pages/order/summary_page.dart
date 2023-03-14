@@ -7,7 +7,6 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
-import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -36,12 +35,10 @@ class SummaryPage extends StatefulWidget {
 class SummaryPageState extends State<SummaryPage> {
   ScreenshotController screenshotController = ScreenshotController();
   late OrderProvider orderProvider;
-  late PatientProvider patientProvider;
 
   @override
   void initState() {
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    patientProvider = Provider.of<PatientProvider>(context, listen: false);
     super.initState();
   }
 
@@ -73,10 +70,10 @@ class SummaryPageState extends State<SummaryPage> {
                   children: [
                     _buildItemSummary(
                         key: "No Rekam Medis",
-                        value: patientProvider.patient.nrm ?? ""),
+                        value: orderProvider.patientEntities.nrm ?? ""),
                     _buildItemSummary(
                         key: "Nama pasien",
-                        value: patientProvider.patient.name ?? ""),
+                        value: orderProvider.patientEntities.name ?? ""),
                     _buildItemSummary(
                         key: "Layanan",
                         value: orderProvider.bookingEntities.service),
@@ -299,7 +296,7 @@ class SummaryPageState extends State<SummaryPage> {
                             child: Padding(
                               padding: paddingTop(2),
                               child: Text(
-                                patientProvider.patient.nrm ?? "",
+                                orderProvider.patientEntities.nrm ?? "",
                                 textAlign: TextAlign.center,
                                 style: AppTheme.heading6.copyWith(
                                   fontSize: 20,
@@ -314,11 +311,11 @@ class SummaryPageState extends State<SummaryPage> {
                         const SizedBox(height: 25),
                         _buildItemSummary(
                           key: "No Rekam Medis",
-                          value: patientProvider.patient.nrm ?? "",
+                          value: orderProvider.patientEntities.nrm ?? "",
                         ),
                         _buildItemSummary(
                           key: "Nama pasien",
-                          value: patientProvider.patient.name ?? "",
+                          value: orderProvider.patientEntities.name ?? "",
                         ),
                         _buildItemSummary(
                           key: "Layanan",
