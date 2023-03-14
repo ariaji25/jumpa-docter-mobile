@@ -29,6 +29,7 @@ import '../account/profile_form.dart';
 import '../auth/login_page.dart';
 import 'package:jd_mobile/injection.dart' as di;
 
+import '../notifications/notification_page.dart';
 import '../schedule/schedule.dart';
 
 class BasePage extends StatefulWidget {
@@ -186,10 +187,9 @@ class BasePageState extends State<BasePage> {
                         context.sbWidth(size: 11),
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamedAndRemoveUntil(
+                            Navigator.pushNamed(
                               context,
-                              LoginPage.routeName,
-                              (route) => false,
+                              NotificationPage.routeName,
                             );
                           },
                           child: Container(
