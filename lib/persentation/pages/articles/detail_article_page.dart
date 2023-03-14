@@ -375,7 +375,7 @@ class _DetailArticleState extends State<DetailArticlePage> {
     await FlutterShare.share(
       title: articles.title ?? '-',
       text: articles.shortDesc ?? '-',
-      linkUrl: ' https://jumpadokter.castellumdigital.org/articles/detail/${articles.id}',
+      linkUrl: ' https://jumpadokter.castellumdigital.org/article/detail/${articles.id}',
     );
   }
 }
