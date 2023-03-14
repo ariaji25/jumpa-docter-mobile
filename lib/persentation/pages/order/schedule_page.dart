@@ -40,22 +40,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
     super.initState();
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
     patientProvider = Provider.of<PatientProvider>(context, listen: false);
-    orderProvider.setDates(List.generate(
-      7,
-      (index) => DateTime.now().add(
-        Duration(days: index),
-      ),
-    ));
-    orderProvider.setSelectedDate(orderProvider.dates?[0]);
-
-    _generateTime();
-
-    Future.delayed(const Duration(milliseconds: 300), () {
-      BookingEntites bookingEntities = orderProvider.bookingEntities;
-      bookingEntities.visitDate =
-          DateHelper.dhis2DateFormat(orderProvider.selectedDate!);
-      orderProvider.updateBooking(bookingEntities);
-    });
+    _generateDate();
   }
 
   @override
@@ -93,7 +78,11 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
               itemCount: orderProvider.dates?.length,
               itemBuilder: (_, index) => Container(
                 margin: EdgeInsets.only(
-                  right: (index < orderProvider.dates!.length - 1)
+                  right: (index <
+                          (orderProvider.dates == null
+                                  ? 0
+                                  : orderProvider.dates!.length) -
+                              1)
                       ? 5
                       : SizeConstants.margin,
                 ),
@@ -251,6 +240,25 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
         }
       }
     }
+  }
+
+  void _generateDate() {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      orderProvider.setDates(List.generate(
+        7,
+        (index) => DateTime.now().add(
+          Duration(days: index),
+        ),
+      ));
+      orderProvider.setSelectedDate(orderProvider.dates?[0]);
+
+      _generateTime();
+
+      BookingEntites bookingEntities = orderProvider.bookingEntities;
+      bookingEntities.visitDate =
+          DateHelper.dhis2DateFormat(orderProvider.selectedDate!);
+      orderProvider.updateBooking(bookingEntities);
+    });
   }
 
   void _generateTime() {
