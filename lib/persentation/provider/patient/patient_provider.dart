@@ -91,7 +91,7 @@ class PatientProvider extends ChangeNotifier {
   Future<void> patientCreateNrm() async {
     final result = await createPatientNrm({
       "name": patient.name,
-      "orgUnit": "ZxIltg4P06f",
+      "orgUnit": "jp49nCFvI75",
     });
     result.fold((l) {
       setRequestState(RequestState.Error);

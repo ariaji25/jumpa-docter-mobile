@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -59,8 +58,6 @@ class OrderProvider extends ChangeNotifier {
   DetailPatientEntities doctors = DetailPatientEntities();
   ClinicEntities clinics = ClinicEntities();
   ClinicEntities clinicsByArea = ClinicEntities();
-  bool loadClinic = false;
-  bool loadPatient = false;
   List<OrganisationUnitsEntities> filteredClinics =
       <OrganisationUnitsEntities>[];
   bool newPatientAlreadyExist = false;
@@ -434,7 +431,7 @@ class OrderProvider extends ChangeNotifier {
 
     final result = await createPatientNrm({
       "name": patientEntities.name,
-      "orgUnit": "ZxIltg4P06f",
+      "orgUnit": "jp49nCFvI75",
     });
     result.fold((l) {
       setRequestCreateNewPatientState(RequestState.Error);
@@ -475,7 +472,7 @@ class OrderProvider extends ChangeNotifier {
     patientEntities = PatientEntities();
     notifyListeners();
 
-    final result = await detailPatientByNik(nik ?? "");
+    final result = await detailPatientByNik(nik ?? search);
     result.fold((l) {
       setRequestLoadPatientState(RequestState.Error);
       _errorMessage = l.message;
@@ -495,8 +492,8 @@ class OrderProvider extends ChangeNotifier {
         notifyListeners();
         patientEntities = patient;
         notifyListeners();
-        setRequestLoadPatientState(RequestState.Loaded);
       }
+      setRequestLoadPatientState(RequestState.Loaded);
     });
   }
 
@@ -534,6 +531,7 @@ class OrderProvider extends ChangeNotifier {
     _requestClinicsAreaState = RequestState.Empty;
     _requestPriceState = RequestState.Empty;
     _requestCreateEnrollmentState = RequestState.Empty;
+    _requestLoadPatientState = RequestState.Empty;
     notifyListeners();
   }
 }

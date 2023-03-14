@@ -93,7 +93,7 @@ class BookingModel extends BookingEntites {
       "event": "null",
       "program": "El6a2lnac0D",
       "programStage": "Aic2hFz57cE",
-      "orgUnit": "ZxIltg4P06f",
+      "orgUnit": "jp49nCFvI75",
       "trackedEntityInstance": teiReference,
       "status": status ?? "ACTIVE",
       "dueDate": DateHelper.dhis2DateFormat(DateTime.now()),

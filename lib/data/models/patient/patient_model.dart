@@ -100,7 +100,7 @@ class PatientModel extends PatientEntities {
   Map<String, dynamic> toJson() {
     return {
       "trackedEntityType": "MvJlDDrR78m",
-      "orgUnit": "ZxIltg4P06f",
+      "orgUnit": "jp49nCFvI75",
       "attributes": [
         {"attribute": PatientKeys.name, "value": name},
         {"attribute": PatientKeys.phoneNumber, "value": phoneNumber},
@@ -119,14 +119,14 @@ class PatientModel extends PatientEntities {
         {
           "program": "El6a2lnac0D",
           "status": "ACTIVE",
-          "orgUnit": "ZxIltg4P06f",
+          "orgUnit": "jp49nCFvI75",
           "enrollmentDate": DateHelper.dhis2DateFormat(DateTime.now()),
           "incidentDate": DateHelper.dhis2DateFormat(DateTime.now()),
           "events": [
             {
               "program": "El6a2lnac0D",
               "programStage": "Aic2hFz57cE",
-              "orgUnit": "ZxIltg4P06f",
+              "orgUnit": "jp49nCFvI75",
               "dueDate": DateHelper.dhis2DateFormat(DateTime.now()),
               "eventDate": DateHelper.dhis2DateFormat(DateTime.now()),
               "status": "ACTIVE"
