@@ -264,11 +264,14 @@ class OrderProvider extends ChangeNotifier {
       _errorMessage = l.message;
       notifyListeners();
     }, (r) {
-      final res = DetailPatientModel.fromJson(jsonDecode(r))
-          .trackedEntityInstances?[0]
-          .attributes;
+      DetailPatientModel res = DetailPatientModel.fromJson(jsonDecode(r));
+      final detailPatient = res.trackedEntityInstances?[0].attributes;
 
-      final PatientModel dataPatient = PatientModel.fromAttributes(res ?? []);
+      final PatientModel dataPatient =
+          PatientModel.fromAttributes(detailPatient ?? []);
+      final teiRef = res.trackedEntityInstances![0].trackedEntityInstance;
+      dataPatient.tei = teiRef;
+      notifyListeners();
       _nikPatient = dataPatient.nik;
       notifyListeners();
 
