@@ -367,6 +367,15 @@ class SchedulePageState extends State<SchedulePage> {
                                                         fontSize: 14),
                                                 marginBottom: 0,
                                                 onTap: () {
+                                                  SnackBarCustom
+                                                      .showSnackBarMessage(
+                                                          context: context,
+                                                          title: "Opps !",
+                                                          message:
+                                                              "Masih dalam Tahap develop",
+                                                          typeMessage:
+                                                              SnackBarType
+                                                                  .error);
                                                   // Navigator.pushNamed(
                                                   //     context, PaymentSuccess.routeName,arguments: [e.bookingId]);
                                                 },

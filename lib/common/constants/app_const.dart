@@ -32,6 +32,7 @@ class AppConst {
     "5": "No bills found",
     "8": "Payment Cancelled",
     "9": "Unknown",
+    "Need verification": "Perlu verifikasi",
   };
 
   static Map<String, Widget> ICON_PAYMENT_STATUS = {
