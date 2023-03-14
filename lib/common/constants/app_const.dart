@@ -28,10 +28,10 @@ class AppConst {
     "0": "Menunggu proses pembayaran!",
     "1": "Pembayaran dalam proses!",
     "2": "Pembayaran berhasil!",
-    "4": "Payment Reserval",
-    "5": "No bills found",
-    "8": "Payment Cancelled",
-    "9": "Unknown",
+    "4": "Reservasi Pembayaran",
+    "5": "Tidak ada tagihan yang ditemukan",
+    "8": "Pembayaran Dibatalkan",
+    "9": "Tidak dikenal",
     "Need verification": "Perlu verifikasi",
   };
 
