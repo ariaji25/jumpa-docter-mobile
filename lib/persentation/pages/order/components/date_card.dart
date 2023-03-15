@@ -40,9 +40,10 @@ class DateCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              date!.day.toString(),
+              date != null ? date!.day.toString() : "",
               style: AppTheme.subtitle.copyWith(
-                color: isSelected! ? AppColors.whiteColor : AppColors.primaryColor,
+                color:
+                    isSelected! ? AppColors.whiteColor : AppColors.primaryColor,
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
@@ -51,9 +52,10 @@ class DateCard extends StatelessWidget {
               height: 1,
             ),
             Text(
-              date!.monthName,
+              date != null ? date!.monthName.toString() : "",
               style: AppTheme.subtitle.copyWith(
-                color: isSelected! ? AppColors.whiteColor : AppColors.primaryColor,
+                color:
+                    isSelected! ? AppColors.whiteColor : AppColors.primaryColor,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
@@ -62,9 +64,10 @@ class DateCard extends StatelessWidget {
               height: 6,
             ),
             Text(
-              date!.dayName,
+              date != null ? date!.dayName.toString() : "",
               style: AppTheme.subtitle.copyWith(
-                color: isSelected! ? AppColors.whiteColor : AppColors.primaryColor,
+                color:
+                    isSelected! ? AppColors.whiteColor : AppColors.primaryColor,
                 fontSize: 9,
                 fontWeight: FontWeight.w300,
               ),

@@ -87,11 +87,11 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                       : SizeConstants.margin,
                 ),
                 child: DateCard(
-                  orderProvider.dates![index],
+                  orderProvider.dates?[index],
                   isSelected:
-                      orderProvider.selectedDate == orderProvider.dates![index],
+                      orderProvider.selectedDate == orderProvider.dates?[index],
                   onTap: () {
-                    orderProvider.setSelectedDate(orderProvider.dates![index]);
+                    orderProvider.setSelectedDate(orderProvider.dates?[index]);
                     BookingEntites bookingEntities =
                         orderProvider.bookingEntities;
                     bookingEntities.visitDate =
