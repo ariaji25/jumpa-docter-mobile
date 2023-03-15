@@ -86,6 +86,7 @@ class ArticleProvider extends ChangeNotifier {
 
       /* FOR GET ALL */
       if (selectedByTag.isEmpty && search.isEmpty) {
+        article.clear();
         article.addAll(articles);
         notifyListeners();
       }
