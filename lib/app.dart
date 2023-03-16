@@ -1,3 +1,4 @@
+import 'package:dio_log/overlay_draggable_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,7 +49,15 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.light,
         title: 'JumpaDokter',
         onGenerateRoute: AppRoutes.generateRoute,
-        home: const SplashPage(),
+        home: Builder(
+          builder: (context) {
+            showDebugBtn(
+              context,
+              btnColor: AppColors.primaryColor.withOpacity(.7),
+            );
+            return const SplashPage();
+          },
+        ),
       ),
     );
   }
