@@ -7,7 +7,7 @@ import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
-import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitities.dart';
 import 'package:jd_mobile/domain/entities/booking/organisation_units_entities.dart';
 import 'package:jd_mobile/domain/entities/patient/tracked_entity_instances_entities.dart';
 import 'package:jd_mobile/persentation/pages/order/components/base_screen_order.dart';
@@ -51,7 +51,7 @@ class _DoctorPageState extends State<DoctorPage> {
       orderProvider.setDataSet("u210IplNxve");
       await orderProvider.getListClinics();
 
-      BookingEntites bookingEntities = orderProvider.bookingEntities;
+      BookingEntities bookingEntities = orderProvider.bookingEntities;
       bookingEntities.serviceType = serviceType[_serviceItemSelected];
       orderProvider.updateBooking(bookingEntities);
     });
@@ -97,7 +97,7 @@ class _DoctorPageState extends State<DoctorPage> {
                       order.setDataSet(AppConst.HOME_CARE);
                       _onChangeServiceTpe(order);
 
-                      BookingEntites bookingEntities = order.bookingEntities;
+                      BookingEntities bookingEntities = order.bookingEntities;
                       bookingEntities.serviceType =
                           serviceType[_serviceItemSelected];
                       order.updateBooking(bookingEntities);
@@ -117,7 +117,7 @@ class _DoctorPageState extends State<DoctorPage> {
                       order.setDataSet(AppConst.ONSITE);
                       _onChangeServiceTpe(order);
 
-                      BookingEntites bookingEntities = order.bookingEntities;
+                      BookingEntities bookingEntities = order.bookingEntities;
                       bookingEntities.serviceType =
                           serviceType[_serviceItemSelected];
                       order.updateBooking(bookingEntities);
@@ -162,7 +162,7 @@ class _DoctorPageState extends State<DoctorPage> {
                                           padding: paddingBottom(16),
                                           child: InkWell(
                                             onTap: () {
-                                              BookingEntites bookingEntities =
+                                              BookingEntities bookingEntities =
                                                   order.bookingEntities;
                                               bookingEntities.clinicArea =
                                                   data.displayName ?? "-";
@@ -235,7 +235,7 @@ class _DoctorPageState extends State<DoctorPage> {
                                         padding: paddingBottom(16.0),
                                         child: InkWell(
                                           onTap: () {
-                                            BookingEntites bookingEntities =
+                                            BookingEntities bookingEntities =
                                                 order.bookingEntities;
                                             bookingEntities.clinicName =
                                                 data?.displayName ?? "-";
@@ -307,7 +307,7 @@ class _DoctorPageState extends State<DoctorPage> {
                                     padding: paddingBottom(16.0),
                                     child: InkWell(
                                       onTap: () {
-                                        BookingEntites bookingEntities =
+                                        BookingEntities bookingEntities =
                                             order.bookingEntities;
                                         bookingEntities.doctorName =
                                             data.getElementValue(
@@ -389,7 +389,7 @@ class _DoctorPageState extends State<DoctorPage> {
   }
 
   _onClickNext(OrderProvider orderProvider) async {
-    BookingEntites bookingEntities = orderProvider.bookingEntities;
+    BookingEntities bookingEntities = orderProvider.bookingEntities;
     bookingEntities.price = orderProvider.price;
     orderProvider.updateBooking(bookingEntities);
     await orderProvider.createNewEnrollment();

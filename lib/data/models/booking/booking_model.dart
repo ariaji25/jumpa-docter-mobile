@@ -1,9 +1,9 @@
 // ignore_for_file: overridden_fields, annotate_overrides, must_be_immutable
 
 import 'package:jd_mobile/common/helpers/date_helper.dart';
-import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitities.dart';
 
-class BookingModel extends BookingEntites {
+class BookingModel extends BookingEntities {
   String? teiReference;
   String? visitDate;
   String? visitTime;
@@ -23,6 +23,7 @@ class BookingModel extends BookingEntites {
   String? price;
   String? doctorId;
   String? enrollment;
+  String? orgUnit;
 
   BookingModel({
     this.teiReference,
@@ -44,9 +45,10 @@ class BookingModel extends BookingEntites {
     this.price,
     this.doctorId,
     this.enrollment,
+    this.orgUnit,
   });
 
-  factory BookingModel.formEntities(BookingEntites d) {
+  factory BookingModel.formEntities(BookingEntities d) {
     return BookingModel(
       teiReference: d.teiReference,
       visitDate: d.visitDate,
@@ -67,6 +69,7 @@ class BookingModel extends BookingEntites {
       price: d.price,
       doctorId: d.doctorId,
       enrollment: d.enrollment,
+      orgUnit: d.orgUnit,
     );
   }
 
@@ -93,7 +96,7 @@ class BookingModel extends BookingEntites {
       "event": "null",
       "program": "El6a2lnac0D",
       "programStage": "Aic2hFz57cE",
-      "orgUnit": "jp49nCFvI75",
+      "orgUnit": orgUnit,
       "trackedEntityInstance": teiReference,
       "status": status ?? "ACTIVE",
       "dueDate": DateHelper.dhis2DateFormat(DateTime.now()),

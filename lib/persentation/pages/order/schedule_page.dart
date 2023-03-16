@@ -7,7 +7,7 @@ import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
-import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitities.dart';
 import 'package:jd_mobile/persentation/pages/homecare/payment_detail.dart';
 import 'package:jd_mobile/persentation/pages/order/summary_page.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
@@ -92,7 +92,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                       orderProvider.selectedDate == orderProvider.dates?[index],
                   onTap: () {
                     orderProvider.setSelectedDate(orderProvider.dates?[index]);
-                    BookingEntites bookingEntities =
+                    BookingEntities bookingEntities =
                         orderProvider.bookingEntities;
                     bookingEntities.visitDate =
                         DateHelper.dhis2DateFormat(orderProvider.selectedDate!);
@@ -131,7 +131,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                             isActive: orderProvider.selectedTime == items,
                             onTap: () {
                               orderProvider.setSelectedTime(items);
-                              BookingEntites bookingEntities =
+                              BookingEntities bookingEntities =
                                   orderProvider.bookingEntities;
                               bookingEntities.visitTime = items;
                               orderProvider.updateBooking(bookingEntities);
@@ -149,7 +149,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                           onTap: () {
                             orderProvider.setSelectedTime(items);
 
-                            BookingEntites bookingEntities =
+                            BookingEntities bookingEntities =
                                 orderProvider.bookingEntities;
                             bookingEntities.visitTime = items;
                             orderProvider.updateBooking(bookingEntities);
@@ -254,7 +254,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
 
       _generateTime();
 
-      BookingEntites bookingEntities = orderProvider.bookingEntities;
+      BookingEntities bookingEntities = orderProvider.bookingEntities;
       bookingEntities.visitDate =
           DateHelper.dhis2DateFormat(orderProvider.selectedDate!);
       orderProvider.updateBooking(bookingEntities);

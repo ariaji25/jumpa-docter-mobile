@@ -7,7 +7,7 @@ import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/data/models/booking/enrollment_model.dart';
 import 'package:jd_mobile/data/models/patient/detail_patient_model.dart';
 import 'package:jd_mobile/data/models/patient/patient_model.dart';
-import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitities.dart';
 import 'package:jd_mobile/domain/entities/booking/enrollment_entities.dart';
 import 'package:jd_mobile/domain/entities/booking/organisation_units_entities.dart';
 import 'package:jd_mobile/domain/entities/booking/service_price_item_entities.dart';
@@ -52,7 +52,7 @@ class OrderProvider extends ChangeNotifier {
   });
 
   final storage = const FlutterSecureStorage();
-  BookingEntites bookingEntities = BookingEntites();
+  BookingEntities bookingEntities = BookingEntities();
   PatientEntities patientEntities = PatientEntities();
   EnrollmentEntities enrollmentEntities = EnrollmentEntities();
   DetailPatientEntities doctors = DetailPatientEntities();
@@ -170,6 +170,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void setOrgUnits(String value) {
+    bookingEntities.orgUnit = value;
     orgUnits = value;
     notifyListeners();
   }
@@ -194,7 +195,7 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateBooking(BookingEntites bookingEntities) {
+  void updateBooking(BookingEntities bookingEntities) {
     this.bookingEntities = bookingEntities;
     notifyListeners();
   }
@@ -503,7 +504,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   clear() {
-    bookingEntities = BookingEntites();
+    bookingEntities = BookingEntities();
     doctors = DetailPatientEntities();
     clinics = ClinicEntities();
     clinicsByArea = ClinicEntities();

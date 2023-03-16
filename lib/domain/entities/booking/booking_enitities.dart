@@ -2,7 +2,7 @@
 
 import 'package:equatable/equatable.dart';
 
-class BookingEntites extends Equatable {
+class BookingEntities extends Equatable {
   String? teiReference;
   String? visitDate;
   String? visitTime;
@@ -22,8 +22,9 @@ class BookingEntites extends Equatable {
   String? price;
   String? doctorId;
   String? enrollment;
+  String? orgUnit;
 
-  BookingEntites({
+  BookingEntities({
     this.teiReference,
     this.visitDate,
     this.visitTime,
@@ -43,6 +44,7 @@ class BookingEntites extends Equatable {
     this.price,
     this.doctorId,
     this.enrollment,
+    this.orgUnit,
   });
 
   @override
@@ -66,5 +68,6 @@ class BookingEntites extends Equatable {
         price,
         doctorId,
         enrollment,
+        orgUnit,
       ];
 }

@@ -6,7 +6,7 @@ import 'package:jd_mobile/common/utils/fialure.dart';
 import 'package:jd_mobile/data/models/booking/booking_model.dart';
 import 'package:jd_mobile/data/models/booking/enrollment_model.dart';
 import 'package:jd_mobile/data/models/patient/detail_patient_model.dart';
-import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitities.dart';
 
 import '../../../domain/entities/booking/clinic_entities.dart';
 import '../../../domain/entities/booking/enrollment_entities.dart';
@@ -74,7 +74,7 @@ class OrderRepositoryImpl extends OrderRepository {
   }
 
   @override
-  Future<Either<Failure, String>> createBooking(BookingEntites booking) async {
+  Future<Either<Failure, String>> createBooking(BookingEntities booking) async {
     try {
       final result =
           await api.createBooking(BookingModel.formEntities(booking).toJson());

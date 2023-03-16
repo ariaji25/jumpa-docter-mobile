@@ -3,7 +3,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
-import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitities.dart';
 import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import 'package:jd_mobile/domain/entities/services_jd/service_jd_entities.dart';
 import 'package:jd_mobile/persentation/pages/order/components/base_screen_order.dart';
@@ -111,7 +111,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 minLines: 8,
                 isShowingLable: false,
                 onChanged: (value) {
-                  BookingEntites bookingEntities =
+                  BookingEntities bookingEntities =
                       orderProvider.bookingEntities;
                   bookingEntities.complaint = value;
                   orderProvider.updateBooking(bookingEntities);
@@ -303,7 +303,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
 
   void _onSelectedOrderFor(int t, String s) {
     orderProvider.setOrderFor(t);
-    BookingEntites bookingEntities = orderProvider.bookingEntities;
+    BookingEntities bookingEntities = orderProvider.bookingEntities;
     bookingEntities.orderType = s;
     orderProvider.updateBooking(bookingEntities);
     orderProvider.updatePatient(

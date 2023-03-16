@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:jd_mobile/common/utils/fialure.dart';
-import 'package:jd_mobile/domain/entities/booking/booking_enitites.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitities.dart';
 import 'package:jd_mobile/domain/entities/booking/clinic_entities.dart';
 import 'package:jd_mobile/domain/entities/booking/service_price_entities.dart';
 
@@ -12,6 +12,6 @@ abstract class OrderRepository {
   Future<Either<Failure, ClinicEntities>> getClinics();
   Future<Either<Failure, ClinicEntities>> getClinicsByArea(String areaId);
   Future<Either<Failure, ServicePriceEntities>> getPriceService(String period, String dataSet, String orgUnit);
-  Future<Either<Failure, String>> createBooking(BookingEntites booking);
+  Future<Either<Failure, String>> createBooking(BookingEntities booking);
   Future<Either<Failure, String>> createEnrollment(EnrollmentEntities enrollment);
 }
