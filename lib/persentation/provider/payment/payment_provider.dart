@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/domain/entities/payment/payment_entities.dart';
@@ -59,6 +61,29 @@ class PaymentProvider extends ChangeNotifier {
     }, (r) {
       _genratePaymentState = RequestState.Loaded;
       _paymentUrls = r.paymentUrl ?? "-";
+      notifyListeners();
+    });
+  }
+
+  RequestState _paymentStatusState = RequestState.Empty;
+  RequestState get paymentStatusState => _paymentStatusState;
+
+  String _paymentStatus = "";
+  String get paymentStatus => _paymentStatus;
+
+  Future<void> checkPaymentStatus({required String bookingId}) async {
+    _paymentStatusState = RequestState.Loading;
+    notifyListeners();
+
+    final ress = await getPaymentStatus(bookingId);
+    ress.fold((l) {
+      _paymentStatusState = RequestState.Error;
+      _errMsg = l.message;
+      notifyListeners();
+    }, (r) {
+      _paymentStatusState = RequestState.Loaded;
+      _paymentStatus = r;
+      log("PAYMENT STATUS -- $r");
       notifyListeners();
     });
   }
