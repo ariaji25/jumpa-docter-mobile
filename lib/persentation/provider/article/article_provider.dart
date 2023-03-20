@@ -16,13 +16,18 @@ class ArticleProvider extends ChangeNotifier {
   int limit = 10;
   String search = "";
   bool lastPage = false;
-  var article = <ArticlesEntities>[];
+  var listArticles = <ArticlesEntities>[];
+  var listArticlesHome = <ArticlesEntities>[];
   var articleFav = <ArticlesEntities>[];
   var tag = <String>[];
   String selectedByTag = "";
+  String selectedByTagHome = "";
   String _errorMessage = "";
   TextEditingController searchCtrl = TextEditingController();
-  int selectedIndex = 0;
+  int selectedIndexTagArticels = 0;
+  int selectedIndexTagArticlesHome = 0;
+
+  int get getSelectedIndexTagArticle => selectedIndexTagArticlesHome;
 
   String get errorMessage => _errorMessage;
   RequestState _requestStateArticles = RequestState.Loading;
@@ -42,13 +47,13 @@ class ArticleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getArticle() async {
+  Future<void> getArticle({bool isFromHome = false}) async {
     setRequestStateArticles(RequestState.Loading);
     final result = await getArticles(Tuple3(
         page,
         limit,
         BaseFilterEntity(
-          tag: selectedByTag.split(":")[0],
+          tag: (isFromHome ? selectedByTagHome : selectedByTag).split(":")[0],
           keywords: search,
         )));
     result.fold((l) {
@@ -62,16 +67,16 @@ class ArticleProvider extends ChangeNotifier {
       }
 
       /* FOR SELECT BY TAG */
-      if (selectedByTag.isNotEmpty) {
-        article.clear();
-        article.addAll(articles);
+      if ((isFromHome ? selectedByTagHome : selectedByTag).isNotEmpty) {
+        (isFromHome ? listArticlesHome : listArticles).clear();
+        (isFromHome ? listArticlesHome : listArticles).addAll(articles);
         notifyListeners();
       }
 
       /* FOR SEARCH */
       if (search.isNotEmpty) {
-        article.clear();
-        article.addAll(articles);
+        listArticles.clear();
+        listArticles.addAll(articles);
         notifyListeners();
       }
 
@@ -85,10 +90,16 @@ class ArticleProvider extends ChangeNotifier {
       }
 
       /* FOR GET ALL */
-      if (selectedByTag.isEmpty && search.isEmpty) {
-        article.clear();
-        article.addAll(articles);
+      if (isFromHome && selectedByTagHome.isEmpty) {
+        listArticlesHome.clear();
+        listArticlesHome.addAll(articles);
         notifyListeners();
+      } else {
+        if (selectedByTag.isEmpty && search.isEmpty) {
+          listArticles.clear();
+          listArticles.addAll(articles);
+          notifyListeners();
+        }
       }
       setRequestStateArticles(RequestState.Loaded);
     });
@@ -129,13 +140,18 @@ class ArticleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSelectedByTagHome(value) {
+    selectedByTagHome = value;
+    notifyListeners();
+  }
+
   void setPage(value) {
     page = value;
     notifyListeners();
   }
 
-  void clearArticle() {
-    article.clear();
+  void clearArticle({bool isFromHome = false}) {
+    (isFromHome ? listArticlesHome : listArticles).clear();
     notifyListeners();
   }
 
@@ -144,8 +160,13 @@ class ArticleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedIndex(value) {
-    selectedIndex = value;
+  void setSelectedIndexTagArticle(value) {
+    selectedIndexTagArticels = value;
+    notifyListeners();
+  }
+
+  setSelectedIndexTagArticleHome(int value) {
+    selectedIndexTagArticlesHome = value;
     notifyListeners();
   }
 }

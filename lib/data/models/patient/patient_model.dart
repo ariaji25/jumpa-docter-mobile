@@ -119,7 +119,7 @@ class PatientModel extends PatientEntities {
       "enrollments": [
         {
           "program": "El6a2lnac0D",
-          "status": "ACTIVE",
+          "status": "COMPLETED",
           "orgUnit": "jp49nCFvI75",
           "enrollmentDate": DateHelper.dhis2DateFormat(DateTime.now()),
           "incidentDate": DateHelper.dhis2DateFormat(DateTime.now()),

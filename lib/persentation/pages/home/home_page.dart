@@ -6,13 +6,13 @@ import 'package:jd_mobile/persentation/pages/order/complaint_page.dart';
 import 'package:jd_mobile/persentation/widgets/loading.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
+
 import '../../../common/resources/assets.dart';
 import '../../../common/resources/colors.dart';
 import '../../../common/resources/size.dart';
 import '../../../common/theme/theme.dart';
 import '../../../common/utils/state_enum.dart';
 import '../../provider/article/article_provider.dart';
-import '../../provider/home/home_provider.dart';
 import '../../widgets/menu_item.dart';
 import '../articles/article_page.dart';
 import '../chat/specialization_page.dart';
@@ -40,7 +40,7 @@ class HomeScreenState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ArticleProvider articleProvider =
           Provider.of<ArticleProvider>(context, listen: false);
-      articleProvider.getArticle();
+      articleProvider.getArticle(isFromHome: true);
       articleProvider.getTag();
     });
     super.initState();
@@ -48,8 +48,6 @@ class HomeScreenState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    HomeProvider homeProvider =
-        Provider.of<HomeProvider>(context, listen: true);
     ArticleProvider articleProvider =
         Provider.of<ArticleProvider>(context, listen: true);
     return Container(
@@ -166,7 +164,7 @@ class HomeScreenState extends State<HomePage> {
                             return ItemSelected(
                               title: e.split(":")[0].toUpperCase(),
                               isActive:
-                                  homeProvider.getSelectedIndexTagArticle ==
+                                  articleProvider.getSelectedIndexTagArticle ==
                                       index,
                               onTap: () {
                                 if (e == "Semua") {
@@ -179,7 +177,8 @@ class HomeScreenState extends State<HomePage> {
                                   _getByTag(articleProvider, e);
                                 }
 
-                                homeProvider.setSelectedIndexTagArticle(index);
+                                articleProvider
+                                    .setSelectedIndexTagArticleHome(index);
                               },
                             );
                           },
@@ -233,10 +232,10 @@ class HomeScreenState extends State<HomePage> {
                       child: ListView.builder(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         physics: const BouncingScrollPhysics(),
-                        itemCount: articleProvider.article.length,
+                        itemCount: articleProvider.listArticlesHome.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (ctx, idx) {
-                          final article = articleProvider.article[idx];
+                          final article = articleProvider.listArticlesHome[idx];
 
                           /// CARD ARTICLE
                           return InkWell(
@@ -252,7 +251,10 @@ class HomeScreenState extends State<HomePage> {
                               padding: const EdgeInsets.all(5),
                               margin: EdgeInsets.only(
                                 left: idx == 0 ? 30 : 8,
-                                right: idx == articleProvider.article.length - 1
+                                right: idx ==
+                                        articleProvider
+                                                .listArticlesHome.length -
+                                            1
                                     ? 30
                                     : 0,
                               ),
@@ -279,9 +281,10 @@ class HomeScreenState extends State<HomePage> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            child: Image.asset(
-                                              "${Assets.othersPath}/artic.png",
-                                              fit: BoxFit.cover,
+                                            child: const Icon(
+                                              Icons.error_outline,
+                                              size: 45,
+                                              color: Colors.grey,
                                             ),
                                           ),
                                         )
@@ -293,6 +296,14 @@ class HomeScreenState extends State<HomePage> {
                                                 BorderRadius.circular(10),
                                             child: Image.network(
                                               article.thumbnail.toString(),
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return const Icon(
+                                                  Icons.error_outline,
+                                                  size: 45,
+                                                  color: Colors.grey,
+                                                );
+                                              },
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -347,17 +358,19 @@ class HomeScreenState extends State<HomePage> {
   }
 
   _getByTag(ArticleProvider articleProvider, String tag) {
-    articleProvider.setSelectedByTag(tag);
+    articleProvider.setSelectedByTagHome(tag);
     articleProvider.setPage(1);
-    articleProvider.getArticle();
+    articleProvider.getArticle(isFromHome: true);
   }
 
   _getAll(ArticleProvider articleProvider) {
     articleProvider.setSelectedByTag("");
+    articleProvider.setSelectedByTagHome("");
     articleProvider.setSearch("");
     articleProvider.setPage(1);
-    articleProvider.clearArticle();
-    articleProvider.getArticle();
+    articleProvider.setSelectedIndexTagArticle(0);
+    articleProvider.clearArticle(isFromHome: true);
+    articleProvider.getArticle(isFromHome: true);
   }
 
   final List<Widget> imageSliders = imgList.map((item) {

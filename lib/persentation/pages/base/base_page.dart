@@ -299,8 +299,11 @@ class BasePageState extends State<BasePage> {
     });
   }
 
-  void isNewPatient(BuildContext context, PatientProvider patientProvider) {
+  void isNewPatient(
+      BuildContext context, PatientProvider patientProvider) async {
     if (patientProvider.isNewPatient && !patientProvider.isInvalidToken) {
+      const storage = FlutterSecureStorage();
+      await storage.delete(key: AppConst.NRM_KEY);
       confirmModal(
         context,
         "Pasien Baru",

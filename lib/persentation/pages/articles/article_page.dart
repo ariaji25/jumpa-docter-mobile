@@ -124,7 +124,7 @@ class _ArticlePageState extends State<ArticlePage> {
                         physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.symmetric(
                             horizontal: SizeConstants.margin),
-                        itemCount: articleProvider.tag.length - 1,
+                        itemCount: articleProvider.tag.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (ctx, index) {
                           final tags = articleProvider.tag[index];
@@ -132,7 +132,7 @@ class _ArticlePageState extends State<ArticlePage> {
                           return TagSelecetdItem(
                             tags: tags,
                             index: index,
-                            isSelecetd: articleProvider.selectedIndex == index,
+                            isSelecetd: articleProvider.selectedIndexTagArticels == index,
                             onTap: () {
                               articleProvider.setSearch("");
                               if (tags == "Semua") {
@@ -141,7 +141,7 @@ class _ArticlePageState extends State<ArticlePage> {
                                 _getByTag(articleProvider, tags);
                               }
 
-                              articleProvider.setSelectedIndex(index);
+                              articleProvider.setSelectedIndexTagArticle(index);
                             },
                           );
                         },
@@ -153,7 +153,7 @@ class _ArticlePageState extends State<ArticlePage> {
                   ? const Center(child: Loading())
                   : articleProvider.requestStateArticles ==
                               RequestState.Loaded &&
-                          articleProvider.article.isNotEmpty
+                          articleProvider.listArticles.isNotEmpty
                       ? SizedBox(
                           height: 300,
                           width: double.infinity,
@@ -167,17 +167,17 @@ class _ArticlePageState extends State<ArticlePage> {
                             scrollDirection: Axis.horizontal,
                             child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
-                              itemCount: articleProvider.article.length,
+                              itemCount: articleProvider.listArticles.length,
                               scrollDirection: Axis.horizontal,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: SizeConstants.margin),
                               itemBuilder: (context, index) {
-                                final data = articleProvider.article[index];
+                                final data = articleProvider.listArticles[index];
                                 return cardTileArticle(data, () {
                                   Navigator.pushNamed(
                                       context, DetailArticlePage.routeName,
                                       arguments: data);
-                                }, index, articleProvider.article.length);
+                                }, index, articleProvider.listArticles.length);
                               },
                             ),
                           ),

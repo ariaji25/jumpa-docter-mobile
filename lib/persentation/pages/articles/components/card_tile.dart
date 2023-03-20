@@ -3,8 +3,6 @@ import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
 import 'package:jd_mobile/domain/entities/articles/article_entites.dart';
 
-import '../../../../common/resources/assets.dart';
-
 Widget cardTileArticle(
     ArticlesEntities data, Function onTap, int index, int length) {
   return InkWell(
@@ -34,14 +32,15 @@ Widget cardTileArticle(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           data.thumbnail == null || data.thumbnail == ""
-              ? Container(
+              ? SizedBox(
                   width: double.infinity,
                   height: 130,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      "${Assets.othersPath}/artic.png",
-                      fit: BoxFit.cover,
+                    child: const Icon(
+                      Icons.error_outline,
+                      size: 45,
+                      color: Colors.grey,
                     ),
                   ),
                 )
@@ -53,6 +52,13 @@ Widget cardTileArticle(
                     child: Image.network(
                       data.thumbnail.toString(),
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.error_outline,
+                          size: 45,
+                          color: Colors.grey,
+                        );
+                      },
                     ),
                   ),
                 ),
