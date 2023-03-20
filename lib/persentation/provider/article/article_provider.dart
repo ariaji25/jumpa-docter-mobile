@@ -54,7 +54,7 @@ class ArticleProvider extends ChangeNotifier {
         limit,
         BaseFilterEntity(
           tag: (isFromHome ? selectedByTagHome : selectedByTag).split(":")[0],
-          keywords: search,
+          keywords: (isFromHome ?null:search),
         )));
     result.fold((l) {
       setRequestStateArticles(RequestState.Error);
