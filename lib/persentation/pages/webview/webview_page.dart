@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:jd_mobile/common/resources/size.dart';
@@ -51,8 +53,9 @@ class WebViewPageState extends State<WebViewPage> {
                 });
               },
               onUpdateVisitedHistory: (ctr, url, _) {
+                log("URL - $url");
                 if (url.toString().contains("payment-success")) {
-                  // Get.to(const PaymentSuccess());
+                  Navigator.pushNamed(context, PaymentSuccess.routeName);
                 }
               },
               onReceivedServerTrustAuthRequest: (controller, challenge) async {
