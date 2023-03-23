@@ -133,6 +133,8 @@ class _DoctorPageState extends State<DoctorPage> {
               title: "Pilih Daerah Klinik",
               subtitle: order.bookingEntities.clinicArea ?? "Pilih",
               onTap: () {
+                order.bookingEntities.clinicName = "Pilih";
+                order.bookingEntities.doctorName = "Pilih";
                 bottomSheetWidget(
                     context: context,
                     onSearch: (value){
