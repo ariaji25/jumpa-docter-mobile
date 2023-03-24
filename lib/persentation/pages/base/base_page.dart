@@ -30,7 +30,7 @@ import '../auth/login_page.dart';
 import 'package:jd_mobile/injection.dart' as di;
 
 import '../notifications/notification_page.dart';
-import '../schedule/schedule.dart';
+import '../schedule/schedule_page.dart';
 
 class BasePage extends StatefulWidget {
   static const routeName = "/BasePage";

@@ -98,8 +98,7 @@ class _DoctorPageState extends State<DoctorPage> {
                       _onChangeServiceTpe(order);
 
                       BookingEntities bookingEntities = order.bookingEntities;
-                      bookingEntities.serviceType =
-                          serviceType[_serviceItemSelected];
+                      bookingEntities.serviceType = serviceType[0];
                       order.updateBooking(bookingEntities);
                     },
                   ),
@@ -118,8 +117,7 @@ class _DoctorPageState extends State<DoctorPage> {
                       _onChangeServiceTpe(order);
 
                       BookingEntities bookingEntities = order.bookingEntities;
-                      bookingEntities.serviceType =
-                          serviceType[_serviceItemSelected];
+                      bookingEntities.serviceType = serviceType[1];
                       order.updateBooking(bookingEntities);
                     },
                   ),
@@ -137,7 +135,7 @@ class _DoctorPageState extends State<DoctorPage> {
                 order.bookingEntities.doctorName = "Pilih";
                 bottomSheetWidget(
                     context: context,
-                    onSearch: (value){
+                    onSearch: (value) {
                       order.getListClinics();
                     },
                     title: "Cari berdasarkan daerah Klinik",
