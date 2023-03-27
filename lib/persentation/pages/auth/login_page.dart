@@ -14,6 +14,8 @@ import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:jd_mobile/persentation/widgets/app_bars.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/helpers/error_auth_helper.dart';
+
 class LoginPage extends StatefulWidget {
   static const routeName = "/LoginPage";
 
@@ -201,10 +203,11 @@ class _LoginPageState extends State<LoginPage> {
     if (_phoneNumber.text.isEmpty) {
       closeKeyboard();
       SnackBarCustom.showSnackBarMessage(
-          context: context,
-          title: "Ops!",
-          message: "Silahkan mengisi nomor hp terlebih dahulu!",
-          typeMessage: SnackBarType.error);
+        context: context,
+        title: "Ops!",
+        message: "Silahkan mengisi nomor hp terlebih dahulu!",
+        typeMessage: SnackBarType.error,
+      );
     } else {
       provider.setRequestState(RequestState.Loading);
       provider.requestOtp(
@@ -216,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
           SnackBarCustom.showSnackBarMessage(
             context: context,
             title: "Opps!",
-            message: err.toString(),
+            message: ErrorAuthHelper.getAuthErrorMessage(err),
             typeMessage: SnackBarType.error,
           );
         },
