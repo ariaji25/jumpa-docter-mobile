@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/persentation/pages/order/components/widgets.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,62 @@ class _ForOtherState extends State<ForOtherWidget> {
           ],
         ),
         const SizedBox(height: 20),
+        if (widget.patientType == 0)
+          Consumer<OrderProvider>(builder: (context, orderProvider, child) {
+            return Visibility(
+              visible: orderProvider.requestCreateNewPatientState ==
+                  RequestState.Loaded && orderProvider.patientEntities.nik != null,
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.grey200Color,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Text(
+                      orderProvider.patientEntities.nik ?? "-",
+                      style: AppTheme.bodyText.copyWith(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const WidgetSpan(
+                          child: Icon(
+                            FeatherIcons.checkCircle,
+                            color: AppColors.greenSuccessColor,
+                            size: 12,
+                          ),
+                        ),
+                        const WidgetSpan(
+                          child: SizedBox(
+                            width: 5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " NIK Pasien Baru",
+                          style: AppTheme.subtitle.copyWith(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.greenSuccessColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
         if (widget.patientType == 1)
           Consumer<OrderProvider>(builder: (context, orderProvider, child) {
             return searchButton(
@@ -83,22 +140,25 @@ class _ForOtherState extends State<ForOtherWidget> {
                             ? const Loading()
                             : orderProvider.requestLoadPatientState ==
                                         RequestState.Loaded &&
-                                    orderProvider.patientEntities.name == null
+                                    orderProvider.patientEntitiesByNIK.name == null
                                 ? universalEmptyState()
                                 : Expanded(
                                     child: InkWell(
                                       onTap: () {
+                                        orderProvider.updatePatient(
+                                            orderProvider.patientEntitiesByNIK);
+                                        orderProvider.clearPatientByNIK();
                                         Navigator.of(context).pop();
                                       },
                                       child: ListTile(
                                         leading: orderProvider
-                                                    .patientEntities.name !=
+                                                    .patientEntitiesByNIK.name !=
                                                 null
                                             ? Image.asset(
                                                 '${Assets.logoPath}/launcher.png')
                                             : const SizedBox.shrink(),
                                         title: Text(
-                                          orderProvider.patientEntities.name ??
+                                          orderProvider.patientEntitiesByNIK.name ??
                                               "",
                                           style: AppTheme.heading6.copyWith(
                                             fontSize: 16,
@@ -107,7 +167,7 @@ class _ForOtherState extends State<ForOtherWidget> {
                                           ),
                                         ),
                                         subtitle: Text(
-                                          orderProvider.patientEntities.name ??
+                                          orderProvider.patientEntitiesByNIK.name ??
                                               "",
                                           style: AppTheme.bodyText.copyWith(
                                             color: Colors.black,

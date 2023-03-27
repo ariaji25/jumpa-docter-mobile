@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/theme/theme.dart';
@@ -9,6 +10,8 @@ import 'package:jd_mobile/domain/entities/services_jd/service_jd_entities.dart';
 import 'package:jd_mobile/persentation/pages/order/components/base_screen_order.dart';
 import 'package:jd_mobile/persentation/pages/order/components/button_item_selected.dart';
 import 'package:jd_mobile/persentation/pages/order/doctor_page.dart';
+import 'package:jd_mobile/persentation/provider/map/map_provider.dart';
+import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:jd_mobile/persentation/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +31,8 @@ class ComplaintPage extends StatefulWidget {
 }
 
 class _ComplaintPageState extends State<ComplaintPage> {
+  late MapProvider mapProvider;
+  late PatientProvider patientProvider;
   late OrderProvider orderProvider;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -35,6 +40,8 @@ class _ComplaintPageState extends State<ComplaintPage> {
 
   @override
   void initState() {
+    mapProvider = Provider.of<MapProvider>(context, listen: false);
+    patientProvider = Provider.of<PatientProvider>(context, listen: false);
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
     orderProvider.checkNikPatient();
     super.initState();
@@ -57,7 +64,10 @@ class _ComplaintPageState extends State<ComplaintPage> {
             : "Tambahkan rincian keluhan anda",
         btnTitle: "Lanjut",
         onNext: () {
-          if (formKey.currentState!.validate()) {
+          if (orderProvider.patientEntities.nik == null ||
+              orderProvider.patientEntities.name == null) {
+            messageRequired("Pastikan pasien tidak kosong");
+          } else if (formKey.currentState!.validate()) {
             Navigator.pushNamed(context, DoctorPage.routeName);
           }
         },
@@ -306,8 +316,8 @@ class _ComplaintPageState extends State<ComplaintPage> {
     BookingEntities bookingEntities = orderProvider.bookingEntities;
     bookingEntities.orderType = s;
     orderProvider.updateBooking(bookingEntities);
-    orderProvider.updatePatient(
-        t == 0 ? orderProvider.patientEntities : PatientEntities());
+    orderProvider
+        .updatePatient(t == 0 ? patientProvider.patient : PatientEntities());
   }
 
   void _onSelectedPatientType(int t) {
@@ -341,11 +351,11 @@ class _ComplaintPageState extends State<ComplaintPage> {
 
   _onCreateNewPatient() {
     if (formKeyNewPatient.currentState!.validate()) {
-      if ((orderProvider.patientEntities.coordinate ?? "") == "") {
+      if ((orderProvider.newPatientEntities.coordinate ?? "") == "") {
         messageRequired("Pastikan Alamat dengan Maps dipilih");
-      } else if ((orderProvider.patientEntities.religion ?? "") == "") {
+      } else if ((orderProvider.newPatientEntities.religion ?? "") == "") {
         messageRequired("Agama wajib dipilih");
-      } else if ((orderProvider.patientEntities.gender ?? "") == "") {
+      } else if ((orderProvider.newPatientEntities.gender ?? "") == "") {
         messageRequired("Jenis Kelamin wajib dipilih");
       } else {
         confirmModal(
@@ -366,6 +376,11 @@ class _ComplaintPageState extends State<ComplaintPage> {
       Navigator.of(context).pop();
 
       if (orderProvider.requestCreateNewPatientState == RequestState.Loaded) {
+        orderProvider.setWaNumberEqPhoneNumber(false);
+        orderProvider.setDobCtrl(TextEditingController());
+        mapProvider.setSelectedPosition(const LatLng(0, 0));
+        mapProvider.setSelectedDetailAddress("");
+
         if (!orderProvider.newPatientAlreadyExist) {
           SnackBarCustom.showSnackBarMessage(
               context: context,

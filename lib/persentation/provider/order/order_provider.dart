@@ -54,6 +54,8 @@ class OrderProvider extends ChangeNotifier {
   final storage = const FlutterSecureStorage();
   BookingEntities bookingEntities = BookingEntities();
   PatientEntities patientEntities = PatientEntities();
+  PatientEntities patientEntitiesByNIK = PatientEntities();
+  PatientEntities newPatientEntities = PatientEntities();
   EnrollmentEntities enrollmentEntities = EnrollmentEntities();
   DetailPatientEntities doctors = DetailPatientEntities();
   ClinicEntities clinics = ClinicEntities();
@@ -83,10 +85,10 @@ class OrderProvider extends ChangeNotifier {
   // Order ID
   String reference = "";
 
-  final TextEditingController complaintCtrl = TextEditingController();
-  final TextEditingController nik = TextEditingController();
-  final TextEditingController dobCtrl = TextEditingController();
-  final TextEditingController phoneNumberCtrl = TextEditingController();
+  TextEditingController complaintCtrl = TextEditingController();
+  TextEditingController nik = TextEditingController();
+  TextEditingController dobCtrl = TextEditingController();
+  TextEditingController phoneNumberCtrl = TextEditingController();
 
   int orderFor = 0;
   int? patientType;
@@ -245,8 +247,23 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateNewPatient(PatientEntities patientEntities) {
+    newPatientEntities = patientEntities;
+    notifyListeners();
+  }
+
+  void clearPatientByNIK() {
+    patientEntitiesByNIK = PatientEntities();
+    notifyListeners();
+  }
+
   void setSearch(String value) {
     search = value;
+    notifyListeners();
+  }
+
+  void setDobCtrl(TextEditingController value) {
+    dobCtrl = value;
     notifyListeners();
   }
 
@@ -436,7 +453,7 @@ class OrderProvider extends ChangeNotifier {
     setRequestCreateNewPatientState(RequestState.Loading);
 
     final result = await createPatientNrm({
-      "name": patientEntities.name,
+      "name": newPatientEntities.name,
       "orgUnit": "jp49nCFvI75",
     });
     result.fold((l) {
@@ -450,7 +467,7 @@ class OrderProvider extends ChangeNotifier {
       newPatientAlreadyExist = isExist;
       notifyListeners();
       if (!isExist) {
-        patientEntities.nrm = nrm;
+        newPatientEntities.nrm = nrm;
         notifyListeners();
       }
     });
@@ -459,14 +476,16 @@ class OrderProvider extends ChangeNotifier {
   Future<void> createNewPatient() async {
     await createNRM();
     setRequestCreateNewPatientState(RequestState.Loading);
-    if (patientEntities.nrm != null) {
-      final result = await createPatient(patientEntities);
+    if (newPatientEntities.nrm != null) {
+      final result = await createPatient(newPatientEntities);
       result.fold((l) {
         setRequestCreateNewPatientState(RequestState.Error);
         _errorMessage = l.message;
         notifyListeners();
       }, (res) {
-        patientEntities.tei = res;
+        newPatientEntities.tei = res;
+        patientEntities = newPatientEntities;
+        newPatientEntities = PatientEntities();
         notifyListeners();
         setRequestCreateNewPatientState(RequestState.Loaded);
       });
@@ -475,7 +494,7 @@ class OrderProvider extends ChangeNotifier {
 
   Future<void> getPatientByNIK({String? nik}) async {
     setRequestLoadPatientState(RequestState.Loading);
-    patientEntities = PatientEntities();
+    patientEntitiesByNIK = PatientEntities();
     notifyListeners();
 
     final result = await detailPatientByNik(nik ?? search);
@@ -496,7 +515,7 @@ class OrderProvider extends ChangeNotifier {
 
         patient.tei = teiRef;
         notifyListeners();
-        patientEntities = patient;
+        patientEntitiesByNIK = patient;
         notifyListeners();
       }
       setRequestLoadPatientState(RequestState.Loaded);
@@ -505,6 +524,9 @@ class OrderProvider extends ChangeNotifier {
 
   clear() {
     bookingEntities = BookingEntities();
+    patientEntities = PatientEntities();
+    patientEntitiesByNIK = PatientEntities();
+    newPatientEntities = PatientEntities();
     doctors = DetailPatientEntities();
     clinics = ClinicEntities();
     clinicsByArea = ClinicEntities();
@@ -528,6 +550,9 @@ class OrderProvider extends ChangeNotifier {
     // Booking ID
     reference = "";
     complaintCtrl.clear();
+    nik.clear();
+    dobCtrl.clear();
+    phoneNumberCtrl.clear();
 
     // Check NIK Patient
     _errorMessage = "";

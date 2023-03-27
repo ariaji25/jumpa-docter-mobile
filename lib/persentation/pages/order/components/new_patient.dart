@@ -93,9 +93,9 @@ bottomSheetPatientWidget(
                           ],
                           onChanged: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.name = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                         ),
                         const SizedBox(height: 12),
@@ -107,9 +107,9 @@ bottomSheetPatientWidget(
                           inputType: TextInputType.text,
                           onChanged: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.domicilieAddress = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                         ),
                         const SizedBox(
@@ -136,11 +136,11 @@ bottomSheetPatientWidget(
                                             value.latitude
                                           ];
                                           PatientEntities patientEntities =
-                                              orderProvider.patientEntities;
+                                              orderProvider.newPatientEntities;
                                           patientEntities.coordinate =
                                               jsonEncode(listLatLong);
-                                          orderProvider
-                                              .updatePatient(patientEntities);
+                                          orderProvider.updateNewPatient(
+                                              patientEntities);
                                         }
                                       })),
                             );
@@ -211,9 +211,9 @@ bottomSheetPatientWidget(
                           formatters: [FilteringTextInputFormatter.digitsOnly],
                           onChanged: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.nik = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                         ),
                         const SizedBox(height: 12),
@@ -225,9 +225,9 @@ bottomSheetPatientWidget(
                           inputType: TextInputType.text,
                           onChanged: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.address = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                         ),
                         const SizedBox(height: 12),
@@ -241,10 +241,10 @@ bottomSheetPatientWidget(
                           isTelephone: true,
                           onChanged: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.waNumber = value;
                             patientEntities.phoneNumber = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                         ),
                         Transform.translate(
@@ -278,9 +278,9 @@ bottomSheetPatientWidget(
                             isTelephone: true,
                             onChanged: (value) {
                               PatientEntities patientEntities =
-                                  orderProvider.patientEntities;
+                                  orderProvider.newPatientEntities;
                               patientEntities.phoneNumber = value;
-                              orderProvider.updatePatient(patientEntities);
+                              orderProvider.updateNewPatient(patientEntities);
                             },
                           ),
                         const SizedBox(height: 12),
@@ -292,9 +292,9 @@ bottomSheetPatientWidget(
                           isUnderline: true,
                           onChanged: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.pob = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                         ),
                         const SizedBox(height: 12),
@@ -307,9 +307,9 @@ bottomSheetPatientWidget(
                           dateController: dobCtrl,
                           onChanged: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.dob = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                         ),
                         const SizedBox(height: 12),
@@ -335,8 +335,8 @@ bottomSheetPatientWidget(
                           height: 10,
                         ),
                         DropdownButtonFormField<String>(
-                          value:
-                              orderProvider.patientEntities.religion ?? "Pilih",
+                          value: orderProvider.newPatientEntities.religion ??
+                              "Pilih",
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(10.0),
                             border: OutlineInputBorder(
@@ -357,9 +357,9 @@ bottomSheetPatientWidget(
                           ),
                           onChanged: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.religion = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                           isExpanded: true,
                           items: [
@@ -379,12 +379,12 @@ bottomSheetPatientWidget(
                         ),
                         const SizedBox(height: 12),
                         RadioButtonGender(
-                          gender: orderProvider.patientEntities.gender ?? "",
+                          gender: orderProvider.newPatientEntities.gender ?? "",
                           onTap: (value) {
                             PatientEntities patientEntities =
-                                orderProvider.patientEntities;
+                                orderProvider.newPatientEntities;
                             patientEntities.gender = value;
-                            orderProvider.updatePatient(patientEntities);
+                            orderProvider.updateNewPatient(patientEntities);
                           },
                         ),
                         const SizedBox(height: 20),
@@ -393,8 +393,9 @@ bottomSheetPatientWidget(
                           onTap: onOrderForOther,
                           loading: orderProvider.requestCreateNewPatientState ==
                               RequestState.Loading,
-                          disabled: orderProvider.requestCreateNewPatientState ==
-                              RequestState.Loading,
+                          disabled:
+                              orderProvider.requestCreateNewPatientState ==
+                                  RequestState.Loading,
                         ),
                         const SizedBox(height: 16),
                         Padding(
