@@ -34,7 +34,6 @@ class DoctorPage extends StatefulWidget {
 }
 
 class _DoctorPageState extends State<DoctorPage> {
-  final int _serviceItemSelected = 0;
 
   final serviceType = [
     "Pelayanan di rumah",
@@ -52,7 +51,7 @@ class _DoctorPageState extends State<DoctorPage> {
       await orderProvider.getListClinics();
 
       BookingEntities bookingEntities = orderProvider.bookingEntities;
-      bookingEntities.serviceType = serviceType[_serviceItemSelected];
+      bookingEntities.serviceType = serviceType[orderProvider.serviceItemSelected];
       orderProvider.updateBooking(bookingEntities);
     });
   }
@@ -396,7 +395,7 @@ class _DoctorPageState extends State<DoctorPage> {
     if (orderProvider.requestCreateEnrollmentState == RequestState.Loaded) {
       if (mounted) {
         Navigator.pushNamed(context, AppointmentSchedulePage.routeName,
-            arguments: _serviceItemSelected);
+            arguments: orderProvider.serviceItemSelected);
       }
     } else if (orderProvider.requestCreateEnrollmentState ==
         RequestState.Error) {
