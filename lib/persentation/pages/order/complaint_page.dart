@@ -170,6 +170,8 @@ class _ComplaintPageState extends State<ComplaintPage> {
                   orderProvider: orderProvider,
                   onNewPatient: () {
                     _onSelectedPatientType(0);
+                    mapProvider.setSelectedDetailAddress("");
+                    mapProvider.setSelectedPosition(const LatLng(0, 0));
                     return bottomSheetPatientWidget(
                         context,
                         _onCheckUseWaNumber,
