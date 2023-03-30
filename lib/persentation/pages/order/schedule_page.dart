@@ -169,7 +169,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
   }
 
   _onClickNext(OrderProvider orderProvider) {
-    if (orderProvider.bookingEntities.visitTime?.isNotEmpty ?? true) {
+    if (_isNotEmptyOption(orderProvider.bookingEntities.visitTime)) {
       _makeAppointment(orderProvider);
     } else {
       _validate();
@@ -181,7 +181,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
       context: context,
       title: "Opps !",
       message: "Silahkan lengkapi informasi pemesanan anda!",
-      typeMessage: SnackBarType.error,
+      typeMessage: SnackBarType.warning,
     );
   }
 
@@ -271,6 +271,13 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
 
       return "${time.hour.toString().padLeft(2, "0")}:${time.minute.toString().padLeft(2, "0")}";
     });
+  }
+
+  bool _isNotEmptyOption(String? value) {
+    if (value == null || value.isEmpty) {
+      return false;
+    }
+    return true;
   }
 }
 

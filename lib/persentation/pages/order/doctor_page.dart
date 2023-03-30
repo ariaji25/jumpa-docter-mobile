@@ -34,7 +34,6 @@ class DoctorPage extends StatefulWidget {
 }
 
 class _DoctorPageState extends State<DoctorPage> {
-
   final serviceType = [
     "Pelayanan di rumah",
     "Kunjungan Klinik",
@@ -51,7 +50,8 @@ class _DoctorPageState extends State<DoctorPage> {
       await orderProvider.getListClinics();
 
       BookingEntities bookingEntities = orderProvider.bookingEntities;
-      bookingEntities.serviceType = serviceType[orderProvider.serviceItemSelected];
+      bookingEntities.serviceType =
+          serviceType[orderProvider.serviceItemSelected];
       orderProvider.updateBooking(bookingEntities);
     });
   }
@@ -376,9 +376,9 @@ class _DoctorPageState extends State<DoctorPage> {
         ],
       ),
       onNext: () {
-        if ((orderProvider.bookingEntities.clinicArea?.isNotEmpty ?? false) &&
-            (orderProvider.bookingEntities.clinicName?.isNotEmpty ?? false) &&
-            (orderProvider.bookingEntities.doctorName?.isNotEmpty ?? false)) {
+        if ((_isNotEmptyOption(orderProvider.bookingEntities.clinicArea)) &&
+            (_isNotEmptyOption(orderProvider.bookingEntities.clinicName)) &&
+            (_isNotEmptyOption(orderProvider.bookingEntities.doctorName))) {
           _onClickNext(orderProvider);
         } else {
           _validate();
@@ -421,5 +421,14 @@ class _DoctorPageState extends State<DoctorPage> {
     if (order.orgUnits.isNotEmpty) {
       order.getPrice();
     }
+  }
+
+  bool _isNotEmptyOption(String? value) {
+    if (value == null || value.isEmpty) {
+      return false;
+    } else if (value.isNotEmpty && value == "Pilih") {
+      return false;
+    }
+    return true;
   }
 }
