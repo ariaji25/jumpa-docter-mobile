@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import '../../../../../common/theme/theme.dart';
 import 'menu_dialog_map.dart';
 
 class DialogMapType extends StatelessWidget {
   final VoidCallback tipeNormal;
   final VoidCallback tipeSatelit;
 
-  const DialogMapType({Key? key, required this.tipeNormal, required this.tipeSatelit})
+  const DialogMapType(
+      {Key? key, required this.tipeNormal, required this.tipeSatelit})
       : super(key: key);
 
   dialogContent(BuildContext context) {
@@ -23,9 +25,9 @@ class DialogMapType extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   "Tipe Map",
-                  style: TextStyle(
+                  style: AppTheme.bodyText.copyWith(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.bold),

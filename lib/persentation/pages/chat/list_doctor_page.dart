@@ -185,7 +185,8 @@ class _ListDoctorPageState extends State<ListDoctorPage> {
 
   Widget _itemSelectText(String text) {
     return Text(text,
-        style: const TextStyle(color: AppColors.grey700Color, fontSize: 14));
+        style: AppTheme.bodyText
+            .copyWith(color: AppColors.grey700Color, fontSize: 14));
   }
 
   Widget _itemSelectIcon(int length) {
@@ -194,8 +195,8 @@ class _ListDoctorPageState extends State<ListDoctorPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(length.toString(),
-            style:
-                const TextStyle(color: AppColors.grey700Color, fontSize: 14)),
+            style: AppTheme.bodyText
+                .copyWith(color: AppColors.grey700Color, fontSize: 14)),
         for (var i = 0; i < length; i++)
           Container(
             margin: const EdgeInsets.only(left: 5),
