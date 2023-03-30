@@ -29,7 +29,8 @@ import '../account/profile_form.dart';
 import '../auth/login_page.dart';
 import 'package:jd_mobile/injection.dart' as di;
 
-import '../schedule/schedule.dart';
+import '../notifications/notification_page.dart';
+import '../schedule/schedule_page.dart';
 
 class BasePage extends StatefulWidget {
   static const routeName = "/BasePage";
@@ -186,10 +187,9 @@ class BasePageState extends State<BasePage> {
                         context.sbWidth(size: 11),
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamedAndRemoveUntil(
+                            Navigator.pushNamed(
                               context,
-                              LoginPage.routeName,
-                              (route) => false,
+                              NotificationPage.routeName,
                             );
                           },
                           child: Container(
@@ -299,8 +299,11 @@ class BasePageState extends State<BasePage> {
     });
   }
 
-  void isNewPatient(BuildContext context, PatientProvider patientProvider) {
+  void isNewPatient(
+      BuildContext context, PatientProvider patientProvider) async {
     if (patientProvider.isNewPatient && !patientProvider.isInvalidToken) {
+      const storage = FlutterSecureStorage();
+      await storage.delete(key: AppConst.NRM_KEY);
       confirmModal(
         context,
         "Pasien Baru",

@@ -91,16 +91,17 @@ class PatientProvider extends ChangeNotifier {
   Future<void> patientCreateNrm() async {
     final result = await createPatientNrm({
       "name": patient.name,
-      "orgUnit": "ZxIltg4P06f",
+      "orgUnit": "jp49nCFvI75",
     });
     result.fold((l) {
       setRequestState(RequestState.Error);
       _errorMessage = l.message;
       notifyListeners();
     }, (r) async {
-      patient.nrm = r;
+      String nrm=jsonDecode(r)["nrm"] ?? "";
+      patient.nrm = nrm;
       notifyListeners();
-      await Helpers.writeLocalStorage(AppConst.NRM_KEY, r);
+      await Helpers.writeLocalStorage(AppConst.NRM_KEY, nrm);
       await patientCreate();
     });
   }
@@ -194,7 +195,11 @@ class PatientProvider extends ChangeNotifier {
 
         storage.write(
             key: AppConst.CURRENT_USER,
-            value: PatientModel.fromEntities(patient).toStorage().toString());
+            value: jsonEncode(PatientModel.fromEntities(patient).toStorage()));
+        storage.write(
+            key: AppConst.ENROLLMENT_CURRENT_USER,
+            value:
+                jsonEncode(res.trackedEntityInstances![0].enrollments ?? []));
         setRequestState(RequestState.Loaded);
       }
     });

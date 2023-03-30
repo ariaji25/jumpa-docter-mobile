@@ -5,21 +5,21 @@ class ErrorAuthHelper {
 
   static String getAuthErrorMessage(FirebaseAuthException e) {
     if (e.code == "invalid-verification-code") {
-      return "Invalid OTP";
+      return "OTP tidak valid";
     } else if (e.code == "code-expired") {
-      return "Code expired. Try again with new code";
+      return "Kode kedaluwarsa. Coba lagi dengan kode baru";
     } else if (e.code == "internal-error") {
-      return "Unknown error. Please try again after sometime";
+      return "Kesalahan yang tidak diketahui. Silakan coba lagi setelah beberapa saat";
     } else if (e.code == "invalid-phone-number") {
-      return "Invalid phone number";
+      return "Nomor telepon tidak valid";
     } else if (e.code == "invalid-verification-id") {
-      return "Invalid verification id";
+      return "Id verifikasi tidak valid";
     } else if (e.code == "quota-exceeded") {
-      return "We are receiving too many requests. Please try again after sometime";
+      return "Kami menerima terlalu banyak permintaan. Silakan coba lagi setelah beberapa saat";
     } else if (e.code == "timeout") {
-      return "Timeout. Please verify again";
+      return "Waktu habis. Harap verifikasi lagi";
     } else if (e.code == "too-many-requests") {
-      return "We are receiving too many requests. Try again after sometime";
+      return "Kami menerima terlalu banyak permintaan. Coba lagi setelah beberapa saat";
     }
     return e.message.toString();
   }

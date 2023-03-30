@@ -10,4 +10,6 @@ abstract class PatientRepository {
   Future<Either<Failure, String>> updatePatient(Map<String, dynamic> data);
 
   Future<Either<Failure, String>> detailPatientByNrm(String phoneNumber);
+
+  Future<Either<Failure, String>> detailPatientByNik(String nik);
 }

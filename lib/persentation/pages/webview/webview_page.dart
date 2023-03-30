@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:jd_mobile/common/resources/size.dart';
+import 'package:jd_mobile/persentation/pages/homecare/success.dart';
 import '../../../common/extensions/padding_ext.dart';
 import '../../widgets/buttons.dart';
 
@@ -30,7 +33,10 @@ class WebViewPageState extends State<WebViewPage> {
               child: Buttons(
                 title: "Selesai",
                 onTap: () {
-                  // Get.to(const PaymentSuccess());
+                  Navigator.pushNamed(
+                    context,
+                    PaymentSuccess.routeName,
+                  );
                 },
               ),
             )
@@ -40,15 +46,16 @@ class WebViewPageState extends State<WebViewPage> {
         child: Stack(
           children: [
             InAppWebView(
-              initialUrlRequest: URLRequest(url: Uri.parse(args[0].paymentUrl)),
+              initialUrlRequest: URLRequest(url: Uri.parse(args[0])),
               onLoadStop: (ctrl, url) {
                 setState(() {
                   isLoading = false;
                 });
               },
               onUpdateVisitedHistory: (ctr, url, _) {
+                log("URL - $url");
                 if (url.toString().contains("payment-success")) {
-                  // Get.to(const PaymentSuccess());
+                  Navigator.pushNamed(context, PaymentSuccess.routeName);
                 }
               },
               onReceivedServerTrustAuthRequest: (controller, challenge) async {

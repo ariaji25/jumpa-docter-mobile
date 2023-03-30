@@ -1,4 +1,5 @@
 // ignore_for_file: overridden_fields, annotate_overrides
+
 import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import '../../../common/helpers/date_helper.dart';
 import '../../../domain/entities/patient/attribute_entities.dart';
@@ -100,7 +101,7 @@ class PatientModel extends PatientEntities {
   Map<String, dynamic> toJson() {
     return {
       "trackedEntityType": "MvJlDDrR78m",
-      "orgUnit": "ZxIltg4P06f",
+      "orgUnit": "jp49nCFvI75",
       "attributes": [
         {"attribute": PatientKeys.name, "value": name},
         {"attribute": PatientKeys.phoneNumber, "value": phoneNumber},
@@ -118,15 +119,15 @@ class PatientModel extends PatientEntities {
       "enrollments": [
         {
           "program": "El6a2lnac0D",
-          "status": "ACTIVE",
-          "orgUnit": "ZxIltg4P06f",
+          "status": "COMPLETED",
+          "orgUnit": "jp49nCFvI75",
           "enrollmentDate": DateHelper.dhis2DateFormat(DateTime.now()),
           "incidentDate": DateHelper.dhis2DateFormat(DateTime.now()),
           "events": [
             {
               "program": "El6a2lnac0D",
               "programStage": "Aic2hFz57cE",
-              "orgUnit": "ZxIltg4P06f",
+              "orgUnit": "jp49nCFvI75",
               "dueDate": DateHelper.dhis2DateFormat(DateTime.now()),
               "eventDate": DateHelper.dhis2DateFormat(DateTime.now()),
               "status": "ACTIVE"

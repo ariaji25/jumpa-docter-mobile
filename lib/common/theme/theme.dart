@@ -29,14 +29,14 @@ class AppTheme {
 
   // Part
   static TextStyle get heading5 {
-    return GoogleFonts.poppins(
+    return GoogleFonts.inter(
       fontSize: 23,
       fontWeight: FontWeight.w400,
     );
   }
 
   static TextStyle get heading6 {
-    return GoogleFonts.poppins(
+    return GoogleFonts.inter(
       fontSize: 19,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.15,
@@ -44,7 +44,7 @@ class AppTheme {
   }
 
   static TextStyle get subtitle {
-    return GoogleFonts.poppins(
+    return GoogleFonts.inter(
       fontSize: 14,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.15,
@@ -52,7 +52,7 @@ class AppTheme {
   }
 
   static TextStyle get bodyText {
-    return GoogleFonts.poppins(
+    return GoogleFonts.inter(
       fontSize: 12,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,

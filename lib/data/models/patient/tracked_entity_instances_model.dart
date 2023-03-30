@@ -1,11 +1,10 @@
 // ignore_for_file: annotate_overrides, overridden_fields
 
+import 'package:jd_mobile/data/models/booking/enrollment_model.dart';
 import 'package:jd_mobile/domain/entities/patient/attribute_entities.dart';
 import 'package:jd_mobile/domain/entities/patient/tracked_entity_instances_entities.dart';
-
-import '../../../domain/entities/patient/enrollment_entities.dart';
+import '../../../domain/entities/booking/enrollment_entities.dart';
 import 'attributes_model.dart';
-import 'enrollment_model.dart';
 
 class TrackedEntityInstancesModel extends TrackedEntityInstancesEntities {
   String? created;

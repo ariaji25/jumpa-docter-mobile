@@ -14,19 +14,25 @@ class AppConst {
   static String PHONE_NUMBER_KEY = "PHONE_NUMBER_KEY";
   static String AUTH_TOKEN = "AUTH_TOKEN";
   static String CURRENT_USER = "CURRENT_USER";
+  static String ENROLLMENT_CURRENT_USER = "ENROLLMENT_CURRENT_USER";
   static String INVALID_TOKEN = "Token is invalid please login";
   static String INVALID_TOKEN_OTHER = "invalid-token";
   static String HOME_SERVICE = "Pelayanan di rumah";
   static String CLINIC_SERVICE = "Kunjungan Klinik";
   static String OPEN_FEEDBACK_KEY = "OPEN_FEEDBACK";
+  static String HOME_CARE = "u210IplNxve";
+  static String ONSITE = "LYr2W0pIxX3";
+  static String ORDER_FOR_OTHER = 'Orang Lain';
+  static String ORDER_BY_OTHER = 'Dipesankan';
   static Map<String, dynamic> STATUS_PAYMENT = {
     "0": "Menunggu proses pembayaran!",
     "1": "Pembayaran dalam proses!",
     "2": "Pembayaran berhasil!",
-    "4": "Payment Reserval",
-    "5": "No bills found",
-    "8": "Payment Cancelled",
-    "9": "Unknown",
+    "4": "Reservasi Pembayaran",
+    "5": "Tidak ada tagihan yang ditemukan",
+    "8": "Pembayaran Dibatalkan",
+    "9": "Tidak dikenal",
+    "Need verification": "Perlu verifikasi",
   };
 
   static Map<String, Widget> ICON_PAYMENT_STATUS = {
@@ -47,5 +53,12 @@ class AppConst {
     "5": Colors.red,
     "8": Colors.red,
     "9": Colors.red,
+  };
+
+  static Map<String, String> pickIconPayment = {
+    "801": "bni.png",
+    "819": "dana.png",
+    "302": "link.png",
+    "812": "ovo.png"
   };
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../common/theme/theme.dart';
+
 class MenuDialog extends StatelessWidget {
   final String title;
   final String? subTitle;
@@ -31,7 +33,7 @@ class MenuDialog extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 5),
                           child: Text(
                             title,
-                            style: const TextStyle(
+                            style: AppTheme.bodyText.copyWith(
                                 color: Colors.black,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold),
@@ -40,8 +42,8 @@ class MenuDialog extends StatelessWidget {
                           ? Container()
                           : Text(
                               subTitle!,
-                              style: const TextStyle(
-                                  color: Color(0xFF999999),
+                              style: AppTheme.bodyText.copyWith(
+                                  color: const Color(0xFF999999),
                                   fontSize: 12,
                                   fontStyle: FontStyle.italic),
                             ),

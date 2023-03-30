@@ -246,8 +246,7 @@ class _OtpPageState extends State<OtpPage> {
     provider.smsCode = _otpCtrl.text;
     provider.signInUser().then((_) {
       if (provider.state == RequestState.Loaded) {
-        const FlutterSecureStorage()
-            .write(key: AppConst.PHONE_NUMBER_KEY, value: phoneNumber);
+        const FlutterSecureStorage().write(key: AppConst.PHONE_NUMBER_KEY, value: phoneNumber);
         Navigator.pushNamedAndRemoveUntil(
           context,
           BasePage.routeName,

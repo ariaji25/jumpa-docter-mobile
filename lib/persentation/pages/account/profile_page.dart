@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/domain/entities/patient/attribute_entities.dart';
+import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import 'package:jd_mobile/persentation/pages/feedback/feedback_page.dart';
 import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:provider/provider.dart';
@@ -30,10 +32,11 @@ class ProfilePageState extends State<ProfilePage> {
       PatientProvider patientProvider =
           Provider.of<PatientProvider>(context, listen: false);
       patientProvider.setNrmPatient(patientProvider
-          .detailPatient.trackedEntityInstances?[0].attributes
-          ?.firstWhere((element) => element.attribute == "kOJUHSrbkBS",
-              orElse: () => AttributesEntities(value: "---------"))
-          .value??"-");
+              .detailPatient.trackedEntityInstances?[0].attributes
+              ?.firstWhere((element) => element.attribute == "kOJUHSrbkBS",
+                  orElse: () => AttributesEntities(value: "---------"))
+              .value ??
+          "-");
     });
 
     super.initState();
@@ -94,7 +97,7 @@ class ProfilePageState extends State<ProfilePage> {
               assets: "${Assets.iconsPath}/box-arrow-right.png",
               key: "Keluar",
               isLogout: true,
-              onTap: () => _onLogout(context),
+              onTap: () => _onLogout(context, patientProvider),
             ),
             const SizedBox(height: 25),
           ],
@@ -103,15 +106,17 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _onLogout(BuildContext context) {
+  void _onLogout(BuildContext context, PatientProvider patientProvider) {
     confirmModal(
       context,
       "Keluar",
       "Yakin ingin keluar?",
       onOk: () async {
         //SERVICE LOGOUT
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            LoginPage.routeName, (Route<dynamic> route) => false);
+        await logout(patientProvider).then((value) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              LoginPage.routeName, (Route<dynamic> route) => false);
+        });
       },
     );
   }
@@ -218,5 +223,12 @@ class ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Future logout(PatientProvider patientProvider) async {
+    patientProvider.isNewPatient = true;
+    patientProvider.patient = PatientEntities();
+    const storage = FlutterSecureStorage();
+    await storage.deleteAll();
   }
 }

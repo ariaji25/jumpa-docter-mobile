@@ -24,7 +24,6 @@ class DetailArticlePage extends StatefulWidget {
 }
 
 class _DetailArticleState extends State<DetailArticlePage> {
-
   @override
   Widget build(BuildContext context) {
     ArticleProvider articleProvider =
@@ -328,16 +327,16 @@ class _DetailArticleState extends State<DetailArticlePage> {
                                       const SizedBox(width: 20),
                                       data.thumbnail == null ||
                                               data.thumbnail == ""
-                                          ? ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(5)),
+                                          ? const ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
                                               child: SizedBox(
                                                 height: 64,
                                                 width: 64,
-                                                child: Image.asset(
-                                                  "${Assets.othersPath}/artic.png",
-                                                  fit: BoxFit.cover,
+                                                child: Icon(
+                                                  Icons.error_outline,
+                                                  size: 45,
+                                                  color: Colors.grey,
                                                 ),
                                               ),
                                             )
@@ -351,6 +350,14 @@ class _DetailArticleState extends State<DetailArticlePage> {
                                                 child: Image.network(
                                                   data.thumbnail.toString(),
                                                   fit: BoxFit.cover,
+                                                  errorBuilder: (context, error,
+                                                      stackTrace) {
+                                                    return const Icon(
+                                                      Icons.error_outline,
+                                                      size: 45,
+                                                      color: Colors.grey,
+                                                    );
+                                                  },
                                                 ),
                                               ),
                                             ),
@@ -375,7 +382,8 @@ class _DetailArticleState extends State<DetailArticlePage> {
     await FlutterShare.share(
       title: articles.title ?? '-',
       text: articles.shortDesc ?? '-',
-      linkUrl: ' https://jumpadokter.castellumdigital.org/articles/detail/${articles.id}',
+      linkUrl:
+          ' https://jumpadokter.castellumdigital.org/article/detail/${articles.id}',
     );
   }
 }

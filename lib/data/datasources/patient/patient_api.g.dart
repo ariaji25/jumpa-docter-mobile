@@ -100,7 +100,29 @@ class _PatientApi implements PatientApi {
     )
         .compose(
           _dio.options,
-          '/api/trackedEntityInstances?program=El6a2lnac0D&ou=ZxIltg4P06f&filter=x9tchw0swEu:eq:${phoneNumber}',
+          '/api/trackedEntityInstances?fields=[*]&program=El6a2lnac0D&ou=jp49nCFvI75&filter=x9tchw0swEu:eq:${phoneNumber}&programStatus=COMPLETED&ouMode=CAPTURE',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> detailPatientByNik(nik) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/trackedEntityInstances?program=El6a2lnac0D&ou=jp49nCFvI75&filter=xGjeKnsJobT:EQ:${nik}',
           queryParameters: queryParameters,
           data: _data,
         )

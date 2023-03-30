@@ -26,7 +26,8 @@ class _ListDropdownState extends State<ListDropdown> {
         child: DropdownButton(
           value: value,
           focusColor: Colors.black,
-          style: const TextStyle(color: AppColors.grey700Color, fontSize: 14),
+          style: AppTheme.bodyText
+              .copyWith(color: AppColors.grey700Color, fontSize: 14),
           alignment: Alignment.bottomCenter,
           icon: const Icon(
             Icons.arrow_drop_down,

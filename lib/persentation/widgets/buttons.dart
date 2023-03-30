@@ -23,7 +23,7 @@ class Buttons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: disabled ? null : onTap,
+      onTap: disabled || loading ? null : onTap,
       child: Container(
         decoration: BoxDecoration(
           color: disabled
