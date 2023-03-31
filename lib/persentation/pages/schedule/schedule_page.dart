@@ -167,7 +167,7 @@ class SchedulePageState extends State<SchedulePage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              DateFormat('EEEE ,dd MMMM yyyy',
+                                              DateFormat('EEEE, dd MMMM yyyy',
                                                       "id")
                                                   .format(DateTime.parse(
                                                       e.getElementValue(
@@ -268,7 +268,7 @@ class SchedulePageState extends State<SchedulePage> {
                                                   text: e.getElementValue(e
                                                               .statusPayment) ==
                                                           "0"
-                                                      ? "Selesaikan proses pembayaran sebelum\n${DateFormat('EEEE ,dd MMMM yyyy hh:mm:dd', "id").format(DateTime.parse(e.getElementValue(e.expiredDate)))}"
+                                                      ? "Selesaikan proses pembayaran sebelum\n${DateFormat('EEEE, dd MMMM yyyy hh:mm:dd', "id").format(DateTime.parse(e.getElementValue(e.expiredDate)))}"
                                                       : AppConst.STATUS_PAYMENT[
                                                               e.getElementValue(e
                                                                   .statusPayment)] ??
