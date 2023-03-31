@@ -507,6 +507,7 @@ Widget dateFieldWidgetWithBorder({
         enabled: isEnabled,
         onTap: () async {
           var dataTime = await showDatePicker(
+            locale: const Locale('id'),
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(1922),
