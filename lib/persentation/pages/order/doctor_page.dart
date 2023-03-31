@@ -87,7 +87,7 @@ class _DoctorPageState extends State<DoctorPage> {
                 Expanded(
                   flex: 1,
                   child: ServiceItem(
-                    title: "Dokter ke rumah anda",
+                    title: "Dokter ke rumah\nanda",
                     imagePath: "${Assets.iconsPath}/ic_home.png",
                     isActive: order.serviceItemSelected == 0,
                     onTap: () {
@@ -106,8 +106,10 @@ class _DoctorPageState extends State<DoctorPage> {
                 Expanded(
                   flex: 1,
                   child: ServiceItem(
-                    title: "Datang ke klinik",
+                    title: "Datang ke\nklinik",
                     imagePath: "${Assets.iconsPath}/ic_hospital.png",
+                    size: 60,
+                    marginBottom: 0,
                     isActive: order.serviceItemSelected == 1,
                     onTap: () {
                       order.setServiceItemSelected(1);
