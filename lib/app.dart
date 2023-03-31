@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:dio_log/overlay_draggable_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:jd_mobile/persentation/provider/payment/payment_provider.dart';
 import 'package:jd_mobile/persentation/provider/schedule/schedule_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'injection.dart' as di;
 
 class MyApp extends StatelessWidget {
@@ -48,6 +51,14 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: kDebugMode,
         theme: AppTheme.light,
         title: 'JumpaDokter',
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('id', 'ID'),
+        ],
         onGenerateRoute: AppRoutes.generateRoute,
         home: Builder(
           builder: (context) {
