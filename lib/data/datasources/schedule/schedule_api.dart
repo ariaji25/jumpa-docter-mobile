@@ -10,7 +10,7 @@ abstract class ScheduleApi {
   Future getHistoryEnrollments(@Path('patientId') String patientId);
 
   @GET(
-      "/api/events?trackedEntityInstance={patientId}&filter=Sd9Z8lFBuQB:like:Pelayanan&filter=AfjUIoWVeER:ge:{currentTime}&deleted=false&fields=[event,dataValues]&totalPages=true")
+      "/api/events?trackedEntityInstance={patientId}&filter=AfjUIoWVeER:ge:{currentTime}&deleted=false&fields=[event,dataValues]&totalPages=true")
   Future getEnrollments(
     @Path('patientId') String patientId,
     @Path('currentTime') String currentTime,

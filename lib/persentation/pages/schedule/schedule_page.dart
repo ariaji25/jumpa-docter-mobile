@@ -22,6 +22,7 @@ import '../../../common/resources/size.dart';
 import '../../../common/resources/snackbar.dart';
 import '../../../common/theme/theme.dart';
 import '../../widgets/buttons.dart';
+import 'components/item_tile.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
@@ -93,7 +94,7 @@ class SchedulePageState extends State<SchedulePage> {
                           margin: paddingOnly(
                             left: SizeConstants.margin,
                             right: SizeConstants.margin,
-                            bottom: 5.0,
+                            bottom: 10.0,
                           ),
                           padding: paddingAll(12.0),
                           decoration: BoxDecoration(
@@ -106,51 +107,54 @@ class SchedulePageState extends State<SchedulePage> {
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          e.getElementValue(e.serviceName),
-                                          style: AppTheme.subtitle.copyWith(
-                                            color: AppColors.primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Visibility(
-                                          visible: e.getElementValue(
-                                                  e.statusPayment) !=
-                                              "2",
-                                          child: InkWell(
-                                            onTap: () {
-                                              SnackBarCustom.showSnackBarMessage(
-                                                  context: context,
-                                                  title: "Opps !",
-                                                  message:
-                                                      "Masih dalam Tahap develop",
-                                                  typeMessage:
-                                                      SnackBarType.error);
-                                            },
-                                            child: Text(
-                                              "Detail",
-                                              style: AppTheme.bodyText.copyWith(
-                                                fontSize: 14,
-                                                color: AppColors.primaryColor,
-                                              ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 15, bottom: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            e.getElementValue(e.serviceName),
+                                            style: AppTheme.subtitle.copyWith(
+                                              color: AppColors.primaryColor,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        )
-                                      ],
+                                          Visibility(
+                                            visible: e.getElementValue(
+                                                    e.statusPayment) !=
+                                                "2",
+                                            child: InkWell(
+                                              onTap: () {
+                                                SnackBarCustom.showSnackBarMessage(
+                                                    context: context,
+                                                    title: "Opps !",
+                                                    message:
+                                                        "Masih dalam Tahap develop",
+                                                    typeMessage:
+                                                        SnackBarType.error);
+                                              },
+                                              child: Text(
+                                                "Detail",
+                                                style:
+                                                    AppTheme.bodyText.copyWith(
+                                                  fontSize: 14,
+                                                  color:
+                                                      const Color(0XFF3754DB),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                     const Divider(
                                         thickness: 1, color: Color(0XFFE4ECF7)),
-                                    ListTile(
-                                      minLeadingWidth: 0,
-                                      horizontalTitleGap: 5,
-                                      isThreeLine: true,
-                                      contentPadding: paddingAll(0.0),
+                                    ItemTile(
                                       leading: const Icon(
                                         FeatherIcons.clock,
+                                        size: 18,
                                         color: AppColors.primaryColorDarkColor,
                                       ),
                                       title: Text(
@@ -160,36 +164,33 @@ class SchedulePageState extends State<SchedulePage> {
                                                 AppColors.primaryColorDarkColor,
                                             fontSize: 12),
                                       ),
-                                      subtitle: Container(
-                                        margin: const EdgeInsets.only(top: 5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              DateFormat('EEEE, dd MMMM yyyy',
-                                                      "id")
-                                                  .format(DateTime.parse(
-                                                      e.getElementValue(
-                                                          e.serviceDate))),
-                                              style: AppTheme.bodyText.copyWith(
-                                                fontSize: 12,
-                                                color: AppColors.primaryColor,
-                                              ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            DateFormat(
+                                                    'EEEE, dd MMMM yyyy', "id")
+                                                .format(DateTime.parse(
+                                                    e.getElementValue(
+                                                        e.serviceDate))),
+                                            style: AppTheme.bodyText.copyWith(
+                                              fontSize: 12,
+                                              color: AppColors.primaryColor,
                                             ),
-                                            const SizedBox(
-                                              height: 10,
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "${e.getElementValue(e.serviceTime)} Wib",
+                                            style: AppTheme.bodyText.copyWith(
+                                              fontSize: 12,
+                                              color: AppColors
+                                                  .primaryColorDarkColor,
                                             ),
-                                            Text(
-                                              "${e.getElementValue(e.serviceTime)} Wib",
-                                              style: AppTheme.bodyText.copyWith(
-                                                fontSize: 12,
-                                                color: AppColors
-                                                    .primaryColorDarkColor,
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                          )
+                                        ],
                                       ),
                                       trailing: DottedBorder(
                                         color: getColorServiceType(e),
@@ -209,24 +210,31 @@ class SchedulePageState extends State<SchedulePage> {
                                     ),
                                     Transform.translate(
                                       offset: const Offset(0, -10),
-                                      child: ListTile(
-                                        minLeadingWidth: 0,
-                                        horizontalTitleGap: 5,
-                                        contentPadding: paddingAll(0.0),
-                                        leading: const Icon(
-                                          FeatherIcons.user,
+                                      child: ItemTile(
+                                        leading: Icon(
+                                          e.getElementValue(e.serviceType) ==
+                                                  AppConst.HOME_SERVICE
+                                              ? FeatherIcons.user
+                                              : FeatherIcons.mapPin,
+                                          size: 18,
                                           color:
                                               AppColors.primaryColorDarkColor,
                                         ),
                                         title: Text(
-                                          e.getElementValue(e.doctor),
+                                          e.getElementValue(e.serviceType) ==
+                                                  AppConst.HOME_SERVICE
+                                              ? e.getElementValue(e.doctor)
+                                              : "Alamat Klinik",
                                           style: AppTheme.bodyText.copyWith(
                                             fontSize: 12,
                                             color: AppColors.primaryColor,
                                           ),
                                         ),
                                         subtitle: Text(
-                                          "Dokter Umum",
+                                          e.getElementValue(e.serviceType) ==
+                                                  AppConst.HOME_SERVICE
+                                              ? "Dokter Umum"
+                                              : e.getElementValue(e.clinicArea),
                                           style: AppTheme.bodyText.copyWith(
                                               color: AppColors
                                                   .primaryColorDarkColor,
@@ -242,10 +250,7 @@ class SchedulePageState extends State<SchedulePage> {
                                         visible:
                                             e.getElementValue(e.serviceType) ==
                                                 AppConst.HOME_SERVICE,
-                                        child: ListTile(
-                                          minLeadingWidth: 0,
-                                          horizontalTitleGap: 5,
-                                          contentPadding: paddingAll(0.0),
+                                        child: ItemTile(
                                           leading: e.getElementValue(
                                                       e.statusPayment) ==
                                                   "0"
@@ -253,13 +258,14 @@ class SchedulePageState extends State<SchedulePage> {
                                                   FeatherIcons.bell,
                                                   color:
                                                       AppColors.redPrimaryColor,
-                                                  size: 20,
+                                                  size: 18,
                                                 )
                                               : AppConst.ICON_PAYMENT_STATUS[
                                                       e.getElementValue(
                                                           e.statusPayment)] ??
                                                   const Icon(
                                                       FeatherIcons.loader,
+                                                      size: 18,
                                                       color: Color(0xffFF9900)),
                                           title: RichText(
                                             text: TextSpan(
@@ -308,6 +314,29 @@ class SchedulePageState extends State<SchedulePage> {
                                       ),
                                     ),
 
+                                    Visibility(
+                                      visible:
+                                          e.getElementValue(e.serviceType) ==
+                                              AppConst.CLINIC_SERVICE,
+                                      child: Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 8),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(65),
+                                            color: const Color(0xffFFEDE3)
+                                                .withOpacity(0.4)),
+                                        child: Text(
+                                          "Silahkan datang ke klinik 20 menit sebelum pemeriksaan",
+                                          textAlign: TextAlign.center,
+                                          style: AppTheme.bodyText.copyWith(
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xffF1774A),
+                                              fontSize: 11),
+                                        ),
+                                      ),
+                                    ),
                                     Visibility(
                                       visible:
                                           e.getElementValue(e.statusPayment) ==
@@ -444,7 +473,7 @@ class SchedulePageState extends State<SchedulePage> {
                           margin: paddingOnly(
                             left: SizeConstants.margin,
                             right: SizeConstants.margin,
-                            bottom: 5.0,
+                            bottom: 10.0,
                           ),
                           padding: paddingAll(12.0),
                           decoration: BoxDecoration(
@@ -456,28 +485,29 @@ class SchedulePageState extends State<SchedulePage> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          e.getElementValue(e.serviceName),
-                                          style: AppTheme.subtitle.copyWith(
-                                            color: AppColors.primaryColor,
-                                            fontWeight: FontWeight.bold,
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 15, bottom: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            e.getElementValue(e.serviceName),
+                                            style: AppTheme.subtitle.copyWith(
+                                              color: AppColors.primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                     const Divider(
                                         thickness: 1, color: Color(0XFFE4ECF7)),
-                                    ListTile(
-                                      minLeadingWidth: 0,
-                                      horizontalTitleGap: 5,
-                                      isThreeLine: true,
-                                      contentPadding: paddingAll(0.0),
+                                    ItemTile(
                                       leading: const Icon(
                                         FeatherIcons.clock,
+                                        size: 18,
                                         color: AppColors.primaryColorDarkColor,
                                       ),
                                       title: Text(
@@ -487,36 +517,33 @@ class SchedulePageState extends State<SchedulePage> {
                                                 AppColors.primaryColorDarkColor,
                                             fontSize: 12),
                                       ),
-                                      subtitle: Container(
-                                        margin: const EdgeInsets.only(top: 5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              DateFormat('EEEE ,dd MMMM yyyy',
-                                                      "id")
-                                                  .format(DateTime.parse(
-                                                      e.getElementValue(
-                                                          e.serviceDate))),
-                                              style: AppTheme.bodyText.copyWith(
-                                                fontSize: 12,
-                                                color: AppColors.primaryColor,
-                                              ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            DateFormat(
+                                                    'EEEE, dd MMMM yyyy', "id")
+                                                .format(DateTime.parse(
+                                                    e.getElementValue(
+                                                        e.serviceDate))),
+                                            style: AppTheme.bodyText.copyWith(
+                                              fontSize: 12,
+                                              color: AppColors.primaryColor,
                                             ),
-                                            const SizedBox(
-                                              height: 10,
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "${e.getElementValue(e.serviceTime)} Wib",
+                                            style: AppTheme.bodyText.copyWith(
+                                              fontSize: 12,
+                                              color: AppColors
+                                                  .primaryColorDarkColor,
                                             ),
-                                            Text(
-                                              "${e.getElementValue(e.serviceTime)} Wib",
-                                              style: AppTheme.bodyText.copyWith(
-                                                fontSize: 12,
-                                                color: AppColors
-                                                    .primaryColorDarkColor,
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                          )
+                                        ],
                                       ),
                                       trailing: DottedBorder(
                                         color: getColorServiceType(e),
@@ -534,24 +561,31 @@ class SchedulePageState extends State<SchedulePage> {
                                         ),
                                       ),
                                     ),
-                                    ListTile(
-                                      minLeadingWidth: 0,
-                                      horizontalTitleGap: 5,
-                                      isThreeLine: true,
-                                      contentPadding: paddingAll(0.0),
-                                      leading: const Icon(
-                                        FeatherIcons.user,
+                                    ItemTile(
+                                      margin: const EdgeInsets.only(top: 10),
+                                      leading: Icon(
+                                        e.getElementValue(e.serviceType) ==
+                                                AppConst.HOME_SERVICE
+                                            ? FeatherIcons.user
+                                            : FeatherIcons.mapPin,
+                                        size: 18,
                                         color: AppColors.primaryColorDarkColor,
                                       ),
                                       title: Text(
-                                        e.getElementValue(e.doctor),
+                                        e.getElementValue(e.serviceType) ==
+                                                AppConst.HOME_SERVICE
+                                            ? e.getElementValue(e.doctor)
+                                            : "Alamat Klinik",
                                         style: AppTheme.bodyText.copyWith(
                                           fontSize: 12,
                                           color: AppColors.primaryColor,
                                         ),
                                       ),
                                       subtitle: Text(
-                                        "Dokter Umum",
+                                        e.getElementValue(e.serviceType) ==
+                                                AppConst.HOME_SERVICE
+                                            ? "Dokter Umum"
+                                            : e.getElementValue(e.clinicArea),
                                         style: AppTheme.bodyText.copyWith(
                                             color:
                                                 AppColors.primaryColorDarkColor,
@@ -560,28 +594,29 @@ class SchedulePageState extends State<SchedulePage> {
                                     ),
                                     Container(
                                       width: double.infinity,
+                                      margin: const EdgeInsets.only(top: 15),
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8, horizontal: 20),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(65),
-                                          color: (AppConst.COLOR_PAYMENT_STATUS[
-                                                      e.getElementValue(
-                                                          e.statusPayment)] ??
-                                                  const Color(0xffFF9900))
-                                              .withOpacity(0.1)),
+                                          color: e.getElementValue(
+                                                      e.statusPayment) ==
+                                                  "2"
+                                              ? const Color(0XFFDEFFEE)
+                                              : const Color(0xFFFFE6E4)),
                                       child: Text(
-                                        AppConst.STATUS_PAYMENT[
-                                                e.getElementValue(
-                                                    e.statusPayment)] ??
-                                            e.getElementValue(e.statusPayment),
+                                        e.getElementValue(e.statusPayment) ==
+                                                "2"
+                                            ? "Selesai"
+                                            : "Dibatalkan",
                                         textAlign: TextAlign.center,
                                         style: AppTheme.bodyText.copyWith(
-                                            color:
-                                                AppConst.COLOR_PAYMENT_STATUS[
-                                                        e.getElementValue(
-                                                            e.statusPayment)] ??
-                                                    const Color(0xffFF9900),
+                                            color: e.getElementValue(
+                                                        e.statusPayment) ==
+                                                    "2"
+                                                ? const Color(0XFF4AAE8C)
+                                                : const Color(0xFFEF0C11),
                                             fontSize: 12),
                                       ),
                                     ),

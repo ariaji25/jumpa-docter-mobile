@@ -56,7 +56,7 @@ class _ScheduleApi implements ScheduleApi {
     )
         .compose(
           _dio.options,
-          '/api/events?trackedEntityInstance=${patientId}&filter=Sd9Z8lFBuQB:like:Pelayanan&filter=AfjUIoWVeER:ge:${currentTime}&deleted=false&fields=[event,dataValues]&totalPages=true',
+          '/api/events?trackedEntityInstance=${patientId}&filter=AfjUIoWVeER:ge:${currentTime}&deleted=false&fields=[event,dataValues]&totalPages=true',
           queryParameters: queryParameters,
           data: _data,
         )
