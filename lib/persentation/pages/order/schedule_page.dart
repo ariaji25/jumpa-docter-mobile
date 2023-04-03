@@ -190,12 +190,11 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
       Navigator.pushNamed(context, PaymentDetailPage.routeName);
     } else {
       if (orderProvider.bookingEntities.orderType == AppConst.ORDER_FOR_OTHER) {
-        // orderProvider.bookingEntities.teiReference =
-        //    orderProvider.patient.value.tei;
-        orderProvider.bookingEntities.refNIK = patientProvider.patient.nik;
-        orderProvider.bookingEntities.refNama = patientProvider.patient.name;
-        orderProvider.bookingEntities.orderType = AppConst.ORDER_BY_OTHER;
-        orderProvider.bookingEntities.status = "COMPLETED";
+        BookingEntities bookingEntities = orderProvider.bookingEntities;
+        bookingEntities.teiReference = orderProvider.patientEntities.tei;
+        bookingEntities.refNIK = patientProvider.patient.nik;
+        bookingEntities.refNama = patientProvider.patient.name;
+        bookingEntities.status = "COMPLETED";
         await orderProvider.makeAppointment();
 
         if (orderProvider.makeAppointmentState != RequestState.Loaded) {
@@ -213,14 +212,12 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
                   AppConst.ORDER_FOR_OTHER) ||
           orderProvider.bookingEntities.orderType != AppConst.ORDER_FOR_OTHER) {
         // Store the booking history in patient
-        orderProvider.bookingEntities.teiReference =
-            patientProvider.patient.tei;
-        // orderProvider.bookingEntities.refNIK =
-        //     orderProvider.patient.value.nik;
-        // orderProvider.bookingEntities.refNama =
-        //     orderProvider.patient.value.name;
-        orderProvider.bookingEntities.orderType = AppConst.ORDER_FOR_OTHER;
-        orderProvider.bookingEntities.status = "ACTIVE";
+        BookingEntities bookingEntities = orderProvider.bookingEntities;
+        bookingEntities.teiReference = patientProvider.patient.tei;
+        bookingEntities.refNIK = orderProvider.patientEntities.nik;
+        bookingEntities.refNama = orderProvider.patientEntities.name;
+        bookingEntities.status = "ACTIVE";
+        orderProvider.updateBooking(bookingEntities);
         await orderProvider.makeAppointment();
         if (orderProvider.makeAppointmentState == RequestState.Loaded) {
           if (mounted) {

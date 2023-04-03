@@ -53,7 +53,9 @@ class _ComplaintPageState extends State<ComplaintPage> {
         as JumpaDokterServiceEntities;
     orderProvider.setServiceId(params.serviceId);
     orderProvider.bookingEntities.service = params.title;
-    orderProvider.bookingEntities.orderType = "Diri Sendiri";
+    BookingEntities bookingEntities = orderProvider.bookingEntities;
+    bookingEntities.orderType = "Diri Sendiri";
+    orderProvider.updateBooking(bookingEntities);
 
     return BaseOrderScreen(
         title: params.title == "Swab Antigen"

@@ -180,7 +180,7 @@ class SchedulePageState extends State<SchedulePage> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 5,
                                           ),
                                           Text(
                                             "${e.getElementValue(e.serviceTime)} Wib",
@@ -533,7 +533,7 @@ class SchedulePageState extends State<SchedulePage> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 5,
                                           ),
                                           Text(
                                             "${e.getElementValue(e.serviceTime)} Wib",
@@ -562,6 +562,7 @@ class SchedulePageState extends State<SchedulePage> {
                                       ),
                                     ),
                                     ItemTile(
+                                      margin: const EdgeInsets.only(top: 10),
                                       leading: Icon(
                                         e.getElementValue(e.serviceType) ==
                                                 AppConst.HOME_SERVICE
