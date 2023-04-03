@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
@@ -584,7 +585,14 @@ class ProfileFormState extends State<ProfileForm> {
         _buildDetailMenu(
             "Jenis Kelamin", getGender(patientProvider.patient.gender)),
         _buildDetailMenu("Tempat Lahir", patientProvider.patient.pob ?? "-"),
-        _buildDetailMenu("Tanggal Lahir", patientProvider.patient.dob ?? "-"),
+        _buildDetailMenu(
+            "Tanggal Lahir",
+            DateHelper.dateTimeToLocalDate(patientProvider.patient.dob)
+                    ?.replaceAll(
+                  "-",
+                  "/",
+                ) ??
+                "-"),
         _buildDetailMenu(
             "Nomor Whatsapp", patientProvider.patient.waNumber ?? "-"),
       ],

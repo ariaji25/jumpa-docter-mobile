@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:jd_mobile/common/extensions/context_ext.dart';
 import 'package:jd_mobile/common/extensions/entities_ext.dart';
+import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/domain/entities/patient/event_entities.dart';
 import 'package:jd_mobile/persentation/pages/webview/webview_page.dart';
@@ -183,7 +184,7 @@ class SchedulePageState extends State<SchedulePage> {
                                             height: 5,
                                           ),
                                           Text(
-                                            "${e.getElementValue(e.serviceTime)} Wib",
+                                            "${DateHelper.convertToLocalTime(e.getElementValue(e.serviceTime), context)}",
                                             style: AppTheme.bodyText.copyWith(
                                               fontSize: 12,
                                               color: AppColors

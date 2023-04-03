@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
+import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
@@ -203,7 +204,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
             ),
             cardColumn(
               "Waktu tanggal berobat",
-              "${orderProvider.bookingEntities.visitTime} - ${orderProvider.bookingEntities.visitDate!.replaceAll("-", "/")}",
+              "${DateHelper.convertToLocalTime(orderProvider.bookingEntities.visitTime!, context)} - ${DateHelper.dateTimeToLocalDate(orderProvider.bookingEntities.visitDate)!.replaceAll("-", "/")}",
             ),
             cardColumn(
               "Alamat janji temu",
