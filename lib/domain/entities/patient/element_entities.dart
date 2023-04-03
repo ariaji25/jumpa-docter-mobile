@@ -9,4 +9,5 @@ abstract class ElementsEntities {
   final paymentUrl = "wnBb4ynNC22";
   final doctor = "WeZLKi92kyq";
   final pgCode = "uKLVZAc5Wch";
+  final clinicArea = "lzJQJ35mwDi";
 }
