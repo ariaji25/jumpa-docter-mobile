@@ -242,16 +242,18 @@ class ProfileFormState extends State<ProfileForm> {
         SnackBarCustom.showSnackBarMessage(
           context: context,
           title: "Berhasil !",
-          message: "Berhasil ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"}  data pasien!",
+          message:
+              "Berhasil ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"}  data pasien!",
           typeMessage: SnackBarType.success,
         );
-      } 
-      
-      if(patientProvider.requestState == RequestState.Error) {
+      }
+
+      if (patientProvider.requestState == RequestState.Error) {
         SnackBarCustom.showSnackBarMessage(
           context: context,
           title: "Ops !",
-          message: "Gagal ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"} data. Coba lagi atau Hubungi Administrator!",
+          message:
+              "Gagal ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"} data. Coba lagi atau Hubungi Administrator!",
           typeMessage: SnackBarType.error,
         );
       }
@@ -293,7 +295,7 @@ class ProfileFormState extends State<ProfileForm> {
                 height: 5,
               ),
               Text(
-                "Sebelum melakukan janji temu bersama dokter\nsilahkan terlebih dahulu mengisikan data diri.",
+                "Silahkan periksa kelengkapan data diri anda",
                 textAlign: TextAlign.center,
                 style: AppTheme.subtitle.copyWith(
                   fontSize: 12,
