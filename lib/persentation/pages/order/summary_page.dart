@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
+import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -78,11 +79,16 @@ class SummaryPageState extends State<SummaryPage> {
                         key: "Layanan",
                         value: orderProvider.bookingEntities.service),
                     _buildItemSummary(
-                        key: "Tanggal",
-                        value: orderProvider.bookingEntities.visitDate),
+                      key: "Tanggal",
+                      value: DateHelper.dateTimeToLocalDate(
+                              orderProvider.bookingEntities.visitDate!)!
+                          .replaceAll("-", "/"),
+                    ),
                     _buildItemSummary(
-                        key: "Jam",
-                        value: orderProvider.bookingEntities.visitTime),
+                      key: "Jam",
+                      value: DateHelper.convertToLocalTime(
+                          orderProvider.bookingEntities.visitTime!, context),
+                    ),
                     CardFieldWidget(
                       keys: "Biaya pemeriksaan",
                       value: orderProvider.bookingEntities.price!.isNotEmpty

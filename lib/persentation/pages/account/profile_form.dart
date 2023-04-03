@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
@@ -242,16 +243,18 @@ class ProfileFormState extends State<ProfileForm> {
         SnackBarCustom.showSnackBarMessage(
           context: context,
           title: "Berhasil !",
-          message: "Berhasil ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"}  data pasien!",
+          message:
+              "Berhasil ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"}  data pasien!",
           typeMessage: SnackBarType.success,
         );
-      } 
-      
-      if(patientProvider.requestState == RequestState.Error) {
+      }
+
+      if (patientProvider.requestState == RequestState.Error) {
         SnackBarCustom.showSnackBarMessage(
           context: context,
           title: "Ops !",
-          message: "Gagal ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"} data. Coba lagi atau Hubungi Administrator!",
+          message:
+              "Gagal ${patientProvider.isNewPatient ? "menyimpan" : "memperbarui"} data. Coba lagi atau Hubungi Administrator!",
           typeMessage: SnackBarType.error,
         );
       }
@@ -293,7 +296,7 @@ class ProfileFormState extends State<ProfileForm> {
                 height: 5,
               ),
               Text(
-                "Sebelum melakukan janji temu bersama dokter\nsilahkan terlebih dahulu mengisikan data diri.",
+                "Silahkan periksa kelengkapan data diri anda",
                 textAlign: TextAlign.center,
                 style: AppTheme.subtitle.copyWith(
                   fontSize: 12,
@@ -582,7 +585,14 @@ class ProfileFormState extends State<ProfileForm> {
         _buildDetailMenu(
             "Jenis Kelamin", getGender(patientProvider.patient.gender)),
         _buildDetailMenu("Tempat Lahir", patientProvider.patient.pob ?? "-"),
-        _buildDetailMenu("Tanggal Lahir", patientProvider.patient.dob ?? "-"),
+        _buildDetailMenu(
+            "Tanggal Lahir",
+            DateHelper.dateTimeToLocalDate(patientProvider.patient.dob)
+                    ?.replaceAll(
+                  "-",
+                  "/",
+                ) ??
+                "-"),
         _buildDetailMenu(
             "Nomor Whatsapp", patientProvider.patient.waNumber ?? "-"),
       ],

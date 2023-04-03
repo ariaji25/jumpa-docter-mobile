@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateHelper {
@@ -21,5 +22,29 @@ class DateHelper {
   static String dhis2DateFormat(DateTime date) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     return formattedDate;
+  }
+
+  static String? dateTimeToLocalDate(String? date) {
+    if (date != null) {
+      DateTime result = DateTime.parse(date);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(result);
+      return formattedDate;
+    }
+
+    return null;
+  }
+
+  static String? convertToLocalTime(String time, BuildContext context) {
+    final int hour = int.tryParse(time.split(":")[0]) ?? 00;
+    final int minute = int.tryParse(time.split(":")[1]) ?? 00;
+
+    TimeOfDay noonTime = TimeOfDay(hour: hour, minute: minute);
+    TimeOfDay morningTime = TimeOfDay(hour: hour, minute: minute);
+
+    if (morningTime.period == DayPeriod.am) {
+      return "${morningTime.format(context)} AM";
+    } else {
+      return "${noonTime.format(context)} PM";
+    }
   }
 }
