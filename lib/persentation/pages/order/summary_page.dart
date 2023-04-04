@@ -86,8 +86,7 @@ class SummaryPageState extends State<SummaryPage> {
                     ),
                     _buildItemSummary(
                       key: "Jam",
-                      value: DateHelper.convertToLocalTime(
-                          orderProvider.bookingEntities.visitTime!, context),
+                      value: "${orderProvider.bookingEntities.visitTime} WIB",
                     ),
                     CardFieldWidget(
                       keys: "Biaya pemeriksaan",
