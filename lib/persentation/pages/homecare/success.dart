@@ -5,6 +5,7 @@ import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/persentation/pages/base/base_page.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
 import 'package:jd_mobile/persentation/provider/payment/payment_provider.dart';
+import 'package:jd_mobile/persentation/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/resources/assets.dart';
@@ -115,8 +116,10 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
               const SizedBox(
                 height: 10,
               ),
+              value.paymentStatusState == RequestState.Loading ? 
+              const Center(child: Loading()) :
               Text(
-                "Pembayaran anda berhasil",
+                AppConst.STATUS_PAYMENT[paymentProvider.paymentStatus],
                 style: AppTheme.bodyText.copyWith(
                   color: const Color(0XFF4AAE8C),
                   fontSize: 14,
