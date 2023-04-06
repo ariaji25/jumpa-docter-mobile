@@ -195,6 +195,7 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
         bookingEntities.refNIK = patientProvider.patient.nik;
         bookingEntities.refNama = patientProvider.patient.name;
         bookingEntities.status = "COMPLETED";
+        orderProvider.updateBooking(bookingEntities);
         await orderProvider.makeAppointment();
 
         if (orderProvider.makeAppointmentState != RequestState.Loaded) {
