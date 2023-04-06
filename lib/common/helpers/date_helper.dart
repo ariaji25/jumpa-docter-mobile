@@ -34,17 +34,15 @@ class DateHelper {
     return null;
   }
 
-  static String? convertToLocalTime(String time, BuildContext context) {
-    final int hour = int.tryParse(time.split(":")[0]) ?? 00;
-    final int minute = int.tryParse(time.split(":")[1]) ?? 00;
-
-    TimeOfDay noonTime = TimeOfDay(hour: hour, minute: minute);
-    TimeOfDay morningTime = TimeOfDay(hour: hour, minute: minute);
-
-    if (morningTime.period == DayPeriod.am) {
-      return "${morningTime.format(context)} AM";
-    } else {
-      return "${noonTime.format(context)} PM";
-    }
-  }
+  // static String? convertToLocalTime(String time, BuildContext context) {
+  //   final int hour = int.tryParse(time.split(":")[0]) ?? 00;
+  //   final int minute = int.tryParse(time.split(":")[1]) ?? 00;
+  //   TimeOfDay noonTime = TimeOfDay(hour: hour, minute: minute);
+  //   TimeOfDay morningTime = TimeOfDay(hour: hour, minute: minute);
+  //   if (morningTime.period == DayPeriod.am) {
+  //     return "${morningTime.format(context)} AM";
+  //   } else {
+  //     return "${noonTime.format(context)} PM";
+  //   }
+  // }
 }

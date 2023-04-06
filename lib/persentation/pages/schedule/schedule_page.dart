@@ -184,7 +184,7 @@ class SchedulePageState extends State<SchedulePage> {
                                             height: 5,
                                           ),
                                           Text(
-                                            "${DateHelper.convertToLocalTime(e.getElementValue(e.serviceTime), context)}",
+                                            "${e.getElementValue(e.serviceTime)} WIB",
                                             style: AppTheme.bodyText.copyWith(
                                               fontSize: 12,
                                               color: AppColors
@@ -537,7 +537,7 @@ class SchedulePageState extends State<SchedulePage> {
                                             height: 5,
                                           ),
                                           Text(
-                                            "${e.getElementValue(e.serviceTime)} Wib",
+                                            "${e.getElementValue(e.serviceTime)} WIB",
                                             style: AppTheme.bodyText.copyWith(
                                               fontSize: 12,
                                               color: AppColors
