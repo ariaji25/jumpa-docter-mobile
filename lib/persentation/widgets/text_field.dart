@@ -509,12 +509,16 @@ Widget dateFieldWidgetWithBorder({
           var dataTime = await showDatePicker(
             locale: const Locale('id'),
             context: context,
-            initialDate: DateTime.now(),
+            initialDate: dateController != null
+                ? DateHelper.covertStringToDateTime(
+                    value: dateController.text.toString())!
+                : DateTime.now(),
             firstDate: DateTime(1922),
             lastDate: DateTime.now(),
           );
-          dateController?.text =
-              DateHelper.changeFormatIdToDateTimeFormat(date: dataTime) ?? "";
+          dateController?.text = DateHelper.changeFormatIdToDateTimeFormat(
+                  date: dataTime, newPatternId: true) ??
+              "";
 
           onChanged(dateController?.text ?? "");
         },
