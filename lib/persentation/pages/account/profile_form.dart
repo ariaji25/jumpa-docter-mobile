@@ -73,7 +73,8 @@ class ProfileFormState extends State<ProfileForm> {
         patientProvider.pobCtrl.text = patientProvider.patient.pob ?? "";
         patientProvider.dobCtrl.text =
             DateHelper.changeFormatIdToDateTimeFormat(
-                    date: DateTime.parse(patientProvider.patient.dob ?? ""),newPatternId: true) ??
+                    date: DateTime.parse(patientProvider.patient.dob ?? ""),
+                    newPatternId: true) ??
                 "";
         patientProvider.patient.gender = patientProvider.patient.gender ?? "";
         patientProvider.setGender(patientProvider.patient.gender ?? "");
@@ -564,7 +565,9 @@ class ProfileFormState extends State<ProfileForm> {
           context: context,
           dateController: patientProvider.dobCtrl,
           onChanged: (value) {
-            patientProvider.patient.dob = DateHelper.changeFormatIdToDateTimeFormat(date:DateHelper.covertStringToDateTime(value: value));
+            patientProvider.patient.dob =
+                DateHelper.changeFormatIdToDateTimeFormat(
+                    date: DateHelper.covertStringToDateTime(value: value));
           },
         ),
         const SizedBox(height: 12),
@@ -590,8 +593,10 @@ class ProfileFormState extends State<ProfileForm> {
         _buildDetailMenu("Tempat Lahir", patientProvider.patient.pob ?? "-"),
         _buildDetailMenu(
             "Tanggal Lahir",
-            DateHelper.changeFormatIdToDateTimeFormat(date:DateHelper.covertStringToDateTime(value:patientProvider.patient.dob??""),newPatternId: true)
-                    ??
+            DateHelper.changeFormatIdToDateTimeFormat(
+                    date: DateHelper.covertStringToDateTime(
+                        value: patientProvider.patient.dob ?? ""),
+                    newPatternId: true) ??
                 "-"),
         _buildDetailMenu(
             "Nomor Whatsapp", patientProvider.patient.waNumber ?? "-"),
