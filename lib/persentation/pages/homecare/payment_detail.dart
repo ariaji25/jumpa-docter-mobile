@@ -13,7 +13,9 @@ import 'package:provider/provider.dart';
 import '../../../common/resources/colors.dart';
 import '../../../common/resources/snackbar.dart';
 import '../../../common/theme/theme.dart';
+import '../../../domain/entities/booking/booking_enitities.dart';
 import '../../provider/order/order_provider.dart';
+import '../../provider/patient/patient_provider.dart';
 import 'components/base_payment.dart';
 import 'components/components.dart';
 
@@ -27,11 +29,13 @@ class PaymentDetailPage extends StatefulWidget {
 
 class _PaymentDetailPageState extends State<PaymentDetailPage> {
   late OrderProvider orderProvider;
+  late PatientProvider patientProvider;
 
   @override
   void initState() {
     super.initState();
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    patientProvider = Provider.of<PatientProvider>(context, listen: false);
   }
 
   @override
@@ -218,13 +222,12 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
 
   void makeAppointment(OrderProvider orderProvider) async {
     if (orderProvider.bookingEntities.orderType == AppConst.ORDER_FOR_OTHER) {
-      orderProvider.bookingEntities.teiReference =
-          orderProvider.patientEntities.tei;
-      orderProvider.bookingEntities.refNIK = orderProvider.patientEntities.nik;
-      orderProvider.bookingEntities.refNama =
-          orderProvider.patientEntities.name;
-      orderProvider.bookingEntities.orderType = AppConst.ORDER_BY_OTHER;
-      orderProvider.bookingEntities.status = "COMPLETED";
+      BookingEntities bookingEntities = orderProvider.bookingEntities;
+      bookingEntities.teiReference = orderProvider.patientEntities.tei;
+      bookingEntities.refNIK = patientProvider.patient.nik;
+      bookingEntities.refNama = patientProvider.patient.name;
+      bookingEntities.status = "COMPLETED";
+      orderProvider.updateBooking(bookingEntities);
       await orderProvider.makeAppointment();
 
       if (orderProvider.makeAppointmentState != RequestState.Loaded) {
@@ -242,13 +245,12 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
                 AppConst.ORDER_FOR_OTHER) ||
         orderProvider.bookingEntities.orderType != AppConst.ORDER_FOR_OTHER) {
       // Store the booking history in patient
-      orderProvider.bookingEntities.teiReference =
-          orderProvider.patientEntities.tei;
-      orderProvider.bookingEntities.refNIK = orderProvider.patientEntities.nik;
-      orderProvider.bookingEntities.refNama =
-          orderProvider.patientEntities.name;
-      orderProvider.bookingEntities.orderType = AppConst.ORDER_FOR_OTHER;
-      orderProvider.bookingEntities.status = "ACTIVE";
+      BookingEntities bookingEntities = orderProvider.bookingEntities;
+      bookingEntities.teiReference = patientProvider.patient.tei;
+      bookingEntities.refNIK = orderProvider.patientEntities.nik;
+      bookingEntities.refNama = orderProvider.patientEntities.name;
+      bookingEntities.status = "ACTIVE";
+      orderProvider.updateBooking(bookingEntities);
       await orderProvider.makeAppointment();
       if (orderProvider.makeAppointmentState == RequestState.Loaded) {
         SnackBarCustom.showSnackBarMessage(
