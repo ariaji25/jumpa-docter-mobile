@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateHelper {
   DateHelper._();
 
-  static String? changeFormatIdToDateTimeFormat({DateTime? date}) {
+  static String? changeFormatIdToDateTimeFormat(
+      {DateTime? date, bool newPatternId = false}) {
     if (date != null) {
-      return DateFormat('yyyy-MM-dd').format(date);
+      return DateFormat(newPatternId ? 'dd-MM-yyyy' : 'yyyy-MM-dd')
+          .format(date);
     }
     return null;
   }
@@ -34,15 +35,25 @@ class DateHelper {
     return null;
   }
 
-  // static String? convertToLocalTime(String time, BuildContext context) {
-  //   final int hour = int.tryParse(time.split(":")[0]) ?? 00;
-  //   final int minute = int.tryParse(time.split(":")[1]) ?? 00;
-  //   TimeOfDay noonTime = TimeOfDay(hour: hour, minute: minute);
-  //   TimeOfDay morningTime = TimeOfDay(hour: hour, minute: minute);
-  //   if (morningTime.period == DayPeriod.am) {
-  //     return "${morningTime.format(context)} AM";
-  //   } else {
-  //     return "${noonTime.format(context)} PM";
-  //   }
-  // }
+  static DateTime? covertStringToDateTime({required String value}) {
+    if (value == "") {
+      return null;
+    }
+    List<String> splitValue = value.split("-");
+    return DateTime.parse(splitValue[0].length >= 4
+        ? value
+        : "${splitValue[2]}-${splitValue[1]}-${splitValue[0]}");
+  }
+
+// static String? convertToLocalTime(String time, BuildContext context) {
+//   final int hour = int.tryParse(time.split(":")[0]) ?? 00;
+//   final int minute = int.tryParse(time.split(":")[1]) ?? 00;
+//   TimeOfDay noonTime = TimeOfDay(hour: hour, minute: minute);
+//   TimeOfDay morningTime = TimeOfDay(hour: hour, minute: minute);
+//   if (morningTime.period == DayPeriod.am) {
+//     return "${morningTime.format(context)} AM";
+//   } else {
+//     return "${noonTime.format(context)} PM";
+//   }
+// }
 }
