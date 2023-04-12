@@ -6,7 +6,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:jd_mobile/common/extensions/context_ext.dart';
 import 'package:jd_mobile/common/extensions/entities_ext.dart';
-import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/domain/entities/patient/event_entities.dart';
 import 'package:jd_mobile/persentation/pages/webview/webview_page.dart';
@@ -50,8 +49,8 @@ class SchedulePageState extends State<SchedulePage> {
           Provider.of<ScheduleProvider>(context, listen: false);
       await scheduleProvider
           .getListEnrollments(patientProvider.patient.tei ?? "");
-      await scheduleProvider
-          .getListHistoryEnrollments(patientProvider.patient.tei ?? "");
+      // await scheduleProvider
+      //     .getListHistoryEnrollments(patientProvider.patient.tei ?? "");
     });
   }
 
@@ -128,21 +127,22 @@ class SchedulePageState extends State<SchedulePage> {
                                                 "2",
                                             child: InkWell(
                                               onTap: () {
-                                                SnackBarCustom.showSnackBarMessage(
-                                                    context: context,
-                                                    title: "Opps !",
-                                                    message:
-                                                        "Masih dalam Tahap develop",
-                                                    typeMessage:
-                                                        SnackBarType.error);
+                                                getDetailEnrollment(
+                                                    e, scheduleProvider);
                                               },
-                                              child: Text(
-                                                "Detail",
-                                                style:
-                                                    AppTheme.bodyText.copyWith(
-                                                  fontSize: 14,
-                                                  color:
-                                                      const Color(0XFF3754DB),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 5,
+                                                        horizontal: 5),
+                                                child: Text(
+                                                  "Detail",
+                                                  style: AppTheme.bodyText
+                                                      .copyWith(
+                                                    fontSize: 14,
+                                                    color:
+                                                        const Color(0XFF3754DB),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -348,24 +348,8 @@ class SchedulePageState extends State<SchedulePage> {
                                           title: "Detail",
                                           marginBottom: 0,
                                           onTap: () {
-                                            SnackBarCustom.showSnackBarMessage(
-                                                context: context,
-                                                title: "Opps !",
-                                                message:
-                                                    "Masih dalam Tahap develop",
-                                                typeMessage:
-                                                    SnackBarType.error);
-                                            /*   if (e.getElementValue(
-                                                    e.serviceType) !=
-                                                clinicService) {
-                                              Get.to(
-                                                const SummaryScreen(),
-                                              );
-                                            } else {
-                                              Get.to(
-                                                const PaymentDetail(),
-                                              );
-                                            }*/
+                                            getDetailEnrollment(
+                                                e, scheduleProvider);
                                           },
                                         ),
                                       ),
@@ -711,5 +695,62 @@ class SchedulePageState extends State<SchedulePage> {
     return Color(e.getElementValue(e.serviceType) == "Kunjungan Klinik"
         ? 0XFF7952B3
         : 0XFFF1774A);
+  }
+
+  void getDetailEnrollment(
+      EventEntities e, ScheduleProvider scheduleProvider) async {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.2),
+      builder: (context) => Center(
+        child: Container(
+          width: 120.0,
+          height: 120.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Loading(),
+          ),
+        ),
+      ),
+    );
+    await scheduleProvider.getDetailEnrollment({
+      'eventId': e.getElementValue(e.bookingId),
+      'orderId': e.getElementValue(e.bookingId)
+    }).then((value) {
+      Navigator.of(context).pop();
+      // if (e.getElementValue(
+      //         e.serviceType) !=
+      //     AppConst.CLINIC_SERVICE) {
+      //   Navigator.pushNamed(context,
+      //       SummaryPage.routeName,
+      //       arguments: [
+      //         // INDEX 0
+      //         e.getElementValue(
+      //           e.paymentUrl,
+      //         ),
+      //         // INDEX 1
+      //         e.getElementValue(
+      //             e.pgCode),
+      //       ]);
+      // } else {
+      //   Navigator.pushNamed(
+      //       context,
+      //       PaymentDetailPage
+      //           .routeName,
+      //       arguments: [
+      //         // INDEX 0  Navigator.pushNamed(context,
+      //         e.getElementValue(
+      //           e.paymentUrl,
+      //         ),
+      //         // INDEX 1
+      //         e.getElementValue(
+      //             e.pgCode),
+      //       ]);
+      // }
+    });
   }
 }

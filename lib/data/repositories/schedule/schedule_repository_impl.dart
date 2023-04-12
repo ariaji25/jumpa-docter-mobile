@@ -42,4 +42,18 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
       return Left(ServerFailure(e.response?.data['message'] ?? e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, List<EventEntities>>> getDetailEnrollment(
+      Map<String, dynamic> data) async {
+    try {
+      final result =
+          await api.getDetailEnrollment(data['eventId'], data['orderId']);
+      return Right((EnrollmentModel.fromJson(result)).events ?? []);
+    } on SocketException {
+      return const Left(ConnectionFailure("Failed to connect to the network"));
+    } on DioError catch (e) {
+      return Left(ServerFailure(e.response?.data['message'] ?? e.message));
+    }
+  }
 }

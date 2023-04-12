@@ -56,7 +56,32 @@ class _ScheduleApi implements ScheduleApi {
     )
         .compose(
           _dio.options,
-          '/api/events?trackedEntityInstance=${patientId}&filter=AfjUIoWVeER:ge:${currentTime}&deleted=false&fields=[event,dataValues]&totalPages=true',
+          '/api/events?trackedEntityInstance=${patientId}&deleted=false&fields=[event,dataValues]&totalPages=true',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> getDetailEnrollment(
+    patientId,
+    currentTime,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/events?event={eventId/orderId}&fields=[*]',
           queryParameters: queryParameters,
           data: _data,
         )

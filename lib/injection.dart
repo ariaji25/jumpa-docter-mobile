@@ -32,6 +32,7 @@ import 'package:jd_mobile/domain/usecases/patient/update_patient.dart';
 import 'package:jd_mobile/domain/usecases/payment/create_payment.dart';
 import 'package:jd_mobile/domain/usecases/payment/get_payment_method.dart';
 import 'package:jd_mobile/domain/usecases/payment/get_payment_status.dart';
+import 'package:jd_mobile/domain/usecases/schedule/get_detail_enrollment.dart';
 import 'package:jd_mobile/domain/usecases/schedule/get_enrollments.dart';
 import 'package:jd_mobile/domain/usecases/schedule/get_history_enrollments.dart';
 import 'package:jd_mobile/persentation/provider/article/article_provider.dart';
@@ -86,6 +87,7 @@ Future setup() async {
     () => ScheduleProvider(
       getEnrollments: getIt(),
       getHistoryEnrollments: getIt(),
+      getDetailEnrollment: getIt(),
     ),
   );
   getIt.registerFactory<OrderProvider>(
@@ -176,6 +178,11 @@ Future setup() async {
   getIt.registerLazySingleton<GetEnrollments>(() => GetEnrollments(getIt()));
   getIt.registerLazySingleton<GetHistoryEnrollments>(
     () => GetHistoryEnrollments(
+      getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<GetDetailEnrollment>(
+    () => GetDetailEnrollment(
       getIt(),
     ),
   );
