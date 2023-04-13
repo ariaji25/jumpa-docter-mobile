@@ -45,10 +45,9 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
 
   @override
   Future<Either<Failure, List<EventEntities>>> getDetailEnrollment(
-      Map<String, dynamic> data) async {
+      String data) async {
     try {
-      final result =
-          await api.getDetailEnrollment(data['eventId'], data['orderId']);
+      final result = await api.getDetailEnrollment(data);
       return Right((EnrollmentModel.fromJson(result)).events ?? []);
     } on SocketException {
       return const Left(ConnectionFailure("Failed to connect to the network"));

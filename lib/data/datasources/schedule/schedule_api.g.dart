@@ -66,10 +66,7 @@ class _ScheduleApi implements ScheduleApi {
   }
 
   @override
-  Future<dynamic> getDetailEnrollment(
-    patientId,
-    currentTime,
-  ) async {
+  Future<dynamic> getDetailEnrollment(eventId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -81,7 +78,7 @@ class _ScheduleApi implements ScheduleApi {
     )
         .compose(
           _dio.options,
-          '/api/events?event={eventId/orderId}&fields=[*]',
+          '/api/events?event=${eventId}&fields=[*]',
           queryParameters: queryParameters,
           data: _data,
         )

@@ -12,5 +12,5 @@ abstract class ScheduleRepository {
   );
 
   Future<Either<Failure, List<EventEntities>>> getDetailEnrollment(
-  Map<String,dynamic> data);
+  String data);
 }

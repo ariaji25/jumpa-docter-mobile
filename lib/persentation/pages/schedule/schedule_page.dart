@@ -22,6 +22,8 @@ import '../../../common/resources/size.dart';
 import '../../../common/resources/snackbar.dart';
 import '../../../common/theme/theme.dart';
 import '../../widgets/buttons.dart';
+import '../homecare/payment_detail.dart';
+import '../order/summary_page.dart';
 import 'components/item_tile.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -717,40 +719,37 @@ class SchedulePageState extends State<SchedulePage> {
         ),
       ),
     );
-    await scheduleProvider.getDetailEnrollment({
-      'eventId': e.getElementValue(e.bookingId),
-      'orderId': e.getElementValue(e.bookingId)
-    }).then((value) {
+    await scheduleProvider.getEnrollmentDetail(e.bookingId ?? "").then((value) {
       Navigator.of(context).pop();
-      // if (e.getElementValue(
-      //         e.serviceType) !=
-      //     AppConst.CLINIC_SERVICE) {
-      //   Navigator.pushNamed(context,
-      //       SummaryPage.routeName,
-      //       arguments: [
-      //         // INDEX 0
-      //         e.getElementValue(
-      //           e.paymentUrl,
-      //         ),
-      //         // INDEX 1
-      //         e.getElementValue(
-      //             e.pgCode),
-      //       ]);
-      // } else {
-      //   Navigator.pushNamed(
-      //       context,
-      //       PaymentDetailPage
-      //           .routeName,
-      //       arguments: [
-      //         // INDEX 0  Navigator.pushNamed(context,
-      //         e.getElementValue(
-      //           e.paymentUrl,
-      //         ),
-      //         // INDEX 1
-      //         e.getElementValue(
-      //             e.pgCode),
-      //       ]);
-      // }
+      if (e.getElementValue(
+              e.serviceType) !=
+          AppConst.CLINIC_SERVICE) {
+        Navigator.pushNamed(context,
+            SummaryPage.routeName,
+            arguments: [
+              // INDEX 0
+              e.getElementValue(
+                e.paymentUrl,
+              ),
+              // INDEX 1
+              e.getElementValue(
+                  e.pgCode),
+            ]);
+      } else {
+        Navigator.pushNamed(
+            context,
+            PaymentDetailPage
+                .routeName,
+            arguments: [
+              // INDEX 0  Navigator.pushNamed(context,
+              e.getElementValue(
+                e.paymentUrl,
+              ),
+              // INDEX 1
+              e.getElementValue(
+                  e.pgCode),
+            ]);
+      }
     });
   }
 }

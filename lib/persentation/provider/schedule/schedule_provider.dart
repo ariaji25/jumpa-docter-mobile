@@ -72,10 +72,9 @@ class ScheduleProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> getEnrollmentDetail(String eventId, String orderId) async {
+  Future<void> getEnrollmentDetail(String eventId) async {
     setRequestStateDetailEnrollment(RequestState.Loading);
-    final result =
-        await getDetailEnrollment({'eventId': eventId, 'orderId': orderId});
+    final result = await getDetailEnrollment(eventId);
     result.fold((l) {
       setRequestStateDetailEnrollment(RequestState.Error);
       setErrorMessage(l.message);

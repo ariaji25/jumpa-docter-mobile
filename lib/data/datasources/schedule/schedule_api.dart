@@ -17,10 +17,9 @@ abstract class ScheduleApi {
   );
 
   @GET(
-      "/api/events?event={eventId/orderId}&fields=[*]")
+      "/api/events?event={eventId}&fields=[*]")
   Future getDetailEnrollment(
-    @Path('eventId') String patientId,
-    @Path('orderId') String currentTime,
+    @Path('eventId') String eventId,
   );
 
   factory ScheduleApi(Dio dio, {String baseUrl}) = _ScheduleApi;

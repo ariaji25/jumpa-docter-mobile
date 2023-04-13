@@ -5,12 +5,12 @@ import 'package:jd_mobile/domain/repositories/schedule/schedule_repository.dart'
 import 'package:jd_mobile/domain/usecases/use_case.dart';
 
 class GetDetailEnrollment
-    extends UseCase<Either<Failure, List<EventEntities>>, Map<String,dynamic>> {
+    extends UseCase<Either<Failure, List<EventEntities>>, String> {
   final ScheduleRepository repository;
 
   GetDetailEnrollment(this.repository);
 
   @override
-  Future<Either<Failure, List<EventEntities>>> call(Map<String,dynamic> params) =>
+  Future<Either<Failure, List<EventEntities>>> call(params) =>
       repository.getDetailEnrollment(params);
 }
