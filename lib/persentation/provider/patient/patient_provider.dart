@@ -107,6 +107,7 @@ class PatientProvider extends ChangeNotifier {
   }
 
   Future<void> patientCreate() async {
+    patient.registerNewPatient = true;
     setRequestState(RequestState.Loading);
     final result = await createPatient(patient);
     result.fold((l) {

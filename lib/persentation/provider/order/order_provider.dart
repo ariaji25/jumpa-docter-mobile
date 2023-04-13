@@ -476,6 +476,7 @@ class OrderProvider extends ChangeNotifier {
   Future<void> createNewPatient() async {
     await createNRM();
     setRequestCreateNewPatientState(RequestState.Loading);
+    newPatientEntities.registerNewPatient = false;
     if (newPatientEntities.nrm != null) {
       final result = await createPatient(newPatientEntities);
       result.fold((l) {

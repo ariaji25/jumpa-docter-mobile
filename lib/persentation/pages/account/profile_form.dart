@@ -41,61 +41,48 @@ class ProfileFormState extends State<ProfileForm> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      PatientProvider patientProvider =
-          Provider.of<PatientProvider>(context, listen: false);
-      MapProvider mapProvider =
-          Provider.of<MapProvider>(context, listen: false);
+      PatientProvider patientProvider = Provider.of<PatientProvider>(context, listen: false);
+      MapProvider mapProvider = Provider.of<MapProvider>(context, listen: false);
+
       patientProvider.setShowBtnEdit(true);
       if (patientProvider.patient.name?.isEmpty ?? true) {
         patientProvider.setShowBtnEdit(false);
       }
 
       Future.delayed(const Duration(milliseconds: 200), () async {
-        final nrm = (patientProvider.patient.nrm == ""
-                ? null
-                : patientProvider.patient.nrm) ??
-            await Helpers.readLocalStorage(AppConst.NRM_KEY);
+        final nrm = (patientProvider.patient.nrm == "" ? null : patientProvider.patient.nrm) ?? await Helpers.readLocalStorage(AppConst.NRM_KEY);
         final phone = await Helpers.readLocalStorage(AppConst.PHONE_NUMBER_KEY);
         patientProvider.patient.nrm = nrm;
         patientProvider.patient.waNumber = phone;
 
         patientProvider.nrmCtrl.text = nrm ?? "";
         patientProvider.waNumberCtrl.text = phone ?? "";
-        patientProvider.phoneNumberCtrl.text =
-            patientProvider.patient.phoneNumber ?? "";
+        patientProvider.phoneNumberCtrl.text = patientProvider.patient.phoneNumber ?? "";
         patientProvider.nameCtrl.text = patientProvider.patient.name ?? "";
         patientProvider.nikCtrl.text = patientProvider.patient.nik ?? "";
         patientProvider.adressCtrl.text = patientProvider.patient.address ?? "";
-        patientProvider.domicilieAdressCtrl.text =
-            patientProvider.patient.domicilieAddress ?? "";
-        patientProvider.religionCtrl.text =
-            patientProvider.patient.religion ?? "";
+        patientProvider.domicilieAdressCtrl.text = patientProvider.patient.domicilieAddress ?? "";
+        patientProvider.religionCtrl.text = patientProvider.patient.religion ?? "";
         patientProvider.pobCtrl.text = patientProvider.patient.pob ?? "";
         patientProvider.dobCtrl.text = patientProvider.patient.dob ?? "";
         patientProvider.patient.gender = patientProvider.patient.gender ?? "";
         patientProvider.setGender(patientProvider.patient.gender ?? "");
         if ((patientProvider.patient.coordinate ?? "") != "") {
-          List<dynamic> latLng =
-              jsonDecode(patientProvider.patient.coordinate!);
-          mapProvider.setSelectedPosition(LatLng(
-              double.parse(latLng[1].toString()),
-              double.parse(latLng[0].toString())));
+          List<dynamic> latLng = jsonDecode(patientProvider.patient.coordinate!);
+          mapProvider.setSelectedPosition(LatLng(double.parse(latLng[1].toString()), double.parse(latLng[0].toString())));
           mapProvider.getLocation(mapProvider.selectedPosition).then((value) {
             mapProvider.setSelectedDetailAddress(value);
           });
         }
 
-        patientProvider.setWaNumberEqPhoneNumber(
-            patientProvider.waNumberCtrl.text ==
-                patientProvider.phoneNumberCtrl.text);
+        patientProvider.setWaNumberEqPhoneNumber(patientProvider.waNumberCtrl.text == patientProvider.phoneNumberCtrl.text);
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    PatientProvider patientProvider =
-        Provider.of<PatientProvider>(context, listen: true);
+    PatientProvider patientProvider = Provider.of<PatientProvider>(context, listen: true);
     MapProvider mapProvider = Provider.of<MapProvider>(context, listen: true);
     return Scaffold(
         appBar: AppsBar(
