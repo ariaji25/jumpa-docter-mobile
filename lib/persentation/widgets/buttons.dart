@@ -26,9 +26,7 @@ class Buttons extends StatelessWidget {
       onTap: disabled || loading ? null : onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: disabled
-              ? AppColors.primaryColor.withOpacity(.50)
-              : AppColors.primaryColor,
+          color: disabled ? const Color(0XFFE4ECF7) : AppColors.primaryColor,
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         margin: EdgeInsets.only(bottom: marginBottom),
@@ -46,7 +44,9 @@ class Buttons extends StatelessWidget {
               : Text(
                   title,
                   style: AppTheme.subtitle.copyWith(
-                    color: AppColors.whiteColor,
+                    color: disabled
+                        ? const Color(0XFF505780)
+                        : AppColors.whiteColor,
                     fontSize: 12,
                   ),
                 ),
@@ -143,7 +143,7 @@ class ButtonCustom extends StatelessWidget {
       onTap: disabled ? null : onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: disabled ? backgroundColor.withOpacity(.50) : backgroundColor,
+          color: disabled ? const Color(0XFFE4ECF7) : backgroundColor,
           borderRadius: BorderRadius.circular(borderRadius),
           border: Border.all(
             color: borderColor ?? backgroundColor,

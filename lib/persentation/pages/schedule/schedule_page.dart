@@ -382,12 +382,12 @@ class SchedulePageState extends State<SchedulePage> {
                                                 child: ButtonCustom(
                                                   title: "Batalkan Pesanan",
                                                   backgroundColor:
-                                                      AppColors.grey200Color,
+                                                      const Color(0XFFE4ECF7),
                                                   titleStyle: AppTheme.bodyText
                                                       .copyWith(
                                                           color: AppColors
                                                               .primaryColor,
-                                                          fontSize: 14),
+                                                          fontSize: 12),
                                                   marginBottom: 0,
                                                   onTap: () {
                                                     SnackBarCustom
@@ -408,30 +408,33 @@ class SchedulePageState extends State<SchedulePage> {
                                             const SizedBox(
                                               width: 10,
                                             ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: SizedBox(
-                                                height: 40,
-                                                width: 137,
-                                                child: Buttons(
-                                                  title: "Bayar Sekarang",
-                                                  marginBottom: 0,
-                                                  disabled: e.getElementValue(
-                                                          e.statusPayment) !=
-                                                      "0",
-                                                  onTap: () {
-                                                    Navigator.pushNamed(context,
-                                                        WebViewPage.routeName,
-                                                        arguments: [
-                                                          // INDEX 0
-                                                          e.getElementValue(
-                                                            e.paymentUrl,
-                                                          ),
-                                                          // INDEX 1
-                                                          e.getElementValue(
-                                                              e.pgCode),
-                                                        ]);
-                                                  },
+                                            Visibility(
+                                              visible: e.getElementValue(
+                                                      e.statusPayment) ==
+                                                  "0",
+                                              child: Expanded(
+                                                flex: 1,
+                                                child: SizedBox(
+                                                  height: 40,
+                                                  width: 137,
+                                                  child: Buttons(
+                                                    title: "Bayar Sekarang",
+                                                    marginBottom: 0,
+                                                    onTap: () {
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          WebViewPage.routeName,
+                                                          arguments: [
+                                                            // INDEX 0
+                                                            e.getElementValue(
+                                                              e.paymentUrl,
+                                                            ),
+                                                            // INDEX 1
+                                                            e.getElementValue(
+                                                                e.pgCode),
+                                                          ]);
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ),
