@@ -12,6 +12,7 @@ class PatientEntities {
   String? waNumber;
   String? tei;
   String? coordinate;
+  bool? registerNewPatient;
 
   PatientEntities({
     this.nrm,
@@ -27,5 +28,6 @@ class PatientEntities {
     this.waNumber,
     this.tei,
     this.coordinate,
+    this.registerNewPatient,
   });
 }

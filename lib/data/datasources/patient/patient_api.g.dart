@@ -100,7 +100,7 @@ class _PatientApi implements PatientApi {
     )
         .compose(
           _dio.options,
-          '/api/trackedEntityInstances?fields=[*]&program=El6a2lnac0D&ou=jp49nCFvI75&filter=x9tchw0swEu:eq:${phoneNumber}&programStatus=COMPLETED&ouMode=CAPTURE',
+          '/api/trackedEntityInstances?fields=[*]&program=El6a2lnac0D&ou=jp49nCFvI75&filter=x9tchw0swEu:eq:${phoneNumber}&programStatus=COMPLETED&ouMode=CAPTURE&filter=uNqxICAbPaK:eq:true',
           queryParameters: queryParameters,
           data: _data,
         )

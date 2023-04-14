@@ -17,6 +17,7 @@ class PatientKeys {
   static String waNumber = "x9tchw0swEu";
   static String nik = "xGjeKnsJobT";
   static String coordinate = "H1ouX506oQO";
+  static String registerNewPatient = "uNqxICAbPaK";
 }
 
 class PatientModel extends PatientEntities {
@@ -33,6 +34,7 @@ class PatientModel extends PatientEntities {
   String? waNumber;
   String? tei;
   String? coordinate;
+  bool? registerNewPatient;
 
   PatientModel({
     this.nrm,
@@ -48,6 +50,7 @@ class PatientModel extends PatientEntities {
     this.waNumber,
     this.tei,
     this.coordinate,
+    this.registerNewPatient,
   });
 
   factory PatientModel.fromEntities(PatientEntities d) {
@@ -65,6 +68,7 @@ class PatientModel extends PatientEntities {
       waNumber: d.waNumber,
       tei: d.tei,
       coordinate: d.coordinate,
+      registerNewPatient: d.registerNewPatient,
     );
   }
 
@@ -115,6 +119,7 @@ class PatientModel extends PatientEntities {
         {"attribute": PatientKeys.waNumber, "value": waNumber},
         {"attribute": PatientKeys.nik, "value": nik},
         {"attribute": PatientKeys.coordinate, "value": coordinate},
+        {"attribute": PatientKeys.registerNewPatient, "value": registerNewPatient},
       ],
       "enrollments": [
         {

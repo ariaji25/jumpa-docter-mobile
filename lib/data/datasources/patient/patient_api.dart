@@ -15,7 +15,7 @@ abstract class PatientApi {
   Future updatePatient(@Body() Map<String, dynamic> data);
 
   @GET(
-      "/api/trackedEntityInstances?fields=[*]&program=El6a2lnac0D&ou=jp49nCFvI75&filter=x9tchw0swEu:eq:{phoneNumber}&programStatus=COMPLETED&ouMode=CAPTURE")
+      "/api/trackedEntityInstances?fields=[*]&program=El6a2lnac0D&ou=jp49nCFvI75&filter=x9tchw0swEu:eq:{phoneNumber}&programStatus=COMPLETED&ouMode=CAPTURE&filter=uNqxICAbPaK:eq:true")
   Future detailPatientByNrm(@Path('phoneNumber') String phoneNumber);
 
   @GET(
