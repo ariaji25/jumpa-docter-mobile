@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:jd_mobile/common/resources/size.dart';
+import 'package:jd_mobile/persentation/pages/base/base_page.dart';
 import 'package:jd_mobile/persentation/pages/homecare/success.dart';
+
 import '../../../common/extensions/padding_ext.dart';
 import '../../widgets/buttons.dart';
 
@@ -33,10 +35,8 @@ class WebViewPageState extends State<WebViewPage> {
               child: Buttons(
                 title: "Selesai",
                 onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    PaymentSuccess.routeName,
-                  );
+                  Navigator.pushNamed(context, BasePage.routeName,
+                      arguments: 2);
                 },
               ),
             )

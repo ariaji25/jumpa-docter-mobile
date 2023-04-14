@@ -7,8 +7,10 @@ import 'package:intl/intl.dart';
 import 'package:jd_mobile/common/extensions/context_ext.dart';
 import 'package:jd_mobile/common/extensions/entities_ext.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
+import 'package:jd_mobile/domain/entities/booking/booking_enitities.dart';
 import 'package:jd_mobile/domain/entities/patient/event_entities.dart';
 import 'package:jd_mobile/persentation/pages/webview/webview_page.dart';
+import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
 import 'package:jd_mobile/persentation/provider/patient/patient_provider.dart';
 import 'package:jd_mobile/persentation/provider/schedule/schedule_provider.dart';
 import 'package:jd_mobile/persentation/widgets/loading.dart';
@@ -21,6 +23,7 @@ import '../../../common/resources/colors.dart';
 import '../../../common/resources/size.dart';
 import '../../../common/resources/snackbar.dart';
 import '../../../common/theme/theme.dart';
+import '../../../domain/entities/patient/patient_entities.dart';
 import '../../widgets/buttons.dart';
 import '../homecare/payment_detail.dart';
 import '../order/summary_page.dart';
@@ -35,6 +38,7 @@ class SchedulePage extends StatefulWidget {
 
 class SchedulePageState extends State<SchedulePage> {
   bool segmentedControlValue = true;
+  late OrderProvider orderProvider;
 
   @override
   void initState() {
@@ -45,6 +49,7 @@ class SchedulePageState extends State<SchedulePage> {
 
   _getEnrollmentOrHistory() {
     Future.delayed(const Duration(seconds: 0), () async {
+      orderProvider = Provider.of<OrderProvider>(context, listen: false);
       PatientProvider patientProvider =
           Provider.of<PatientProvider>(context, listen: false);
       ScheduleProvider scheduleProvider =
@@ -721,34 +726,40 @@ class SchedulePageState extends State<SchedulePage> {
     );
     await scheduleProvider.getEnrollmentDetail(e.bookingId ?? "").then((value) {
       Navigator.of(context).pop();
-      if (e.getElementValue(
-              e.serviceType) !=
-          AppConst.CLINIC_SERVICE) {
-        Navigator.pushNamed(context,
-            SummaryPage.routeName,
-            arguments: [
-              // INDEX 0
-              e.getElementValue(
-                e.paymentUrl,
-              ),
-              // INDEX 1
-              e.getElementValue(
-                  e.pgCode),
-            ]);
-      } else {
-        Navigator.pushNamed(
-            context,
-            PaymentDetailPage
-                .routeName,
-            arguments: [
-              // INDEX 0  Navigator.pushNamed(context,
-              e.getElementValue(
-                e.paymentUrl,
-              ),
-              // INDEX 1
-              e.getElementValue(
-                  e.pgCode),
-            ]);
+      if (scheduleProvider.detailEnrollment.events != null &&
+          scheduleProvider.detailEnrollment.events!.isNotEmpty) {
+        EventEntities eventEntities =
+            scheduleProvider.detailEnrollment.events!.first;
+        BookingEntities bookingEntities = orderProvider.bookingEntities;
+        PatientEntities patientEntities = orderProvider.patientEntities;
+        patientEntities.name =
+            eventEntities.getElementValue(eventEntities.namePatient);
+        patientEntities.nik =
+            eventEntities.getElementValue(eventEntities.nikPatient);
+        patientEntities.address =
+            eventEntities.getElementValue(eventEntities.clinicArea);
+        bookingEntities.doctorName =
+            eventEntities.getElementValue(eventEntities.doctor);
+        bookingEntities.complaint =
+            eventEntities.getElementValue(eventEntities.assesment);
+        bookingEntities.serviceType =
+            eventEntities.getElementValue(eventEntities.serviceType);
+        bookingEntities.service =
+            eventEntities.getElementValue(eventEntities.serviceName);
+        bookingEntities.visitDate =
+            eventEntities.getElementValue(eventEntities.serviceDate);
+        bookingEntities.visitTime =
+            eventEntities.getElementValue(eventEntities.serviceTime);
+        bookingEntities.price =
+            eventEntities.getElementValue(eventEntities.totalPay);
+        bookingEntities.clinicAddress =
+            eventEntities.getElementValue(eventEntities.clinicArea);
+        if (e.getElementValue(e.serviceType) == AppConst.CLINIC_SERVICE) {
+          Navigator.pushNamed(context, SummaryPage.routeName, arguments: true);
+        } else {
+          Navigator.pushNamed(context, PaymentDetailPage.routeName,
+              arguments: true);
+        }
       }
     });
   }

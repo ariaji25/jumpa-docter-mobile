@@ -34,8 +34,9 @@ import '../schedule/schedule_page.dart';
 
 class BasePage extends StatefulWidget {
   static const routeName = "/BasePage";
+  final int selectedIndex;
 
-  const BasePage({Key? key}) : super(key: key);
+  const BasePage({Key? key, this.selectedIndex = 0}) : super(key: key);
 
   @override
   BasePageState createState() => BasePageState();
@@ -53,6 +54,7 @@ class BasePageState extends State<BasePage> {
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.selectedIndex;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

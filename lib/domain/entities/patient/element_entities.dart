@@ -10,4 +10,8 @@ abstract class ElementsEntities {
   final doctor = "WeZLKi92kyq";
   final pgCode = "uKLVZAc5Wch";
   final clinicArea = "lzJQJ35mwDi";
+  final doctorName = "MLMRJAh6nLA";
+  final totalPay = "NwHWGOgcihm";
+  final nikPatient = "GZi3X6d4lqu";
+  final namePatient = "FwdxzpQ8w2I";
 }

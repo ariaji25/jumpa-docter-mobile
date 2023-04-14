@@ -79,6 +79,7 @@ class ScheduleProvider extends ChangeNotifier {
       setRequestStateDetailEnrollment(RequestState.Error);
       setErrorMessage(l.message);
     }, (r) async {
+      detailEnrollment.events = [];
       detailEnrollment.events = r;
       notifyListeners();
       setRequestStateDetailEnrollment(RequestState.Loaded);

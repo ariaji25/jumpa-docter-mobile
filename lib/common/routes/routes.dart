@@ -22,10 +22,10 @@ import '../../persentation/pages/chat/payment_chat_page.dart';
 import '../../persentation/pages/chat/specialization_page.dart';
 import '../../persentation/pages/feedback/feedback_doctor_page.dart';
 import '../../persentation/pages/homecare/payment.dart';
+import '../../persentation/pages/notifications/notification_page.dart';
 import '../../persentation/pages/order/schedule_page.dart';
 import '../../persentation/pages/order/summary_page.dart';
 import '../../persentation/pages/webview/webview_page.dart';
-import '../../persentation/pages/notifications/notification_page.dart';
 
 class AppRoutes {
   static Route generateRoute(RouteSettings settings) {
@@ -51,8 +51,9 @@ class AppRoutes {
           settings: settings,
         );
       case BasePage.routeName:
+        int index = settings.arguments != null ? settings.arguments as int : 0;
         return CupertinoPageRoute(
-          builder: (_) => const BasePage(),
+          builder: (_) => BasePage(selectedIndex: index),
           settings: settings,
         );
       case ComplaintPage.routeName:
@@ -136,8 +137,10 @@ class AppRoutes {
           settings: settings,
         );
       case SummaryPage.routeName:
+        bool? fromDetail =
+            settings.arguments != null ? settings.arguments as bool : false;
         return CupertinoPageRoute(
-          builder: (_) => const SummaryPage(),
+          builder: (_) => SummaryPage(fromDetail: fromDetail),
           settings: settings,
         );
       case PaymentPage.routeName:
@@ -146,8 +149,12 @@ class AppRoutes {
           settings: settings,
         );
       case PaymentDetailPage.routeName:
+        bool? fromDetail =
+            settings.arguments != null ? settings.arguments as bool : false;
         return CupertinoPageRoute(
-          builder: (_) => const PaymentDetailPage(),
+          builder: (_) => PaymentDetailPage(
+            fromDetail: fromDetail,
+          ),
           settings: settings,
         );
       case PaymentSuccess.routeName:

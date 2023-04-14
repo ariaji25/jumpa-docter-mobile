@@ -24,10 +24,9 @@ import 'components/card_field.dart';
 
 class SummaryPage extends StatefulWidget {
   static const routeName = "/SummaryPage";
+  final bool fromDetail;
 
-  const SummaryPage({
-    Key? key,
-  }) : super(key: key);
+  const SummaryPage({Key? key, this.fromDetail = false}) : super(key: key);
 
   @override
   SummaryPageState createState() => SummaryPageState();
@@ -49,7 +48,7 @@ class SummaryPageState extends State<SummaryPage> {
       title: "Detail",
       subTitle: "Jadwal pesanan anda",
       onNext: _finish,
-      btnTitle: "Selesai",
+      btnTitle: widget.fromDetail ? "Tutup" : "Selesai",
       enableBackButton: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,10 +70,10 @@ class SummaryPageState extends State<SummaryPage> {
                   children: [
                     _buildItemSummary(
                         key: "No Rekam Medis",
-                        value: orderProvider.patientEntities.nrm ?? ""),
+                        value: orderProvider.patientEntities.nrm ?? "-"),
                     _buildItemSummary(
                         key: "Nama pasien",
-                        value: orderProvider.patientEntities.name ?? ""),
+                        value: orderProvider.patientEntities.name ?? "-"),
                     _buildItemSummary(
                         key: "Layanan",
                         value: orderProvider.bookingEntities.service),
@@ -488,20 +487,21 @@ class SummaryPageState extends State<SummaryPage> {
   }
 
   _finish() async {
-    orderProvider.clear();
-    const storage = FlutterSecureStorage();
-    Navigator.pushNamed(
-      context,
-      BasePage.routeName,
-    );
-    String isOpenFeedback =
-        await storage.read(key: AppConst.OPEN_FEEDBACK_KEY) ?? 'false';
-    if ((isOpenFeedback.toLowerCase() == "true")) {
-      if (mounted) {
-        Alerts.showAlertDialogFeedback(context);
+    if (widget.fromDetail) {
+      Navigator.of(context).pop();
+    } else {
+      orderProvider.clear();
+      const storage = FlutterSecureStorage();
+      Navigator.pushNamed(context, BasePage.routeName, arguments: 2);
+      String isOpenFeedback =
+          await storage.read(key: AppConst.OPEN_FEEDBACK_KEY) ?? 'false';
+      if ((isOpenFeedback.toLowerCase() == "true")) {
+        if (mounted) {
+          Alerts.showAlertDialogFeedback(context);
+        }
+        await storage.write(
+            key: AppConst.OPEN_FEEDBACK_KEY, value: false.toString());
       }
-      await storage.write(
-          key: AppConst.OPEN_FEEDBACK_KEY, value: false.toString());
     }
   }
 }
