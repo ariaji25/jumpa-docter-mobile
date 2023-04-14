@@ -10,4 +10,7 @@ abstract class ScheduleRepository {
   Future<Either<Failure, List<EventEntities>>> getEnrollments(
     String patientId,
   );
+
+  Future<Either<Failure, List<EventEntities>>> getDetailEnrollment(
+  String data);
 }

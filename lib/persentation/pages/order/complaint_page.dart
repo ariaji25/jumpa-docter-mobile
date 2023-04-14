@@ -43,7 +43,9 @@ class _ComplaintPageState extends State<ComplaintPage> {
     mapProvider = Provider.of<MapProvider>(context, listen: false);
     patientProvider = Provider.of<PatientProvider>(context, listen: false);
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    orderProvider.checkNikPatient();
+    Future.delayed(const Duration(seconds: 0), () async {
+      orderProvider.checkNikPatient();
+    });
     super.initState();
   }
 
@@ -51,11 +53,13 @@ class _ComplaintPageState extends State<ComplaintPage> {
   Widget build(BuildContext context) {
     final params = ModalRoute.of(context)?.settings.arguments
         as JumpaDokterServiceEntities;
-    orderProvider.setServiceId(params.serviceId);
-    orderProvider.bookingEntities.service = params.title;
-    BookingEntities bookingEntities = orderProvider.bookingEntities;
-    bookingEntities.orderType = "Diri Sendiri";
-    orderProvider.updateBooking(bookingEntities);
+    Future.delayed(const Duration(seconds: 0), () async {
+      orderProvider.setServiceId(params.serviceId);
+      orderProvider.bookingEntities.service = params.title;
+      BookingEntities bookingEntities = orderProvider.bookingEntities;
+      bookingEntities.orderType = "Diri Sendiri";
+      orderProvider.updateBooking(bookingEntities);
+    });
 
     return BaseOrderScreen(
         title: params.title == "Swab Antigen"

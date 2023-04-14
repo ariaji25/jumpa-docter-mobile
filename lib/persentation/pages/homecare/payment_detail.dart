@@ -16,12 +16,16 @@ import '../../../common/theme/theme.dart';
 import '../../../domain/entities/booking/booking_enitities.dart';
 import '../../provider/order/order_provider.dart';
 import '../../provider/patient/patient_provider.dart';
+import '../base/base_page.dart';
 import 'components/base_payment.dart';
 import 'components/components.dart';
 
 class PaymentDetailPage extends StatefulWidget {
   static const routeName = '/PaymentDetailPage';
-  const PaymentDetailPage({Key? key}) : super(key: key);
+  final bool fromDetail;
+
+  const PaymentDetailPage({Key? key, this.fromDetail = false})
+      : super(key: key);
 
   @override
   State<PaymentDetailPage> createState() => _PaymentDetailPageState();
@@ -42,12 +46,14 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
   Widget build(BuildContext context) {
     return Consumer<OrderProvider>(builder: (context, provider, _) {
       return BasePaymentScreen(
-        btnTitle: "Lanjut",
+        btnTitle: widget.fromDetail ? "Tutup" : "Lanjut",
         isPayment: true,
         price: orderProvider.bookingEntities.price != ""
             ? Helpers.formatCurrency(orderProvider.bookingEntities.price ?? "0")
             : "0",
-        onNext: () => makeAppointment(orderProvider),
+        onNext: () => widget.fromDetail
+            ? Navigator.of(context).pop()
+            : makeAppointment(orderProvider),
         loading: orderProvider.makeAppointmentState == RequestState.Loading,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,7 +206,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
             ),
             cardColumn(
               "Layanan",
-              orderProvider.bookingEntities.serviceType ?? "",
+              orderProvider.bookingEntities.service ?? "",
             ),
             cardColumn(
               "Keluhan yang dirasakan",

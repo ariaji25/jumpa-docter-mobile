@@ -10,10 +10,16 @@ abstract class ScheduleApi {
   Future getHistoryEnrollments(@Path('patientId') String patientId);
 
   @GET(
-      "/api/events?trackedEntityInstance={patientId}&filter=AfjUIoWVeER:ge:{currentTime}&deleted=false&fields=[event,dataValues]&totalPages=true")
+      "/api/events?trackedEntityInstance={patientId}&deleted=false&fields=[event,dataValues]&totalPages=true")
   Future getEnrollments(
     @Path('patientId') String patientId,
     @Path('currentTime') String currentTime,
+  );
+
+  @GET(
+      "/api/events?event={eventId}&fields=[*]")
+  Future getDetailEnrollment(
+    @Path('eventId') String eventId,
   );
 
   factory ScheduleApi(Dio dio, {String baseUrl}) = _ScheduleApi;
