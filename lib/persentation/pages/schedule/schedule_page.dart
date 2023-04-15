@@ -54,8 +54,14 @@ class SchedulePageState extends State<SchedulePage> {
           Provider.of<PatientProvider>(context, listen: false);
       ScheduleProvider scheduleProvider =
           Provider.of<ScheduleProvider>(context, listen: false);
-      await scheduleProvider
-          .getListEnrollments(patientProvider.patient.tei ?? "");
+      if (patientProvider.isNewPatient && !patientProvider.isInvalidToken) {
+        scheduleProvider.enrollment.events=[];
+        scheduleProvider.enrollmentHistory.events=[];
+        scheduleProvider.setRequestState(RequestState.Loaded);
+      } else {
+        await scheduleProvider
+            .getListEnrollments(patientProvider.patient.tei ?? "");
+      }
       // await scheduleProvider
       //     .getListHistoryEnrollments(patientProvider.patient.tei ?? "");
     });
