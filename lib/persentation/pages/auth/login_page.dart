@@ -15,6 +15,7 @@ import 'package:jd_mobile/persentation/widgets/app_bars.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/helpers/error_auth_helper.dart';
+import '../../widgets/buttons.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/LoginPage";
@@ -26,8 +27,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _phoneNumber = TextEditingController();
-
   _navigateToOtpPage(String phoneNumber, String verificationId) {
     Navigator.pushNamed(
       context,
@@ -126,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 10),
             TextFormField(
-              controller: _phoneNumber,
+              controller: provider.phoneNumberCtrl,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: "cth : 08123456789",
@@ -134,7 +133,9 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onChanged: (value) {},
+              onChanged: (value) {
+                provider.setEnableButtonLogin(value.length > 10);
+              },
             ),
             const SizedBox(height: 25),
             InkWell(
@@ -158,33 +159,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 25),
-            InkWell(
-              onTap: () => _onLanjut(provider, _phoneNumber.text),
-              child: Container(
-                height: 47,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Center(
-                  child: provider.requestState == RequestState.Loading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2.0,
-                          ),
-                        )
-                      : Text(
-                          "Lanjut",
-                          style: AppTheme.subtitle.copyWith(
-                            color: AppColors.whiteColor,
-                            fontSize: 14,
-                          ),
-                        ),
-                ),
-              ),
+            Buttons(
+              disabled: !provider.enableButtonLogin,
+              loading: provider.requestState == RequestState.Loading,
+              title: "Lanjut",
+              marginBottom: 0,
+              onTap: () => _onLanjut(provider, provider.phoneNumberCtrl.text),
             ),
           ],
         ),
@@ -200,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _onLanjut(AuthProvider provider, String phoneNumber) {
-    if (_phoneNumber.text.isEmpty) {
+    if (provider.phoneNumberCtrl.text.isEmpty) {
       closeKeyboard();
       SnackBarCustom.showSnackBarMessage(
         context: context,
@@ -211,7 +191,8 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       provider.setRequestState(RequestState.Loading);
       provider.requestOtp(
-        phoneNumber: PhoneNumberHelper.formatPhoneNumber(_phoneNumber.text),
+        phoneNumber:
+            PhoneNumberHelper.formatPhoneNumber(provider.phoneNumberCtrl.text),
         timeout: const Duration(seconds: 120),
         verificationCompleted: (phoneAuthCredential) {},
         verificationFailed: (err) {
@@ -227,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
           provider.verificationId = verificationId;
           provider.resendToken = resendToken;
           await _navigateToOtpPage(
-            _phoneNumber.text,
+            provider.phoneNumberCtrl.text,
             verificationId,
           );
           provider.setRequestState(RequestState.Loaded);
