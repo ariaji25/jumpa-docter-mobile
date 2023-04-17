@@ -65,6 +65,9 @@ class _DoctorPageState extends State<DoctorPage> {
       btnTitle: "Lanjut",
       loading:
           orderProvider.requestCreateEnrollmentState == RequestState.Loading,
+      disabled: !_isNotEmptyOption(orderProvider.bookingEntities.clinicArea) ||
+          !_isNotEmptyOption(orderProvider.bookingEntities.clinicName) ||
+          !_isNotEmptyOption(orderProvider.bookingEntities.doctorName),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
