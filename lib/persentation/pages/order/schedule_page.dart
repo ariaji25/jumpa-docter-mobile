@@ -55,6 +55,14 @@ class AppointmentSchedulePageState extends State<AppointmentSchedulePage> {
         _onClickNext(orderProvider);
       },
       loading: orderProvider.makeAppointmentState == RequestState.Loading,
+      disabled: orderProvider.selectedTime == null ||
+          (orderProvider.selectedTime != null &&
+              orderProvider.selectedDate != null &&
+              orderProvider.selectedDate!.day <= DateTime.now().day &&
+              dateFormat.parse(orderProvider.selectedTime!).hour <=
+                  DateTime.now().hour &&
+              dateFormat.parse(orderProvider.selectedTime!).minute <=
+                  DateTime.now().minute),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
