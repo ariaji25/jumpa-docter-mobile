@@ -93,6 +93,7 @@ class OrderProvider extends ChangeNotifier {
   int orderFor = 0;
   int? patientType;
   String search = "";
+  String pgCode = "";
 
   String get errorMessage => _errorMessage;
 
@@ -264,6 +265,11 @@ class OrderProvider extends ChangeNotifier {
 
   void setDobCtrl(TextEditingController value) {
     dobCtrl = value;
+    notifyListeners();
+  }
+
+  void setPgCode(String value) {
+    pgCode = value;
     notifyListeners();
   }
 
@@ -547,6 +553,7 @@ class OrderProvider extends ChangeNotifier {
     orgUnits = "";
     dataSet = "";
     price = "";
+    pgCode = "";
 
     // Booking ID
     reference = "";

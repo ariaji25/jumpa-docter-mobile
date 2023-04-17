@@ -16,7 +16,6 @@ import '../../../common/theme/theme.dart';
 import '../../../domain/entities/booking/booking_enitities.dart';
 import '../../provider/order/order_provider.dart';
 import '../../provider/patient/patient_provider.dart';
-import '../base/base_page.dart';
 import 'components/base_payment.dart';
 import 'components/components.dart';
 
@@ -214,7 +213,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
             ),
             cardColumn(
               "Waktu tanggal berobat",
-              "${orderProvider.bookingEntities.visitTime} WIB - ${DateHelper.dateTimeToLocalDate(orderProvider.bookingEntities.visitDate)!.replaceAll("-", "/")}",
+              "${orderProvider.bookingEntities.visitTime} WIB - ${orderProvider.bookingEntities.visitDate != null ?DateHelper.dateTimeToLocalDate(orderProvider.bookingEntities.visitDate)!.replaceAll("-", "/"):''}",
             ),
             cardColumn(
               "Alamat janji temu",
