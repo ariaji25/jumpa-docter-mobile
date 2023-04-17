@@ -45,6 +45,24 @@ class DateHelper {
         : "${splitValue[2]}-${splitValue[1]}-${splitValue[0]}");
   }
 
+  static String getTimezon() {
+    final now = DateTime.now();
+    final timeZone = now.timeZoneOffset;
+
+    String timeZoneAbbreviation;
+    if (timeZone.inHours == 7) {
+      timeZoneAbbreviation = 'WIB';
+    } else if (timeZone.inHours == 8) {
+      timeZoneAbbreviation = 'WITA';
+    } else if (timeZone.inHours == 9) {
+      timeZoneAbbreviation = 'WIT';
+    } else {
+      timeZoneAbbreviation = timeZone.toString();
+    }
+
+    return timeZoneAbbreviation;
+  }
+
 // static String? convertToLocalTime(String time, BuildContext context) {
 //   final int hour = int.tryParse(time.split(":")[0]) ?? 00;
 //   final int minute = int.tryParse(time.split(":")[1]) ?? 00;
