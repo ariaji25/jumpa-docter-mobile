@@ -79,7 +79,18 @@ class _ComplaintPageState extends State<ComplaintPage> {
         },
         onBack: _onCancelOrder,
         loading: false,
-        disabled: false,
+        disabled: Provider.of<OrderProvider>(context, listen: true)
+                    .patientEntities
+                    .nik ==
+                null ||
+            Provider.of<OrderProvider>(context, listen: true)
+                    .patientEntities
+                    .name ==
+                null ||
+            Provider.of<OrderProvider>(context, listen: true)
+                    .complaintCtrl
+                    .text ==
+                "",
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
