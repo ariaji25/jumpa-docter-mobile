@@ -56,8 +56,8 @@ class SchedulePageState extends State<SchedulePage> {
       ScheduleProvider scheduleProvider =
           Provider.of<ScheduleProvider>(context, listen: false);
       if (patientProvider.isNewPatient && !patientProvider.isInvalidToken) {
-        scheduleProvider.enrollment.events=[];
-        scheduleProvider.enrollmentHistory.events=[];
+        scheduleProvider.enrollment.events = [];
+        scheduleProvider.enrollmentHistory.events = [];
         scheduleProvider.setRequestState(RequestState.Loaded);
       } else {
         await scheduleProvider
@@ -719,6 +719,7 @@ class SchedulePageState extends State<SchedulePage> {
     showDialog(
       context: context,
       barrierColor: Colors.black.withOpacity(0.2),
+      barrierDismissible: false,
       builder: (context) => Center(
         child: Container(
           width: 120.0,

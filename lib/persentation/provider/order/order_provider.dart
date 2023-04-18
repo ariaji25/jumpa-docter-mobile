@@ -534,6 +534,7 @@ class OrderProvider extends ChangeNotifier {
     patientEntities = PatientEntities();
     patientEntitiesByNIK = PatientEntities();
     newPatientEntities = PatientEntities();
+    enrollmentEntities = EnrollmentEntities();
     doctors = DetailPatientEntities();
     clinics = ClinicEntities();
     clinicsByArea = ClinicEntities();
@@ -569,7 +570,9 @@ class OrderProvider extends ChangeNotifier {
     _requestClinicsState = RequestState.Empty;
     _requestClinicsAreaState = RequestState.Empty;
     _requestPriceState = RequestState.Empty;
+    _makeAppointmentState = RequestState.Empty;
     _requestCreateEnrollmentState = RequestState.Empty;
+    _requestCreateNewPatientState = RequestState.Empty;
     _requestLoadPatientState = RequestState.Empty;
     notifyListeners();
   }
