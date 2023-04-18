@@ -5,8 +5,10 @@ import '../../../data/models/patient/datavalue_model.dart';
 class EventEntities extends ElementsEntities {
   List<DataValueEntities>? dataValues;
   String? bookingId;
+  String? nrm;
+  String? addressPatient;
 
-  EventEntities({this.dataValues});
+  EventEntities({this.dataValues,this.nrm,this.addressPatient});
 
   EventEntities.fromJson(Map<String, dynamic> json) {
     if (json["dataValues"] != null) {
@@ -17,5 +19,7 @@ class EventEntities extends ElementsEntities {
     }
 
     bookingId = json["event"];
+    nrm = json["nrm"];
+    addressPatient = json["address_patient"];
   }
 }
