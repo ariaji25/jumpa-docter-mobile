@@ -6,6 +6,7 @@ import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/extensions/padding_ext.dart';
 import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/size.dart';
+import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/persentation/pages/webview/webview_page.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
@@ -26,7 +27,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentState extends State<PaymentPage> {
-  var _pgCode = "801";
+  var _pgCode = "";
   late OrderProvider orderProvider;
   late PaymentProvider paymentProvider;
 
@@ -51,27 +52,35 @@ class _PaymentState extends State<PaymentPage> {
         return BasePaymentScreen(
           btnTitle: "Bayar",
           onNext: () async {
-            await paymentProvider.genratePayment({
-              "booking_id": orderProvider.reference,
-              "product_id": orderProvider.bookingEntities.service,
-              "product_name": orderProvider.bookingEntities.serviceType,
-              "product_price": "${orderProvider.bookingEntities.price}00",
-              "payment_channel": _pgCode,
-              "patient_id": orderProvider.patientEntities.tei,
-              "patient_name": orderProvider.patientEntities.name,
-              "booking_date":
-                  "${orderProvider.bookingEntities.visitDate} ${orderProvider.bookingEntities.visitTime}"
-            }).then((value) {
-              log('PAYMENT URL -- ${paymentProvider.paymentUrls}');
-              Navigator.pushNamed(
-                context,
-                WebViewPage.routeName,
-                arguments: [
-                  paymentProvider.paymentUrls,
-                  _pgCode,
-                ],
+            if(_pgCode == "") {
+              SnackBarCustom.showSnackBarMessage(
+                context: context,
+                title: "Opps!",
+                message: "Silahkan pilih metode pembayaran!",
+                typeMessage: SnackBarType.warning,
               );
-            });
+            } else {
+              await paymentProvider.genratePayment({
+                "booking_id": orderProvider.reference,
+                "product_id": orderProvider.bookingEntities.service,
+                "product_name": orderProvider.bookingEntities.serviceType,
+                "product_price": "${orderProvider.bookingEntities.price}00",
+                "payment_channel": _pgCode,
+                "patient_id": orderProvider.patientEntities.tei,
+                "patient_name": orderProvider.patientEntities.name,
+                "booking_date": "${orderProvider.bookingEntities.visitDate} ${orderProvider.bookingEntities.visitTime}"
+              }).then((value) {
+                log('PAYMENT URL -- ${paymentProvider.paymentUrls}');
+                Navigator.pushNamed(
+                  context,
+                  WebViewPage.routeName,
+                  arguments: [
+                    paymentProvider.paymentUrls,
+                    _pgCode,
+                  ],
+                );
+              });
+            }
           },
           loading: value.genratePaymentState == RequestState.Loading,
           child: Consumer<PaymentProvider>(
