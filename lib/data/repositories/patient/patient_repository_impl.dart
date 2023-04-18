@@ -77,4 +77,16 @@ class PatientRepositoryImpl extends PatientRepository {
       return Left(ServerFailure(e.response?.data['message'] ?? e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, String>> detailPatientByNikOther(String nik) async {
+    try {
+      final result = await api.detailPatientByNikOther(nik);
+      return Right(jsonEncode(result));
+    } on SocketException {
+      return const Left(ConnectionFailure("Failed to connect to the network"));
+    } on DioError catch (e) {
+      return Left(ServerFailure(e.response?.data['message'] ?? e.message));
+    }
+  }
 }

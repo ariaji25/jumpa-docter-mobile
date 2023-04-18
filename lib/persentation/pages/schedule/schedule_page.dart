@@ -735,7 +735,9 @@ class SchedulePageState extends State<SchedulePage> {
         ),
       ),
     );
-    await scheduleProvider.getEnrollmentDetail(e.bookingId ?? "").then((value) {
+    await scheduleProvider
+        .patientDetailByNIK(e.bookingId ?? "", e.getElementValue(e.nikPatient))
+        .then((value) {
       Navigator.of(context).pop();
       if (scheduleProvider.detailEnrollment.events != null &&
           scheduleProvider.detailEnrollment.events!.isNotEmpty) {
@@ -743,12 +745,12 @@ class SchedulePageState extends State<SchedulePage> {
             scheduleProvider.detailEnrollment.events!.first;
         BookingEntities bookingEntities = orderProvider.bookingEntities;
         PatientEntities patientEntities = orderProvider.patientEntities;
+        patientEntities.nrm = eventEntities.nrm;
+        patientEntities.address = eventEntities.addressPatient;
         patientEntities.name =
             eventEntities.getElementValue(eventEntities.namePatient);
         patientEntities.nik =
             eventEntities.getElementValue(eventEntities.nikPatient);
-        patientEntities.address =
-            eventEntities.getElementValue(eventEntities.clinicArea);
         bookingEntities.doctorName =
             eventEntities.getElementValue(eventEntities.doctor);
         bookingEntities.complaint =

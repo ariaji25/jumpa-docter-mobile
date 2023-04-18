@@ -12,4 +12,6 @@ abstract class PatientRepository {
   Future<Either<Failure, String>> detailPatientByNrm(String phoneNumber);
 
   Future<Either<Failure, String>> detailPatientByNik(String nik);
+
+  Future<Either<Failure, String>> detailPatientByNikOther(String nik);
 }

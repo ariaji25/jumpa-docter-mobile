@@ -54,6 +54,7 @@ import 'data/repositories/patient/patient_repository_impl.dart';
 import 'domain/repositories/patient/patient_repositorty.dart';
 import 'domain/repositories/schedule/schedule_repository.dart';
 import 'domain/usecases/patient/create_patient.dart';
+import 'domain/usecases/patient/detail_patient_by_nik_other.dart';
 import 'persentation/provider/patient/patient_provider.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -88,6 +89,7 @@ Future setup() async {
       getEnrollments: getIt(),
       getHistoryEnrollments: getIt(),
       getDetailEnrollment: getIt(),
+      detailPatientByNik: getIt(),
     ),
   );
   getIt.registerFactory<OrderProvider>(
@@ -169,6 +171,11 @@ Future setup() async {
   );
   getIt.registerLazySingleton<DetailPatientByNik>(
     () => DetailPatientByNik(
+      getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<DetailPatientByNikOther>(
+        () => DetailPatientByNikOther(
       getIt(),
     ),
   );

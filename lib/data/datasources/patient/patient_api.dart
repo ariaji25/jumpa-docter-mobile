@@ -22,5 +22,9 @@ abstract class PatientApi {
       "/api/trackedEntityInstances?program=El6a2lnac0D&ou=jp49nCFvI75&filter=xGjeKnsJobT:EQ:{nik}")
   Future detailPatientByNik(@Path('nik') String nik);
 
+  @GET(
+      "/api/trackedEntityInstances/query.json?ou=jp49nCFvI75&ouMode=ACCESSIBLE&program=El6a2lnac0D&attribute=xGjeKnsJobT:LIKE:{nik}")
+  Future detailPatientByNikOther(@Path('nik') String nik);
+
   factory PatientApi(Dio dio, {String baseUrl}) = _PatientApi;
 }
