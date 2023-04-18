@@ -160,72 +160,81 @@ class ProfileFormState extends State<ProfileForm> {
                               child: _buildDetailPatient(patientProvider),
                             ),
                             const SizedBox(height: 10),
-                            Buttons(
-                                title: patientProvider.showBtnEdit
-                                    ? "Edit identitas"
-                                    : "Simpan",
+                            Visibility(
+                              visible: patientProvider.showBtnEdit,
+                              child: Buttons(
+                                title: 'Edit Identitas',
                                 onTap: () {
-                                  if (patientProvider.requestState !=
-                                      RequestState.Loading) {
-                                    if (patientProvider.showBtnEdit == false) {
-                                      if ((patientProvider.patient.coordinate ??
-                                              "") ==
-                                          "") {
-                                        SnackBarCustom.showSnackBarMessage(
-                                          context: context,
-                                          title: "Ops !",
-                                          message:
-                                              "Pastikan Alamat dengan Maps dipilih",
-                                          typeMessage: SnackBarType.error,
-                                        );
-                                      } else if ((patientProvider
-                                                  .patient.gender ??
-                                              "") ==
-                                          "") {
-                                        SnackBarCustom.showSnackBarMessage(
-                                          context: context,
-                                          title: "Ops !",
-                                          message:
-                                              "Jenis Kelamin harus dipilih",
-                                          typeMessage: SnackBarType.error,
-                                        );
-                                      } else if (_formKey.currentState!
-                                          .validate()) {
-                                        Helpers.printDebug("_createOrUpdate()");
-                                        _createOrUpdate(patientProvider);
-                                      }
-                                    }
-
-                                    if (patientProvider.showBtnEdit) {
-                                      patientProvider.setShowBtnEdit(false);
-                                    }
+                                  if (patientProvider.showBtnEdit) {
+                                    patientProvider.setShowBtnEdit(false);
                                   }
                                 },
-                                loading: patientProvider.requestState ==
-                                    RequestState.Loading,
-                                disabled: Helpers.checkIsNull(
-                                        patientProvider.patient.name) ||
-                                    Helpers.checkIsNull(patientProvider
-                                        .patient.domicilieAddress) ||
-                                    Helpers.checkIsNull(
-                                        patientProvider.patient.coordinate) ||
-                                    Helpers.checkIsNull(
-                                        patientProvider.patient.nik) ||
-                                    (patientProvider.patient.nik != null &&
-                                        patientProvider.patient.nik!.length <
-                                            16) ||
-                                    Helpers.checkIsNull(
-                                        patientProvider.patient.address) ||
-                                    Helpers.checkIsNull(
-                                        patientProvider.patient.waNumber) ||
-                                    Helpers.checkIsNull(
-                                        patientProvider.patient.phoneNumber) ||
-                                    Helpers.checkIsNull(
-                                        patientProvider.patient.pob) ||
-                                    Helpers.checkIsNull(
-                                        patientProvider.patient.dob) ||
-                                    Helpers.checkIsNull(
-                                        patientProvider.patient.gender)),
+                              ),
+                            ),
+                            Visibility(
+                              visible: !patientProvider.showBtnEdit,
+                              child: Buttons(
+                                  title: "Simpan",
+                                  onTap: () {
+                                    if (patientProvider.requestState !=
+                                        RequestState.Loading) {
+                                      if (patientProvider.showBtnEdit ==
+                                          false) {
+                                        if ((patientProvider
+                                                    .patient.coordinate ??
+                                                "") ==
+                                            "") {
+                                          SnackBarCustom.showSnackBarMessage(
+                                            context: context,
+                                            title: "Ops !",
+                                            message:
+                                                "Pastikan Alamat dengan Maps dipilih",
+                                            typeMessage: SnackBarType.error,
+                                          );
+                                        } else if ((patientProvider
+                                                    .patient.gender ??
+                                                "") ==
+                                            "") {
+                                          SnackBarCustom.showSnackBarMessage(
+                                            context: context,
+                                            title: "Ops !",
+                                            message:
+                                                "Jenis Kelamin harus dipilih",
+                                            typeMessage: SnackBarType.error,
+                                          );
+                                        } else if (_formKey.currentState!
+                                            .validate()) {
+                                          Helpers.printDebug(
+                                              "_createOrUpdate()");
+                                          _createOrUpdate(patientProvider);
+                                        }
+                                      }
+                                    }
+                                  },
+                                  loading: patientProvider.requestState ==
+                                      RequestState.Loading,
+                                  disabled: Helpers.checkIsNull(
+                                          patientProvider.patient.name) ||
+                                      Helpers.checkIsNull(patientProvider
+                                          .patient.domicilieAddress) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.coordinate) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.nik) ||
+                                      (patientProvider.patient.nik != null &&
+                                          patientProvider.patient.nik!.length <
+                                              16) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.address) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.waNumber) ||
+                                      Helpers.checkIsNull(patientProvider
+                                          .patient.phoneNumber) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.pob) ||
+                                      Helpers.checkIsNull(patientProvider.patient.dob) ||
+                                      Helpers.checkIsNull(patientProvider.patient.gender)),
+                            ),
                             const SizedBox(height: 16),
                             Padding(
                               padding: EdgeInsets.only(
