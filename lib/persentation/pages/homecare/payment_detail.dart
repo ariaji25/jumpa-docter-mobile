@@ -214,7 +214,7 @@ class _PaymentDetailPageState extends State<PaymentDetailPage> {
             ),
             cardColumn(
               "Waktu tanggal berobat",
-              "${orderProvider.bookingEntities.visitTime} WIB - ${DateHelper.dateTimeToLocalDate(orderProvider.bookingEntities.visitDate)!.replaceAll("-", "/")}",
+              "${orderProvider.bookingEntities.visitTime} ${DateHelper.getTimezon()} - ${DateHelper.dateTimeToLocalDate(orderProvider.bookingEntities.visitDate)!.replaceAll("-", "/")}",
             ),
             cardColumn(
               "Alamat janji temu",
