@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:jd_mobile/common/constants/app_const.dart';
 import 'package:jd_mobile/common/extensions/padding_ext.dart';
+import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/size.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
@@ -197,7 +198,7 @@ class _PaymentState extends State<PaymentPage> {
                                 width: 5,
                               ),
                               Text(
-                                "Selesaikan pembayaran sebelum 18.00 WIB",
+                                "Selesaikan pembayaran sebelum 18.00 ${DateHelper.getTimezon()}",
                                 style: AppTheme.bodyText.copyWith(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
