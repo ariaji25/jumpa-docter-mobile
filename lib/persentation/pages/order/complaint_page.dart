@@ -189,6 +189,9 @@ class _ComplaintPageState extends State<ComplaintPage> {
                     _onSelectedPatientType(0);
                     mapProvider.setSelectedDetailAddress("");
                     mapProvider.setSelectedPosition(const LatLng(0, 0));
+                    orderProvider.newPatientEntities = PatientEntities();
+                    orderProvider.setWaNumberEqPhoneNumber(false);
+                    orderProvider.phoneNumberCtrl.text = "";
                     return bottomSheetPatientWidget(
                         context,
                         _onCheckUseWaNumber,

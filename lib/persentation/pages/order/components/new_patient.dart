@@ -395,22 +395,22 @@ bottomSheetPatientWidget(
                             loading: orderProvider.requestCreateNewPatientState ==
                                 RequestState.Loading,
                             disabled: Helpers.checkIsNull(
-                                    orderProvider.newPatientEntities.name) &&
+                                    orderProvider.newPatientEntities.name) ||
                                 Helpers.checkIsNull(orderProvider
-                                    .newPatientEntities.domicilieAddress) &&
+                                    .newPatientEntities.domicilieAddress) ||
                                 Helpers.checkIsNull(orderProvider
-                                    .newPatientEntities.coordinate) &&
+                                    .newPatientEntities.coordinate) ||
                                 Helpers.checkIsNull(
-                                    orderProvider.newPatientEntities.nik) &&
+                                    orderProvider.newPatientEntities.nik) ||
                                 Helpers.checkIsNull(
-                                    orderProvider.newPatientEntities.address) &&
+                                    orderProvider.newPatientEntities.address) ||
                                 Helpers.checkIsNull(orderProvider
-                                    .newPatientEntities.waNumber) &&
+                                    .newPatientEntities.waNumber) ||
                                 Helpers.checkIsNull(orderProvider
-                                    .newPatientEntities.phoneNumber) &&
-                                Helpers.checkIsNull(orderProvider.newPatientEntities.pob) &&
-                                Helpers.checkIsNull(orderProvider.newPatientEntities.dob) &&
-                                Helpers.checkIsNull(orderProvider.newPatientEntities.religion) &&
+                                    .newPatientEntities.phoneNumber) ||
+                                Helpers.checkIsNull(orderProvider.newPatientEntities.pob) ||
+                                Helpers.checkIsNull(orderProvider.newPatientEntities.dob) ||
+                                Helpers.checkIsNull(orderProvider.newPatientEntities.religion) ||
                                 Helpers.checkIsNull(orderProvider.newPatientEntities.gender)),
                         const SizedBox(height: 16),
                         Padding(
