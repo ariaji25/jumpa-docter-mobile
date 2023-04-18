@@ -18,6 +18,8 @@ import 'package:jd_mobile/persentation/provider/auth/auth_provider.dart';
 import 'package:jd_mobile/persentation/widgets/app_bars.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/buttons.dart';
+
 class OtpPage extends StatefulWidget {
   static const routeName = "/OtpPage";
 
@@ -28,7 +30,6 @@ class OtpPage extends StatefulWidget {
 }
 
 class _OtpPageState extends State<OtpPage> {
-  final TextEditingController _otpCtrl = TextEditingController();
   late CountdownTimerController? controller;
 
   int endTime = DateTime.now().millisecondsSinceEpoch +
@@ -122,8 +123,7 @@ class _OtpPageState extends State<OtpPage> {
             ),
             RichText(
               text: TextSpan(
-                text:
-                    "Kami sudah mengirimkan kode OTP melalui\nSMS ke nomor ",
+                text: "Kami sudah mengirimkan kode OTP melalui\nSMS ke nomor ",
                 style: GoogleFonts.inter(
                   color: AppColors.primaryColorDarkColor,
                   fontSize: 12,
@@ -155,78 +155,101 @@ class _OtpPageState extends State<OtpPage> {
             const SizedBox(height: 15),
             OtpTextField(
               onSubmit: (value) {
-                _otpCtrl.text = value;
+                provider.otpCtrl.text = value;
+                provider.setEnableButtonOtp(value.length == 6);
               },
-              focusedBorderColor: AppColors.primaryColor,
+              focusedBorderColor: provider.state == RequestState.Error
+                  ? AppColors.dangerDarkColor
+                  : AppColors.primaryColor,
               fieldWidth: MediaQuery.of(context).size.width / 8,
+              keyboardType: TextInputType.number,
               numberOfFields: 6,
-              borderColor: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(5),
+              borderColor: provider.state == RequestState.Error
+                  ? AppColors.dangerDarkColor
+                  : AppColors.primaryColor,
+              enabledBorderColor: provider.state == RequestState.Error
+                  ? AppColors.dangerDarkColor
+                  : const Color(0xFFE7E7E7),
+              cursorColor: provider.state == RequestState.Error
+                  ? AppColors.dangerDarkColor
+                  : AppColors.primaryColor,
               showFieldAsBox: true,
+              autoFocus: true,
+              textStyle: AppTheme.bodyText.copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: provider.state == RequestState.Error
+                    ? AppColors.dangerDarkColor
+                    : AppColors.primaryColor,
+              ),
+              onCodeChanged: (value) {
+                provider.handleOtp(value);
+                provider.setEnableButtonOtp(provider.otpCtrl.text.length == 6);
+              },
             ),
             const SizedBox(height: 30),
             Center(
-              child: CountdownTimer(
-                controller: controller,
-                endTime: endTime,
-                widgetBuilder: (_, CurrentRemainingTime? time) {
-                  return RichText(
-                    text: TextSpan(
-                      text: time == null ? "Belum dapet kode OTP? " : "",
-                      style: GoogleFonts.poppins(
-                          color: AppColors.primaryColorDarkColor),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: time == null
-                              ? 'Kirim Lagi'
-                              : "${time.min ?? 0}:${time.sec}",
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Visibility(
+                      visible: provider.state == RequestState.Error,
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 30),
+                        child: Text(
+                          "Kode OTP salah atau kode sudah kadaluarsa, coba lagi beberapa saat",
+                          textAlign: TextAlign.center,
                           style: AppTheme.bodyText.copyWith(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 12,
-                            color: AppColors.primaryColorDarkColor,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              if (time == null) {
-                                // Make Request OTP Again
-                                resetCountDown();
-                                controller?.start();
-                              }
-                            },
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                              color: AppColors.dangerDarkColor),
                         ),
-                      ],
-                    ),
-                  );
-                },
+                      )),
+                  CountdownTimer(
+                    controller: controller,
+                    endTime: endTime,
+                    widgetBuilder: (_, CurrentRemainingTime? time) {
+                      return RichText(
+                        text: TextSpan(
+                          text: time == null ? "Belum dapet kode OTP? " : "",
+                          style: GoogleFonts.poppins(
+                              color: AppColors.primaryColorDarkColor),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: time == null
+                                  ? 'Kirim Lagi'
+                                  : "${time.min ?? 0}:${time.sec}",
+                              style: AppTheme.bodyText.copyWith(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 12,
+                                color: AppColors.primaryColorDarkColor,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  if (time == null) {
+                                    // Make Request OTP Again
+                                    resetCountDown();
+                                    controller?.start();
+                                  }
+                                },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 30),
-            InkWell(
+            Buttons(
+              disabled: !provider.enableButtonOtp,
+              loading: provider.state == RequestState.Loading,
+              title: "Lanjut",
+              marginBottom: 0,
               onTap: () => _onLanjut(provider, params[1]),
-              child: Container(
-                height: 47,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Center(
-                  child: provider.state == RequestState.Loading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2.0,
-                          ),
-                        )
-                      : Text(
-                          "Lanjut",
-                          style: AppTheme.bodyText.copyWith(
-                            color: AppColors.whiteColor,
-                            fontSize: 14,
-                          ),
-                        ),
-                ),
-              ),
             ),
           ],
         ),
@@ -243,10 +266,11 @@ class _OtpPageState extends State<OtpPage> {
 
   void _onLanjut(AuthProvider provider, String phoneNumber) {
     closeKeyboard();
-    provider.smsCode = _otpCtrl.text;
+    provider.smsCode = provider.otpCtrl.text;
     provider.signInUser().then((_) {
       if (provider.state == RequestState.Loaded) {
-        const FlutterSecureStorage().write(key: AppConst.PHONE_NUMBER_KEY, value: phoneNumber);
+        const FlutterSecureStorage()
+            .write(key: AppConst.PHONE_NUMBER_KEY, value: phoneNumber);
         Navigator.pushNamedAndRemoveUntil(
           context,
           BasePage.routeName,

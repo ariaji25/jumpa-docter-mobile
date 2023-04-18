@@ -55,8 +55,14 @@ class SchedulePageState extends State<SchedulePage> {
           Provider.of<PatientProvider>(context, listen: false);
       ScheduleProvider scheduleProvider =
           Provider.of<ScheduleProvider>(context, listen: false);
-      await scheduleProvider
-          .getListEnrollments(patientProvider.patient.tei ?? "");
+      if (patientProvider.isNewPatient && !patientProvider.isInvalidToken) {
+        scheduleProvider.enrollment.events = [];
+        scheduleProvider.enrollmentHistory.events = [];
+        scheduleProvider.setRequestState(RequestState.Loaded);
+      } else {
+        await scheduleProvider
+            .getListEnrollments(patientProvider.patient.tei ?? "");
+      }
       // await scheduleProvider
       //     .getListHistoryEnrollments(patientProvider.patient.tei ?? "");
     });
@@ -383,12 +389,12 @@ class SchedulePageState extends State<SchedulePage> {
                                                 child: ButtonCustom(
                                                   title: "Batalkan Pesanan",
                                                   backgroundColor:
-                                                      AppColors.grey200Color,
+                                                      const Color(0XFFE4ECF7),
                                                   titleStyle: AppTheme.bodyText
                                                       .copyWith(
                                                           color: AppColors
                                                               .primaryColor,
-                                                          fontSize: 14),
+                                                          fontSize: 12),
                                                   marginBottom: 0,
                                                   onTap: () {
                                                     SnackBarCustom
@@ -409,30 +415,33 @@ class SchedulePageState extends State<SchedulePage> {
                                             const SizedBox(
                                               width: 10,
                                             ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: SizedBox(
-                                                height: 40,
-                                                width: 137,
-                                                child: Buttons(
-                                                  title: "Bayar Sekarang",
-                                                  marginBottom: 0,
-                                                  disabled: e.getElementValue(
-                                                          e.statusPayment) !=
-                                                      "0",
-                                                  onTap: () {
-                                                    Navigator.pushNamed(context,
-                                                        WebViewPage.routeName,
-                                                        arguments: [
-                                                          // INDEX 0
-                                                          e.getElementValue(
-                                                            e.paymentUrl,
-                                                          ),
-                                                          // INDEX 1
-                                                          e.getElementValue(
-                                                              e.pgCode),
-                                                        ]);
-                                                  },
+                                            Visibility(
+                                              visible: e.getElementValue(
+                                                      e.statusPayment) ==
+                                                  "0",
+                                              child: Expanded(
+                                                flex: 1,
+                                                child: SizedBox(
+                                                  height: 40,
+                                                  width: 137,
+                                                  child: Buttons(
+                                                    title: "Bayar Sekarang",
+                                                    marginBottom: 0,
+                                                    onTap: () {
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          WebViewPage.routeName,
+                                                          arguments: [
+                                                            // INDEX 0
+                                                            e.getElementValue(
+                                                              e.paymentUrl,
+                                                            ),
+                                                            // INDEX 1
+                                                            e.getElementValue(
+                                                                e.pgCode),
+                                                          ]);
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -710,6 +719,7 @@ class SchedulePageState extends State<SchedulePage> {
     showDialog(
       context: context,
       barrierColor: Colors.black.withOpacity(0.2),
+      barrierDismissible: false,
       builder: (context) => Center(
         child: Container(
           width: 120.0,

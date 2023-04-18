@@ -7,7 +7,6 @@ import 'package:jd_mobile/common/extensions/padding_ext.dart';
 import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/helpers/helpers.dart';
 import 'package:jd_mobile/common/resources/size.dart';
-import 'package:jd_mobile/common/resources/snackbar.dart';
 import 'package:jd_mobile/common/utils/state_enum.dart';
 import 'package:jd_mobile/persentation/pages/webview/webview_page.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
@@ -21,6 +20,7 @@ import 'components/base_payment.dart';
 
 class PaymentPage extends StatefulWidget {
   static const routeName = "/PaymentPage";
+
   const PaymentPage({Key? key}) : super(key: key);
 
   @override
@@ -28,7 +28,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentState extends State<PaymentPage> {
-  var _pgCode = "";
   late OrderProvider orderProvider;
   late PaymentProvider paymentProvider;
 
@@ -53,36 +52,33 @@ class _PaymentState extends State<PaymentPage> {
         return BasePaymentScreen(
           btnTitle: "Bayar",
           onNext: () async {
-            if(_pgCode == "") {
-              SnackBarCustom.showSnackBarMessage(
-                context: context,
-                title: "Opps!",
-                message: "Silahkan pilih metode pembayaran!",
-                typeMessage: SnackBarType.warning,
+            await paymentProvider.genratePayment({
+              "booking_id": orderProvider.reference,
+              "product_id": orderProvider.bookingEntities.service,
+              "product_name": orderProvider.bookingEntities.serviceType,
+              "product_price": "${orderProvider.bookingEntities.price}00",
+              "payment_channel": orderProvider.pgCode,
+              "patient_id": orderProvider.patientEntities.tei,
+              "patient_name": orderProvider.patientEntities.name,
+              "booking_date":
+                  "${orderProvider.bookingEntities.visitDate} ${orderProvider.bookingEntities.visitTime}"
+            }).then((value) {
+              log('PAYMENT URL -- ${paymentProvider.paymentUrls}');
+              Navigator.pushNamed(
+                context,
+                WebViewPage.routeName,
+                arguments: [
+                  paymentProvider.paymentUrls,
+                  orderProvider.pgCode,
+                ],
               );
-            } else {
-              await paymentProvider.genratePayment({
-                "booking_id": orderProvider.reference,
-                "product_id": orderProvider.bookingEntities.service,
-                "product_name": orderProvider.bookingEntities.serviceType,
-                "product_price": "${orderProvider.bookingEntities.price}00",
-                "payment_channel": _pgCode,
-                "patient_id": orderProvider.patientEntities.tei,
-                "patient_name": orderProvider.patientEntities.name,
-                "booking_date": "${orderProvider.bookingEntities.visitDate} ${orderProvider.bookingEntities.visitTime}"
-              }).then((value) {
-                log('PAYMENT URL -- ${paymentProvider.paymentUrls}');
-                Navigator.pushNamed(
-                  context,
-                  WebViewPage.routeName,
-                  arguments: [
-                    paymentProvider.paymentUrls,
-                    _pgCode,
-                  ],
-                );
-              });
-            }
+              orderProvider.clear();
+            });
           },
+          disabled: [
+            '',
+            '-'
+          ].contains(Provider.of<OrderProvider>(context, listen: true).pgCode),
           loading: value.genratePaymentState == RequestState.Loading,
           child: Consumer<PaymentProvider>(
             builder: (context, value, child) {
@@ -139,11 +135,14 @@ class _PaymentState extends State<PaymentPage> {
                         children: value.paymentEntites!.va!
                             .map(
                               (e) => PayemntTile(
-                                isActive: _pgCode == e.pgCode,
+                                isActive: Provider.of<OrderProvider>(context,
+                                            listen: true)
+                                        .pgCode ==
+                                    e.pgCode,
                                 title: e.pgName ?? "-",
                                 image: AppConst.pickIconPayment[e.pgCode]!,
                                 onTap: () {
-                                  onChnage(e.pgCode ?? "");
+                                  onChange(e.pgCode ?? "");
                                 },
                               ),
                             )
@@ -162,11 +161,14 @@ class _PaymentState extends State<PaymentPage> {
                         children: value.paymentEntites!.eWallet!.map(
                           (e) {
                             return PayemntTile(
-                              isActive: _pgCode == e.pgCode,
+                              isActive: Provider.of<OrderProvider>(context,
+                                          listen: true)
+                                      .pgCode ==
+                                  e.pgCode,
                               title: e.pgName ?? "-",
                               image: AppConst.pickIconPayment[e.pgCode]!,
                               onTap: () {
-                                onChnage(e.pgCode ?? "-");
+                                onChange(e.pgCode ?? "-");
                               },
                             );
                           },
@@ -237,10 +239,8 @@ class _PaymentState extends State<PaymentPage> {
     );
   }
 
-  void onChnage(String val) {
-    setState(() {
-      _pgCode = val;
-    });
+  void onChange(String val) {
+    orderProvider.setPgCode(val);
   }
 
   Widget buildCardPrice(String price) {

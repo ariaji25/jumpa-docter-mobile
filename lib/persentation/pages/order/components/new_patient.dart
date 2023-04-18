@@ -9,6 +9,7 @@ import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import 'package:jd_mobile/persentation/provider/order/order_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../common/helpers/helpers.dart';
 import '../../../../common/resources/assets.dart';
 import '../../../../common/resources/colors.dart';
 import '../../../../common/theme/theme.dart';
@@ -389,14 +390,28 @@ bottomSheetPatientWidget(
                         ),
                         const SizedBox(height: 20),
                         Buttons(
-                          title: "Simpan",
-                          onTap: onOrderForOther,
-                          loading: orderProvider.requestCreateNewPatientState ==
-                              RequestState.Loading,
-                          disabled:
-                              orderProvider.requestCreateNewPatientState ==
-                                  RequestState.Loading,
-                        ),
+                            title: "Simpan",
+                            onTap: onOrderForOther,
+                            loading: orderProvider.requestCreateNewPatientState ==
+                                RequestState.Loading,
+                            disabled: Helpers.checkIsNull(
+                                    orderProvider.newPatientEntities.name) ||
+                                Helpers.checkIsNull(orderProvider
+                                    .newPatientEntities.domicilieAddress) ||
+                                Helpers.checkIsNull(orderProvider
+                                    .newPatientEntities.coordinate) ||
+                                Helpers.checkIsNull(
+                                    orderProvider.newPatientEntities.nik) ||
+                                Helpers.checkIsNull(
+                                    orderProvider.newPatientEntities.address) ||
+                                Helpers.checkIsNull(orderProvider
+                                    .newPatientEntities.waNumber) ||
+                                Helpers.checkIsNull(orderProvider
+                                    .newPatientEntities.phoneNumber) ||
+                                Helpers.checkIsNull(orderProvider.newPatientEntities.pob) ||
+                                Helpers.checkIsNull(orderProvider.newPatientEntities.dob) ||
+                                Helpers.checkIsNull(orderProvider.newPatientEntities.religion) ||
+                                Helpers.checkIsNull(orderProvider.newPatientEntities.gender)),
                         const SizedBox(height: 16),
                         Padding(
                           padding: EdgeInsets.only(

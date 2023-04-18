@@ -40,4 +40,10 @@ class Helpers {
     final formatter = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ');
     return formatter.format(double.parse(value));
   }
+
+  static bool checkIsNull(String? value) {
+    if (value == null || value == "") return true;
+
+    return false;
+  }
 }

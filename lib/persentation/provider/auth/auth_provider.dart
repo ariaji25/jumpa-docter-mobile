@@ -11,6 +11,8 @@ import 'package:jd_mobile/domain/usecases/auth/sign_in.dart';
 import 'package:jd_mobile/injection.dart' as di;
 
 class AuthProvider extends ChangeNotifier {
+  final TextEditingController phoneNumberCtrl = TextEditingController();
+  final TextEditingController otpCtrl = TextEditingController();
   final SignIn signIn;
 
   AuthProvider({required this.signIn});
@@ -28,6 +30,27 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setEnableButtonLogin(value) {
+    enableButtonLogin = value;
+    notifyListeners();
+  }
+
+  void setEnableButtonOtp(value) {
+    enableButtonOtp = value;
+    notifyListeners();
+  }
+
+  void handleOtp(String value) {
+    if (value == '') {
+      otpCtrl.text = otpCtrl.text
+          .replaceRange(otpCtrl.text.length - 1, otpCtrl.text.length, '');
+      notifyListeners();
+    } else {
+      otpCtrl.text += value;
+      notifyListeners();
+    }
+  }
+
   String _errMsg = AppConst.EMPTY_STRING;
 
   String get errMsg => _errMsg;
@@ -35,6 +58,8 @@ class AuthProvider extends ChangeNotifier {
   String verificationId = AppConst.EMPTY_STRING;
   String smsCode = AppConst.EMPTY_STRING;
   int? resendToken = 0;
+  bool enableButtonLogin = false;
+  bool enableButtonOtp = false;
 
   final _auth = di.getIt<FirebaseAuth>();
 

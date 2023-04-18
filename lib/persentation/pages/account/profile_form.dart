@@ -9,6 +9,7 @@ import 'package:jd_mobile/common/helpers/date_helper.dart';
 import 'package:jd_mobile/common/resources/assets.dart';
 import 'package:jd_mobile/common/resources/colors.dart';
 import 'package:jd_mobile/common/resources/size.dart';
+import 'package:jd_mobile/domain/entities/patient/patient_entities.dart';
 import 'package:jd_mobile/persentation/pages/account/components/map/map_page.dart';
 import 'package:jd_mobile/persentation/widgets/logo_widget.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ import '../../../common/utils/state_enum.dart';
 import '../../provider/map/map_provider.dart';
 import '../../provider/patient/patient_provider.dart';
 import '../../widgets/app_bars.dart';
-import '../../widgets/loading.dart';
+import '../../widgets/buttons.dart';
 import '../../widgets/profile_widget.dart';
 import '../../widgets/text_field.dart';
 
@@ -41,8 +42,10 @@ class ProfileFormState extends State<ProfileForm> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      PatientProvider patientProvider = Provider.of<PatientProvider>(context, listen: false);
-      MapProvider mapProvider = Provider.of<MapProvider>(context, listen: false);
+      PatientProvider patientProvider =
+          Provider.of<PatientProvider>(context, listen: false);
+      MapProvider mapProvider =
+          Provider.of<MapProvider>(context, listen: false);
 
       patientProvider.setShowBtnEdit(true);
       if (patientProvider.patient.name?.isEmpty ?? true) {
@@ -50,19 +53,25 @@ class ProfileFormState extends State<ProfileForm> {
       }
 
       Future.delayed(const Duration(milliseconds: 200), () async {
-        final nrm = (patientProvider.patient.nrm == "" ? null : patientProvider.patient.nrm) ?? await Helpers.readLocalStorage(AppConst.NRM_KEY);
+        final nrm = (patientProvider.patient.nrm == ""
+                ? null
+                : patientProvider.patient.nrm) ??
+            await Helpers.readLocalStorage(AppConst.NRM_KEY);
         final phone = await Helpers.readLocalStorage(AppConst.PHONE_NUMBER_KEY);
         patientProvider.patient.nrm = nrm;
         patientProvider.patient.waNumber = phone;
 
         patientProvider.nrmCtrl.text = nrm ?? "";
         patientProvider.waNumberCtrl.text = phone ?? "";
-        patientProvider.phoneNumberCtrl.text = patientProvider.patient.phoneNumber ?? "";
+        patientProvider.phoneNumberCtrl.text =
+            patientProvider.patient.phoneNumber ?? "";
         patientProvider.nameCtrl.text = patientProvider.patient.name ?? "";
         patientProvider.nikCtrl.text = patientProvider.patient.nik ?? "";
         patientProvider.adressCtrl.text = patientProvider.patient.address ?? "";
-        patientProvider.domicilieAdressCtrl.text = patientProvider.patient.domicilieAddress ?? "";
-        patientProvider.religionCtrl.text = patientProvider.patient.religion ?? "";
+        patientProvider.domicilieAdressCtrl.text =
+            patientProvider.patient.domicilieAddress ?? "";
+        patientProvider.religionCtrl.text =
+            patientProvider.patient.religion ?? "";
         patientProvider.pobCtrl.text = patientProvider.patient.pob ?? "";
         patientProvider.dobCtrl.text =
             DateHelper.changeFormatIdToDateTimeFormat(
@@ -72,21 +81,27 @@ class ProfileFormState extends State<ProfileForm> {
         patientProvider.patient.gender = patientProvider.patient.gender ?? "";
         patientProvider.setGender(patientProvider.patient.gender ?? "");
         if ((patientProvider.patient.coordinate ?? "") != "") {
-          List<dynamic> latLng = jsonDecode(patientProvider.patient.coordinate!);
-          mapProvider.setSelectedPosition(LatLng(double.parse(latLng[1].toString()), double.parse(latLng[0].toString())));
+          List<dynamic> latLng =
+              jsonDecode(patientProvider.patient.coordinate!);
+          mapProvider.setSelectedPosition(LatLng(
+              double.parse(latLng[1].toString()),
+              double.parse(latLng[0].toString())));
           mapProvider.getLocation(mapProvider.selectedPosition).then((value) {
             mapProvider.setSelectedDetailAddress(value);
           });
         }
 
-        patientProvider.setWaNumberEqPhoneNumber(patientProvider.waNumberCtrl.text == patientProvider.phoneNumberCtrl.text);
+        patientProvider.setWaNumberEqPhoneNumber(
+            patientProvider.waNumberCtrl.text ==
+                patientProvider.phoneNumberCtrl.text);
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    PatientProvider patientProvider = Provider.of<PatientProvider>(context, listen: true);
+    PatientProvider patientProvider =
+        Provider.of<PatientProvider>(context, listen: true);
     MapProvider mapProvider = Provider.of<MapProvider>(context, listen: true);
     return Scaffold(
         appBar: AppsBar(
@@ -138,73 +153,87 @@ class ProfileFormState extends State<ProfileForm> {
                             Visibility(
                               visible: !patientProvider.showBtnEdit,
                               child:
-                                  _buildTextfield(patientProvider, mapProvider),
+                                  _buildTextField(patientProvider, mapProvider),
                             ),
                             Visibility(
                               visible: patientProvider.showBtnEdit,
                               child: _buildDetailPatient(patientProvider),
                             ),
                             const SizedBox(height: 10),
-                            InkWell(
-                              onTap: () {
-                                if (patientProvider.requestState !=
-                                    RequestState.Loading) {
-                                  if (patientProvider.showBtnEdit == false) {
-                                    if ((patientProvider.patient.coordinate ??
-                                            "") ==
-                                        "") {
-                                      SnackBarCustom.showSnackBarMessage(
-                                        context: context,
-                                        title: "Ops !",
-                                        message:
-                                            "Pastikan Alamat dengan Maps dipilih",
-                                        typeMessage: SnackBarType.error,
-                                      );
-                                    } else if ((patientProvider
-                                                .patient.gender ??
-                                            "") ==
-                                        "") {
-                                      SnackBarCustom.showSnackBarMessage(
-                                        context: context,
-                                        title: "Ops !",
-                                        message: "Jenis Kelamin harus dipilih",
-                                        typeMessage: SnackBarType.error,
-                                      );
-                                    } else if (_formKey.currentState!
-                                        .validate()) {
-                                      Helpers.printDebug("_createOrUpdate()");
-                                      _createOrUpdate(patientProvider);
-                                    }
-                                  }
-
+                            Visibility(
+                              visible: patientProvider.showBtnEdit,
+                              child: Buttons(
+                                title: 'Edit Identitas',
+                                onTap: () {
                                   if (patientProvider.showBtnEdit) {
                                     patientProvider.setShowBtnEdit(false);
                                   }
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryColor,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                height: 40,
-                                child: Center(
-                                  child: patientProvider.requestState ==
-                                          RequestState.Loading
-                                      ? const Loading(
-                                          color: Colors.white,
-                                          size: 20,
-                                        )
-                                      : Text(
-                                          patientProvider.showBtnEdit
-                                              ? "Edit identitas"
-                                              : "Simpan",
-                                          style: AppTheme.subtitle.copyWith(
-                                            color: AppColors.whiteColor,
-                                          ),
-                                        ),
-                                ),
+                                },
                               ),
+                            ),
+                            Visibility(
+                              visible: !patientProvider.showBtnEdit,
+                              child: Buttons(
+                                  title: "Simpan",
+                                  onTap: () {
+                                    if (patientProvider.requestState !=
+                                        RequestState.Loading) {
+                                      if (patientProvider.showBtnEdit ==
+                                          false) {
+                                        if ((patientProvider
+                                                    .patient.coordinate ??
+                                                "") ==
+                                            "") {
+                                          SnackBarCustom.showSnackBarMessage(
+                                            context: context,
+                                            title: "Ops !",
+                                            message:
+                                                "Pastikan Alamat dengan Maps dipilih",
+                                            typeMessage: SnackBarType.error,
+                                          );
+                                        } else if ((patientProvider
+                                                    .patient.gender ??
+                                                "") ==
+                                            "") {
+                                          SnackBarCustom.showSnackBarMessage(
+                                            context: context,
+                                            title: "Ops !",
+                                            message:
+                                                "Jenis Kelamin harus dipilih",
+                                            typeMessage: SnackBarType.error,
+                                          );
+                                        } else if (_formKey.currentState!
+                                            .validate()) {
+                                          Helpers.printDebug(
+                                              "_createOrUpdate()");
+                                          _createOrUpdate(patientProvider);
+                                        }
+                                      }
+                                    }
+                                  },
+                                  loading: patientProvider.requestState ==
+                                      RequestState.Loading,
+                                  disabled: Helpers.checkIsNull(
+                                          patientProvider.patient.name) ||
+                                      Helpers.checkIsNull(patientProvider
+                                          .patient.domicilieAddress) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.coordinate) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.nik) ||
+                                      (patientProvider.patient.nik != null &&
+                                          patientProvider.patient.nik!.length <
+                                              16) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.address) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.waNumber) ||
+                                      Helpers.checkIsNull(patientProvider
+                                          .patient.phoneNumber) ||
+                                      Helpers.checkIsNull(
+                                          patientProvider.patient.pob) ||
+                                      Helpers.checkIsNull(patientProvider.patient.dob) ||
+                                      Helpers.checkIsNull(patientProvider.patient.gender)),
                             ),
                             const SizedBox(height: 16),
                             Padding(
@@ -335,7 +364,7 @@ class ProfileFormState extends State<ProfileForm> {
     );
   }
 
-  Widget _buildTextfield(
+  Widget _buildTextField(
       PatientProvider patientProvider, MapProvider mapProvider) {
     return Column(
       children: [
@@ -352,7 +381,9 @@ class ProfileFormState extends State<ProfileForm> {
             FilteringTextInputFormatter.allow(RegExp('[a-zA-Z-" "]')),
           ],
           onChanged: (value) {
-            patientProvider.patient.name = value;
+            PatientEntities patient = patientProvider.patient;
+            patient.name = value;
+            patientProvider.updateDataPatient(patient);
           },
         ),
         const SizedBox(height: 12),
@@ -364,7 +395,9 @@ class ProfileFormState extends State<ProfileForm> {
           controller: patientProvider.domicilieAdressCtrl,
           inputType: TextInputType.text,
           onChanged: (value) {
-            patientProvider.patient.domicilieAddress = value;
+            PatientEntities patient = patientProvider.patient;
+            patient.domicilieAddress = value;
+            patientProvider.updateDataPatient(patient);
           },
         ),
         const SizedBox(
@@ -389,8 +422,9 @@ class ProfileFormState extends State<ProfileForm> {
                             value.longitude,
                             value.latitude
                           ];
-                          patientProvider.patient.coordinate =
-                              jsonEncode(listLatLong);
+                          PatientEntities patient = patientProvider.patient;
+                          patient.coordinate = jsonEncode(listLatLong);
+                          patientProvider.updateDataPatient(patient);
                         }
                       })),
             );
@@ -460,7 +494,9 @@ class ProfileFormState extends State<ProfileForm> {
           inputType: TextInputType.number,
           formatters: [FilteringTextInputFormatter.digitsOnly],
           onChanged: (value) {
-            patientProvider.patient.nik = value;
+            PatientEntities patient = patientProvider.patient;
+            patient.nik = value;
+            patientProvider.updateDataPatient(patient);
           },
         ),
         textFieldWidgetWithBorder(
@@ -471,7 +507,9 @@ class ProfileFormState extends State<ProfileForm> {
           controller: patientProvider.adressCtrl,
           inputType: TextInputType.text,
           onChanged: (value) {
-            patientProvider.patient.address = value;
+            PatientEntities patient = patientProvider.patient;
+            patient.address = value;
+            patientProvider.updateDataPatient(patient);
           },
         ),
         const SizedBox(height: 12),
@@ -487,6 +525,8 @@ class ProfileFormState extends State<ProfileForm> {
           isTelephone: true,
           onChanged: (value) {
             patientProvider.patient.waNumber = value;
+            PatientEntities patient = patientProvider.patient;
+            patient.waNumber = value;
           },
         ),
         Transform.translate(
@@ -505,10 +545,14 @@ class ProfileFormState extends State<ProfileForm> {
                 if (patientProvider.waNumberEqPhoneNumber) {
                   patientProvider.phoneNumberCtrl.text =
                       patientProvider.waNumberCtrl.text;
-                  patientProvider.patient.phoneNumber =
-                      patientProvider.phoneNumberCtrl.text;
+                  PatientEntities patient = patientProvider.patient;
+                  patient.phoneNumber = patientProvider.phoneNumberCtrl.text;
+                  patientProvider.updateDataPatient(patient);
                 } else {
                   patientProvider.phoneNumberCtrl.text = "";
+                  PatientEntities patient = patientProvider.patient;
+                  patient.phoneNumber = "";
+                  patientProvider.updateDataPatient(patient);
                 }
               },
               controlAffinity: ListTileControlAffinity.leading,
@@ -526,7 +570,9 @@ class ProfileFormState extends State<ProfileForm> {
             formatters: [FilteringTextInputFormatter.digitsOnly],
             isTelephone: true,
             onChanged: (value) {
-              patientProvider.patient.phoneNumber = value;
+              PatientEntities patient = patientProvider.patient;
+              patient.phoneNumber = value;
+              patientProvider.updateDataPatient(patient);
             },
           ),
         Transform.translate(
@@ -539,7 +585,9 @@ class ProfileFormState extends State<ProfileForm> {
             isUnderline: true,
             inputType: TextInputType.text,
             onChanged: (value) {
-              patientProvider.patient.pob = value;
+              PatientEntities patient = patientProvider.patient;
+              patient.pob = value;
+              patientProvider.updateDataPatient(patient);
             },
           ),
         ),
@@ -552,9 +600,10 @@ class ProfileFormState extends State<ProfileForm> {
           context: context,
           dateController: patientProvider.dobCtrl,
           onChanged: (value) {
-            patientProvider.patient.dob =
-                DateHelper.changeFormatIdToDateTimeFormat(
-                    date: DateHelper.covertStringToDateTime(value: value));
+            PatientEntities patient = patientProvider.patient;
+            patient.dob = DateHelper.changeFormatIdToDateTimeFormat(
+                date: DateHelper.covertStringToDateTime(value: value));
+            patientProvider.updateDataPatient(patient);
           },
         ),
         const SizedBox(height: 12),
@@ -680,6 +729,9 @@ class ProfileFormState extends State<ProfileForm> {
                   onChanged: (value) {
                     patientProvider.setGender(value.toString());
                     patientProvider.patient.gender = value.toString();
+                    PatientEntities patient = patientProvider.patient;
+                    patient.gender = value.toString();
+                    patientProvider.updateDataPatient(patient);
                   },
                 ),
               ),

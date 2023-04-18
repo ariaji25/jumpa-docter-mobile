@@ -88,6 +88,11 @@ class PatientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateDataPatient(PatientEntities patientEntities) {
+    patient = patientEntities;
+    notifyListeners();
+  }
+
   Future<void> patientCreateNrm() async {
     final result = await createPatientNrm({
       "name": patient.name,

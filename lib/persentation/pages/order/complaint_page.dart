@@ -79,7 +79,18 @@ class _ComplaintPageState extends State<ComplaintPage> {
         },
         onBack: _onCancelOrder,
         loading: false,
-        disabled: false,
+        disabled: Provider.of<OrderProvider>(context, listen: true)
+                    .patientEntities
+                    .nik ==
+                null ||
+            Provider.of<OrderProvider>(context, listen: true)
+                    .patientEntities
+                    .name ==
+                null ||
+            Provider.of<OrderProvider>(context, listen: true)
+                    .complaintCtrl
+                    .text ==
+                "",
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -178,6 +189,9 @@ class _ComplaintPageState extends State<ComplaintPage> {
                     _onSelectedPatientType(0);
                     mapProvider.setSelectedDetailAddress("");
                     mapProvider.setSelectedPosition(const LatLng(0, 0));
+                    orderProvider.newPatientEntities = PatientEntities();
+                    orderProvider.setWaNumberEqPhoneNumber(false);
+                    orderProvider.phoneNumberCtrl.text = "";
                     return bottomSheetPatientWidget(
                         context,
                         _onCheckUseWaNumber,
