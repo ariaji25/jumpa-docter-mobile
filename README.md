@@ -17,7 +17,7 @@ Run this command in your terminal to generate json seriable files & Retrofit Fil
 ![JD FHIR](https://github.com/ariaji25/jumpa-docter-mobile/assets/39869366/00c373f6-d963-42ee-9673-3c87bf5f7b55)
 
 # DHIS2 to FHIR Data source mapping
-![JD FHIR (1)](https://github.com/ariaji25/jumpa-docter-mobile/assets/39869366/ec87bc01-4a86-430a-8649-39d85a1a56d0)
+![JD FHIR (2)](https://github.com/ariaji25/jumpa-docter-mobile/assets/39869366/bf97bc5d-974f-4e5e-9519-4539376769cb)
 
 # DHIS2 to FHIR Data element mapping
 ![JD FHIR 1](https://github.com/ariaji25/jumpa-docter-mobile/assets/39869366/91c96159-0d5a-43bf-99cf-83358c3478da)
